@@ -15,24 +15,6 @@
                 "description": "Specifies the name of the Azure Machine Learning workspace."
             }
         },
-        "keyVaultName": {
-            "type": "string",
-            "metadata": {
-                "description": "Specifies the name of the key vault."
-            }
-        },
-        "applicationInsightsName": {
-            "type": "string",
-            "metadata": {
-                "description": "Specifies the name of the application insights account."
-            }
-        },
-        "storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "Specifies the name of the storage account."
-            }
-        },
         "storageAccountType": {
             "type": "string",
             "defaultValue": "Standard_ZRS",
@@ -48,12 +30,6 @@
             ],
             "metadata": {
                 "description": "Specifies the SKU of the storage account."
-            }
-        },
-        "containerRegistryName": {
-            "type": "string",
-            "metadata": {
-                "description": "Specifies the name of the container registry that should be used for the Azure Machine Learning workspace."
             }
         },
         "logAnalyticsWorkspaceResourceId": {
@@ -85,11 +61,11 @@
     "variables": {
         "location": "[parameters('location')]",
         "workspaceName": "[parameters('workspaceName')]",
-        "keyVaultName": "[parameters('keyVaultName')]",
-        "applicationInsightsName": "[parameters('applicationInsightsName')]",
-        "storageAccountName": "[parameters('storageAccountName')]",
+        "keyVaultName": "[concat(variables('workspaceName'), '-kv')]",
+        "applicationInsightsName": "[concat(variables('workspaceName'), '-applicationinsights')]",
+        "storageAccountName": "[concat(replace(variables('workspaceName'), '-', ''), 'storage')]",
         "storageAccountType": "[parameters('storageAccountType')]",
-        "containerRegistryName": "[parameters('containerRegistryName')]",
+        "containerRegistryName": "[concat(replace(variables('workspaceName'), '-', ''), 'acr')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "privateDnsZoneResourceGroupName": "[last(split(variables('privateDnsZoneResourceGroupId'), '/'))]",
         "logAnalyticsWorkspaceResourceId": "[parameters('logAnalyticsWorkspaceResourceId')]",
@@ -148,8 +124,8 @@
                 "supportsHttpsTrafficOnly": true,
                 "isHnsEnabled": false,
                 "largeFileSharesState": "Disabled",
-                "minimumTlsVersion": "TLS1_2",
-                "allowBlobPublicAccess": false
+                "minimumTlsVersion": "TLS1_2"
+                // "allowBlobPublicAccess": false
                 // "routingPreference": {
                 //     "routingChoice": "MicrosoftRouting",
                 //     "publishMicrosoftEndpoints": false,
@@ -157,80 +133,80 @@
                 // }
             }
         },
-        // {
-        //     "name": "BlobPrivateEndpointDeployment",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "apiVersion": "2019-10-01",
-        //     "dependsOn": [
-        //         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-        //     ],
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[variables('templateUri')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "privateEndpointName": {
-        //                 "value": "[concat(variables('storageAccountName'), '-pe')]"
-        //             },
-        //             "privateEndpointLocation": {
-        //                 "value": "[variables('location')]"
-        //             },
-        //             "privateLinkServiceResourceId": {
-        //                 "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-        //             },
-        //             "privateLinkServiceGroupId": {
-        //                 "value": "blob"
-        //             },
-        //             "subnetResourceId": {
-        //                 "value": "[variables('privateLinkSubnetResourceId')]"
-        //             },
-        //             "privateDnsZoneId": {
-        //                 "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')]"
-        //             }
-        //         }
-        //     }
-        // },
-        // {
-        //     "name": "FilePrivateEndpointDeployment",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "apiVersion": "2019-10-01",
-        //     "dependsOn": [
-        //         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-        //     ],
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[variables('templateUri')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "privateEndpointName": {
-        //                 "value": "[concat(variables('storageAccountName'), '-pe')]"
-        //             },
-        //             "privateEndpointLocation": {
-        //                 "value": "[variables('location')]"
-        //             },
-        //             "privateLinkServiceResourceId": {
-        //                 "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-        //             },
-        //             "privateLinkServiceGroupId": {
-        //                 "value": "blob"
-        //             },
-        //             "subnetResourceId": {
-        //                 "value": "[variables('privateLinkSubnetResourceId')]"
-        //             },
-        //             "privateDnsZoneId": {
-        //                 "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.file.core.windows.net')]"
-        //             }
-        //         }
-        //     }
-        // },
         {
+            "name": "BlobPrivateEndpointDeployment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('templateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "privateEndpointName": {
+                        "value": "[concat(variables('storageAccountName'), '-private-endpoint')]"
+                    },
+                    "privateEndpointLocation": {
+                        "value": "[variables('location')]"
+                    },
+                    "privateLinkServiceResourceId": {
+                        "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                    },
+                    "privateLinkServiceGroupId": {
+                        "value": "blob"
+                    },
+                    "subnetResourceId": {
+                        "value": "[variables('privateLinkSubnetResourceId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "FilePrivateEndpointDeployment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('templateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "privateEndpointName": {
+                        "value": "[concat(variables('storageAccountName'), '-private-endpoint')]"
+                    },
+                    "privateEndpointLocation": {
+                        "value": "[variables('location')]"
+                    },
+                    "privateLinkServiceResourceId": {
+                        "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                    },
+                    "privateLinkServiceGroupId": {
+                        "value": "blob"
+                    },
+                    "subnetResourceId": {
+                        "value": "[variables('privateLinkSubnetResourceId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.file.core.windows.net')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[variables('applicationInsightsName')]",
             "type": "Microsoft.Insights/components",
             "apiVersion": "2020-02-02-preview",
-            "name": "[variables('applicationInsightsName')]",
             "location": "[variables('location')]",
             "kind": "web",
             "properties": {
@@ -269,6 +245,10 @@
                     "ipRules": [
                     ],
                     "virtualNetworkRules": [
+                        {
+                            "action": "Allow",
+                            "id": "[variables('serviceEndpointSubnetResourceId')]"
+                        }
                     ]
                 }
             }
@@ -288,16 +268,16 @@
         //         },
         //         "parameters": {
         //             "privateEndpointName": {
-        //                 "value": "[concat(variables('storageAccountName'), '-pe')]"
+        //                 "value": "[concat(variables('keyVaultName'), '-private-endpoint')]"
         //             },
         //             "privateEndpointLocation": {
         //                 "value": "[variables('location')]"
         //             },
         //             "privateLinkServiceResourceId": {
-        //                 "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        //                 "value": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
         //             },
         //             "privateLinkServiceGroupId": {
-        //                 "value": "blob"
+        //                 "value": "vault"
         //             },
         //             "subnetResourceId": {
         //                 "value": "[variables('privateLinkSubnetResourceId')]"
@@ -324,6 +304,10 @@
                 "networkRuleSet": {
                     "defaultAction": "Deny",
                     "virtualNetworkRules": [
+                        {
+                            "action": "Allow",
+                            "id": "[variables('serviceEndpointSubnetResourceId')]"
+                        }
                     ],
                     "ipRules": [
                     ]
@@ -360,13 +344,13 @@
         //         },
         //         "parameters": {
         //             "privateEndpointName": {
-        //                 "value": "[concat(variables('storageAccountName'), '-pe')]"
+        //                 "value": "[concat(variables('containerRegistryName'), '-private-endpoint')]"
         //             },
         //             "privateEndpointLocation": {
         //                 "value": "[variables('location')]"
         //             },
         //             "privateLinkServiceResourceId": {
-        //                 "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        //                 "value": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
         //             },
         //             "privateLinkServiceGroupId": {
         //                 "value": "blob"
@@ -464,16 +448,16 @@
                 },
                 "parameters": {
                     "privateEndpointName": {
-                        "value": "[concat(variables('storageAccountName'), '-pe')]"
+                        "value": "[concat(variables('workspaceName'), '-private-endpoint')]"
                     },
                     "privateEndpointLocation": {
                         "value": "[variables('location')]"
                     },
                     "privateLinkServiceResourceId": {
-                        "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                        "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspaceName'))]"
                     },
                     "privateLinkServiceGroupId": {
-                        "value": "blob"
+                        "value": "amlworkspace"
                     },
                     "subnetResourceId": {
                         "value": "[variables('privateLinkSubnetResourceId')]"

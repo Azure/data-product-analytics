@@ -6,6 +6,7 @@ on:
     paths:
       - 'infra/Storage/**'
       - 'infra/KeyVault/**'
+      - 'infra/MachineLearning/**'
       - 'infra/PrivateEndpoint/**'
       - '.github/workflows/dataProductDeployment.yml'
 
@@ -87,6 +88,19 @@ jobs:
             --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
             --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
     
+    # Deploy ml workspace - validation
+    - name: Deploy ml workspace - validation
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group validate \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --template-file $GITHUB_WORKSPACE/infra/MachineLearning/deploy.mlWorkspace.json \
+            --parameters $GITHUB_WORKSPACE/infra/MachineLearning/params.mlWorkspace001.json
+    
     # Deploy data factory - validation
     - name: Deploy data factory - validation
       uses: azure/CLI@v1
@@ -151,6 +165,19 @@ jobs:
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
             --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
+    
+    # Deploy ml workspace
+    - name: Deploy ml workspace
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group create \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --template-file $GITHUB_WORKSPACE/infra/MachineLearning/deploy.mlWorkspace.json \
+            --parameters $GITHUB_WORKSPACE/infra/MachineLearning/params.mlWorkspace001.json
     
     # Deploy data factory
     - name: Deploy data factory
