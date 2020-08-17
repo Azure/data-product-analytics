@@ -95,7 +95,7 @@
         "logAnalyticsWorkspaceResourceId": "[parameters('logAnalyticsWorkspaceResourceId')]",
         "privateLinkSubnetResourceId": "[parameters('privateLinkSubnetResourceId')]",
         "serviceEndpointSubnetResourceId": "[parameters('serviceEndpointSubnetResourceId')]",
-        "templateUri": "https://raw.githubusercontent.com/Azure/aml-enterprise-template/master/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTX4QOF2ICMV3PZPD727GYZ42"
+        "templateUri": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTUZRZJYJGENJSI7EW27INYGW"
     },
     "resources": [
         {
