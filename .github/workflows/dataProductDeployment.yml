@@ -61,19 +61,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # Deploy storage account - validation
-    - name: Deploy storage account - validation
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
-            --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
-    
     # Deploy key vault - validation
     - name: Deploy key vault - validation
       uses: azure/CLI@v1
@@ -86,6 +73,19 @@ jobs:
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --template-file $GITHUB_WORKSPACE/infra/KeyVault/deploy.keyVault.json \
             --parameters $GITHUB_WORKSPACE/infra/KeyVault/params.keyVault001.json
+    
+    # Deploy storage account - validation
+    - name: Deploy storage account - validation
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group validate \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
+            --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
     
     # Deploy data factory - validation
     - name: Deploy data factory - validation
@@ -126,19 +126,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # Deploy storage account
-    - name: Deploy storage account
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
-            --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
-    
     # Deploy key vault
     - name: Deploy key vault
       uses: azure/CLI@v1
@@ -151,6 +138,19 @@ jobs:
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --template-file $GITHUB_WORKSPACE/infra/KeyVault/deploy.keyVault.json \
             --parameters $GITHUB_WORKSPACE/infra/KeyVault/params.keyVault001.json
+    
+    # Deploy storage account
+    - name: Deploy storage account
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group create \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --template-file $GITHUB_WORKSPACE/infra/Storage/deploy.storage.json \
+            --parameters $GITHUB_WORKSPACE/infra/Storage/params.storage001.json
     
     # Deploy data factory
     - name: Deploy data factory

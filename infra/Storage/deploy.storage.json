@@ -32,6 +32,12 @@
                 "description": "Specifies the SKU of the storage account."
             }
         },
+        "keyVaultId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the key vault to store the storage access key."
+            }
+        },
         "subnetResourceId": {
             "type": "string",
             "metadata": {
@@ -50,6 +56,8 @@
         "location": "[parameters('location')]",
         "storageAccountName": "[parameters('storageAccountName')]",
         "storageAccountType": "[parameters('storageAccountType')]",
+        "keyVaultId": "[parameters('keyVaultId')]",
+        "keyVaultName": "[last(split(variables('keyVaultId'), '/'))]",
         "subnetResourceId": "[parameters('subnetResourceId')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "privateDnsZoneResourceGroupName": "[last(split(variables('privateDnsZoneResourceGroupId'), '/'))]",
@@ -242,6 +250,21 @@
                     "privateDnsZoneId": {
                         "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')]"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(variables('keyVaultName'), '/storageAccountKey')]",
+            "apiVersion": "2019-09-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "contentType": "text/plain",
+                "value": "[listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value]",
+                "attributes": {
+                    "enabled": true
                 }
             }
         }
