@@ -63,7 +63,7 @@
         "workspaceName": "[parameters('workspaceName')]",
         "keyVaultName": "[concat(variables('workspaceName'), '-kv')]",
         "applicationInsightsName": "[concat(variables('workspaceName'), '-applicationinsights')]",
-        "storageAccountName": "[concat(replace(variables('workspaceName'), '-', ''), 'storage')]",
+        "storageAccountName": "[concat(replace(variables('workspaceName'), '-', ''), 'sa')]",
         "storageAccountType": "[parameters('storageAccountType')]",
         "containerRegistryName": "[concat(replace(variables('workspaceName'), '-', ''), 'acr')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
