@@ -1,0 +1,206 @@
+name: Data Product Deployment
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'infra/Storage/**'
+      - 'infra/KeyVault/**'
+      - 'infra/MachineLearning/**'
+      - 'infra/PrivateEndpoint/**'
+      - '.ado/workflows/dataProductDeployment.yml'
+
+variables:
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'Marvins Azure Subscription(558bd446-4212-46a2-908c-9ab0a628705e)'
+  AZURE_SUBSCRIPTION_ID: '558bd446-4212-46a2-908c-9ab0a628705e'
+  AZURE_RESOURCE_GROUP_NAME: 'dataproduct002'
+  AZURE_LOCATION: 'North Europe'
+
+stages:
+  - stage: Validation
+    displayName: 'Validation of ARM templates'
+    jobs:
+      - job: Validation
+        displayName: 'Validation of ARM templates'
+        continueOnError: false
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+        # Checkout code
+        - checkout: self
+          name: checkout_repository
+          displayName: 'Checkout repository'
+          submodules: true
+          lfs: false
+          clean: true
+          continueOnError: false
+          enabled: true
+        
+        # Deploy key vault 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: key_vault_001_validation
+          displayName: Deploy key vault 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy storage account 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: storage_account_001_validation
+          displayName: Deploy storage account 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/Storage/deploy.storage.json'
+            csmParametersFile: 'infra/Storage/params.storage001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy ml workspace 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: ml_workspace_001_validation
+          displayName: Deploy ml workspace 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/MachineLearning/deploy.mlWorkspace.json'
+            csmParametersFile: 'infra/MachineLearning/params.mlWorkspace001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy data factory 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: data_factory_001_validation
+          displayName: Deploy data factory 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/DataFactory/deploy.dataFactory.json'
+            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
+            deploymentMode: 'Validation'
+
+  - stage: Deployment
+    displayName: 'Deployment of ARM templates'
+    dependsOn: Validation
+    condition: succeeded()
+    jobs:
+      - job: Deployment
+        displayName: 'Deployment of ARM templates'
+        continueOnError: false
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+        # Checkout repository
+        - checkout: self
+          name: checkout_repository
+          displayName: 'Checkout repository'
+          submodules: true
+          lfs: false
+          clean: true
+          continueOnError: false
+          enabled: true
+        
+        # Deploy key vault 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: key_vault_001_deployment
+          displayName: Deploy key vault 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy storage account 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: storage_account_001_deployment
+          displayName: Deploy storage account 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/Storage/deploy.storage.json'
+            csmParametersFile: 'infra/Storage/params.storage001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy ml workspace 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: ml_workspace_001_deployment
+          displayName: Deploy ml workspace 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/MachineLearning/deploy.mlWorkspace.json'
+            csmParametersFile: 'infra/MachineLearning/params.mlWorkspace001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy data factory 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: data_factory_001_deployment
+          displayName: Deploy data factory 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/DataFactory/deploy.dataFactory.json'
+            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
+            deploymentMode: 'Incremental'
