@@ -21,7 +21,7 @@
             "value": "default"
         },
         "subnetId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/datanode001-network/providers/Microsoft.Network/virtualNetworks/datanode001-vnet/subnets/dataproduct002-privatelink-subnet"
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/datanode001-network/providers/Microsoft.Network/virtualNetworks/datanode001-vnet/subnets/dataproduct001-privatelink-subnet"
         },
         "privateDnsZoneId": {
             "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net"
