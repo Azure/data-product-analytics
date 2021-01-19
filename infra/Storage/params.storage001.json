@@ -6,19 +6,22 @@
             "value": "northeurope"
         },
         "storageAccountName": {
-            "value": "dataproduct002"
+            "value": "dn001dp001storage001"
         },
         "storageAccountType": {
             "value": "Standard_ZRS"
         },
-        "keyVaultId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/dataproduct002/providers/Microsoft.KeyVault/vaults/dataproduct002-kv001"
+        "enableHns": {
+            "value": false
         },
-        "subnetResourceId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/datanode001-network/providers/Microsoft.Network/virtualNetworks/datanode001-vnet/subnets/dataproduct002-privatelink-subnet"
+        "subnetId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
         },
-        "privateDnsZoneResourceGroupId": {
-            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/datahub-global-dns"
+        "privateDnsZoneIdBlob": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+        },
+        "privateDnsZoneIdFile": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
         }
     }
 }
