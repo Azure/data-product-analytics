@@ -15,6 +15,29 @@
                 "description": "Specifies the name of the cognitive service."
             }
         },
+        "cognitiveServiceKind": {
+            "type": "string",
+            "defaultValue": "CognitiveServices",
+            "allowedValues": [
+                "AnomalyDetector",
+                "ComputerVision",
+                "ContentModerator",
+                "CustomVision.Training",
+                "CustomVision.Prediction",
+                "Face",
+                "FormRecognizer",
+                "ImmersiveReader",
+                "LUIS",
+                "Personalizer",
+                "SpeechServices",
+                "TextAnalytics",
+                "QnAMaker",
+                "TranslatorText"
+            ],
+            "metadata": {
+                "description": "Specifies the name of the cognitive service."
+            }
+        },
         "subnetId": {
             "type": "string",
             "metadata": {
@@ -32,6 +55,7 @@
     "variables": {
         "location": "[parameters('location')]",
         "cognitiveServiceName": "[parameters('cognitiveServiceName')]",
+        "cognitiveServiceKind": "[parameters('cognitiveServiceKind')]",
         "subnetId": "[parameters('subnetId')]",
         "privateDnsZoneId": "[parameters('privateDnsZoneId')]",
         "privateEndpointName": "[concat(variables('cognitiveServiceName'), '-private-endpoint')]"
@@ -46,11 +70,11 @@
                 "type": "SystemAssigned"
             },
             "sku": {
-                "name": "S1"
+                "name": "S0"
             },
-            "kind": "CognitiveServices",
+            "kind": "[variables('cognitiveServiceKind')]",
             "properties": {
-                "customSubDomainName": "",
+                "customSubDomainName": "[variables('cognitiveServiceName')]",
                 "encryption": {
                     "keySource": "Microsoft.CognitiveServices"
                 },
