@@ -1,0 +1,108 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "bigDataPoolName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the big data pool."
+            }
+        },
+        "bigDataPoolNodeSize": {
+            "type": "string",
+            "defaultValue": "Medium",
+            "allowedValues": [
+                "Small",
+                "Medium",
+                "Large",
+                "XLarge",
+                "XXLarge",
+                "XXXLarge"
+            ],
+            "metadata": {
+                "description": "Specifies the minimum node count of the big data pool."
+            }
+        },
+        "bigDataPoolMinNodes": {
+            "type": "int",
+            "minValue": 3,
+            "defaultValue": 3,
+            "metadata": {
+                "description": "Specifies the minimum node count of the big data pool."
+            }
+        },
+        "bigDataPoolMaxNodes": {
+            "type": "int",
+            "minValue": 3,
+            "defaultValue": 10,
+            "metadata": {
+                "description": "Specifies the maximum node count of the big data pool."
+            }
+        },
+        "bigDataPoolAutopauseDelay": {
+            "type": "int",
+            "minValue": 1,
+            "defaultValue": 15,
+            "metadata": {
+                "description": "Specifies the autopause delay of the big data pool."
+            }
+        },
+        "synapseWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the Synapse workspace to which the big data pool will be deployed."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "bigDataPoolName": "[parameters('bigDataPoolName')]",
+        "bigDataPoolNodeSize": "[parameters('bigDataPoolNodeSize')]",
+        "bigDataPoolMinNodes": "[parameters('bigDataPoolMinNodes')]",
+        "bigDataPoolMaxNodes": "[parameters('bigDataPoolMaxNodes')]",
+        "bigDataPoolAutopauseDelay": "[parameters('bigDataPoolAutopauseDelay')]",
+        "synapseWorkspaceId": "[parameters('synapseWorkspaceId')]",
+        "synapseWorkspaceName": "[last(split(variables('synapseWorkspaceId'), '/'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces/bigDataPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/', variables('bigDataPoolName'))]",
+            "location": "[variables('location')]",
+            "properties": {
+                "autoPause": {
+                    "enabled": true,
+                    "delayInMinutes": "[variables('bigDataPoolAutopauseDelay')]"
+                },
+                "autoScale": {
+                    "enabled": true,
+                    "minNodeCount": "[variables('bigDataPoolMinNodes')]",
+                    "maxNodeCount": "[variables('bigDataPoolMaxNodes')]"
+                },
+                "defaultSparkLogFolder": "logs/",
+                "libraryRequirements": {
+                    "content": "",
+                    "filename": "requirements.txt"
+                },
+                "nodeSize": "[variables('bigDataPoolNodeSize')]",
+                "nodeSizeFamily": "MemoryOptimized",
+                "provisioningState": "Succeeded",
+                "sparkEventsFolder": "events/",
+                "sparkVersion": "2.4",
+                "sessionLevelPackagesEnabled": false,
+                "isComputeIsolationEnabled": true,
+                "sparkConfigProperties": {}
+            }
+        }
+    ],
+    "outputs": {}
+}
