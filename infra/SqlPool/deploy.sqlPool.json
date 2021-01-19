@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "sqlPoolName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the SQL pool."
+            }
+        },
+        "sqlPoolCapacity": {
+            "type": "string",
+            "defaultValue": "DW100c",
+            "allowedValues": [
+                "DW100c",
+                "DW200c",
+                "DW300c",
+                "DW400c",
+                "DW500c",
+                "DW1000c",
+                "DW1500c",
+                "DW2000c",
+                "DW2500c",
+                "DW3000c",
+                "DW5000c",
+                "DW6000c",
+                "DW7500c",
+                "DW10000c",
+                "DW15000c",
+                "DW30000c"
+            ],
+            "metadata": {
+                "description": "Specifies the capacity in DWs of the SQL pool."
+            }
+        },
+        "synapseWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the Synapse workspace to which the sql pool will be deployed."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "sqlPoolName": "[parameters('sqlPoolName')]",
+        "sqlPoolCapacity": "[parameters('sqlPoolCapacity')]",
+        "synapseWorkspaceId": "[parameters('synapseWorkspaceId')]",
+        "synapseWorkspaceName": "[last(split(variables('synapseWorkspaceId'), '/'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/', variables('sqlPoolName'))]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "[variables('sqlPoolCapacity')]"
+            },
+            "properties": {
+                "createMode": "Default",
+                "collation": "SQL_Latin1_General_CP1_CI_AS"
+            }
+        }
+    ],
+    "outputs": {}
+}
