@@ -6,16 +6,28 @@ trigger:
       - main
   paths:
     include:
-      - 'infra/Storage/**'
-      - 'infra/KeyVault/**'
-      - 'infra/MachineLearning/**'
-      - 'infra/PrivateEndpoint/**'
-      - '.ado/workflows/dataProductDeployment.yml'
+      - infra/ApplicationInsights/*
+      - infra/BigDataPool/*
+      - infra/CognitiveServices/*
+      - infra/ContainerRegistry/*
+      - infra/DataFactory/*
+      - infra/KeyVault/*
+      - infra/LogicApps/*
+      - infra/MachineLearning/*
+      - infra/MachineLearningAks/*
+      - infra/MachineLearningCluster/*
+      - infra/MachineLearningComputeInstance/*
+      - infra/MachineLearningSynapse/*
+      - infra/Search/*
+      - infra/SqlPool/*
+      - infra/Storage/*
+      - infra/Synapse/*
+      - .ado/workflows/dataProductDeployment.yml
 
 variables:
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'Marvins Azure Subscription(558bd446-4212-46a2-908c-9ab0a628705e)'
-  AZURE_SUBSCRIPTION_ID: '558bd446-4212-46a2-908c-9ab0a628705e'
-  AZURE_RESOURCE_GROUP_NAME: 'dataproduct002'
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'My Subscription'
+  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'
+  AZURE_RESOURCE_GROUP_NAME: 'dn001-dp001'
   AZURE_LOCATION: 'North Europe'
 
 stages:
@@ -39,10 +51,10 @@ stages:
           continueOnError: false
           enabled: true
         
-        # Deploy key vault 001 - validation
+        # Deploy Key Vault 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: key_vault_001_validation
-          displayName: Deploy key vault 001 - validation
+          displayName: Deploy Key Vault 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -53,14 +65,32 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/KeyVault/deploy.keyVault.json'
-            csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Validation'
         
-        # Deploy storage account 001 - validation
+        # Deploy Key Vault 002 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: key_vault_002_validation
+          displayName: Deploy Key Vault 002 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault002.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Storage Account 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: storage_account_001_validation
-          displayName: Deploy storage account 001 - validation
+          displayName: Deploy Storage Account 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -71,14 +101,14 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/Storage/deploy.storage.json'
-            csmParametersFile: 'infra/Storage/params.storage001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Storage/deploy.storage.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Storage/params.storage001.json'
             deploymentMode: 'Validation'
         
-        # Deploy ml workspace 001 - validation
+        # Deploy Application Insights 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
-          name: ml_workspace_001_validation
-          displayName: Deploy ml workspace 001 - validation
+          name: application_insights_001_validation
+          displayName: Deploy Application Insights 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -89,14 +119,228 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/MachineLearning/deploy.mlWorkspace.json'
-            csmParametersFile: 'infra/MachineLearning/params.mlWorkspace001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/ApplicationInsights/deploy.applicationInsights.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/ApplicationInsights/params.applicationInsights001.json'
             deploymentMode: 'Validation'
         
-        # Deploy data factory 001 - validation
+        # Deploy Container Registry 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: container_registry_001_validation
+          displayName: Deploy Container Registry 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/ContainerRegistry/deploy.containerRegistry.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/ContainerRegistry/params.containerRegistry001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_001_validation
+          displayName: Deploy Machine Learning 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearning/deploy.machineLearning.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearning/params.machineLearning001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning Cluster 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_cluster_001_validation
+          displayName: Deploy Machine Learning Cluster 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningCluster/deploy.machineLearningCluster.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningCluster/params.machineLearningCluster001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning Compute Instance 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_compute_instance_001_validation
+          displayName: Deploy Machine Learning Compute Instance 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning AKS 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_aks_001_validation
+          displayName: Deploy Machine Learning AKS 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningAks/deploy.machineLearningAks.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningAks/params.machineLearningAks001.json'
+            deploymentMode: 'Validation'
+        
+        # Generate Password 001
+        - task: PowerShell@2
+          name: generate_password_001
+          displayName: Generate Password 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy Synapse 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: synapse_001_validation
+          displayName: Deploy Synapse 001 - validation
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/deploy.synapse.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/params.synapse001.json'
+            deploymentMode: 'Validation'
+            overrideParameters: >
+              -synapseSqlAdministratorPassword "$(password)"
+        
+        # Deploy SQL Pool 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_pool_001_validation
+          displayName: Deploy SQL Pool 001 - validation
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Big Data Pool 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: big_data_pool_001_validation
+          displayName: Deploy Big Data Pool 001 - validation
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/deploy.bigDataPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/params.bigDataPool001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning Synapse 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_synapse_001_validation
+          displayName: Deploy Machine Learning Synapse 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/params.machineLearningSynapse001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Cognitive Services 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: cogitive_services_001_validation
+          displayName: Deploy Cognitive Services 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/CognitiveServices/deploy.cognitiveService.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/CognitiveServices/params.cognitiveService001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Search 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: search_001_validation
+          displayName: Deploy Search 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Search/deploy.search.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Search/params.search001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Data Factory 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: data_factory_001_validation
-          displayName: Deploy data factory 001 - validation
+          displayName: Deploy Data Factory 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -107,10 +351,10 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/DataFactory/deploy.dataFactory.json'
-            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/deploy.dataFactory.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json'
             deploymentMode: 'Validation'
-
+  
   - stage: Deployment
     displayName: 'Deployment of ARM templates'
     dependsOn: Validation
@@ -133,10 +377,10 @@ stages:
           continueOnError: false
           enabled: true
         
-        # Deploy key vault 001
+        # Deploy Key Vault 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: key_vault_001_deployment
-          displayName: Deploy key vault 001
+          displayName: Deploy Key Vault 001
           enabled: true
           continueOnError: false
           inputs:
@@ -147,14 +391,32 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/KeyVault/deploy.keyVault.json'
-            csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy storage account 001
+        # Deploy Key Vault 002
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: key_vault_002_deployment
+          displayName: Deploy Key Vault 002
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/deploy.keyVault.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault002.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Storage Account 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: storage_account_001_deployment
-          displayName: Deploy storage account 001
+          displayName: Deploy Storage Account 001
           enabled: true
           continueOnError: false
           inputs:
@@ -165,14 +427,14 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/Storage/deploy.storage.json'
-            csmParametersFile: 'infra/Storage/params.storage001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Storage/deploy.storage.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Storage/params.storage001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy ml workspace 001
+        # Deploy Application Insights 001
         - task: AzureResourceManagerTemplateDeployment@3
-          name: ml_workspace_001_deployment
-          displayName: Deploy ml workspace 001
+          name: application_insights_001_deployment
+          displayName: Deploy Application Insights 001
           enabled: true
           continueOnError: false
           inputs:
@@ -183,14 +445,14 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/MachineLearning/deploy.mlWorkspace.json'
-            csmParametersFile: 'infra/MachineLearning/params.mlWorkspace001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/ApplicationInsights/deploy.applicationInsights.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/ApplicationInsights/params.applicationInsights001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy data factory 001
+        # Deploy Container Registry 001
         - task: AzureResourceManagerTemplateDeployment@3
-          name: data_factory_001_deployment
-          displayName: Deploy data factory 001
+          name: container_registry_001_deployment
+          displayName: Deploy Container Registry 001
           enabled: true
           continueOnError: false
           inputs:
@@ -201,6 +463,220 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: 'infra/DataFactory/deploy.dataFactory.json'
-            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/ContainerRegistry/deploy.containerRegistry.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/ContainerRegistry/params.containerRegistry001.json'
             deploymentMode: 'Incremental'
+        
+        # Deploy Machine Learning 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_001_deployment
+          displayName: Deploy Machine Learning 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearning/deploy.machineLearning.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearning/params.machineLearning001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Machine Learning Cluster 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_cluster_001_deployment
+          displayName: Deploy Machine Learning Cluster 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningCluster/deploy.machineLearningCluster.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningCluster/params.machineLearningCluster001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Machine Learning Compute Instance 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_compute_instance_001_deployment
+          displayName: Deploy Machine Learning Compute Instance 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
+            deploymentMode: 'Incremental'
+        
+        # # Deploy Machine Learning AKS 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: machine_learning_aks_001_deployment
+        #   displayName: Deploy Machine Learning AKS 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningAks/deploy.machineLearningAks.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningAks/params.machineLearningAks001.json'
+        #     deploymentMode: 'Incremental'
+        
+        # Generate Password 001
+        - task: PowerShell@2
+          name: generate_password_001
+          displayName: Generate Password 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy Synapse 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: synapse_001_deployment
+          displayName: Deploy Synapse 001
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/deploy.synapse.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/params.synapse001.json'
+            deploymentMode: 'Incremental'
+            overrideParameters: >
+              -synapseSqlAdministratorPassword "$(password)"
+        
+        # # Deploy SQL Pool 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: sql_pool_001_deployment
+        #   displayName: Deploy SQL Pool 001
+        #   enabled: false
+        #   continueOnError: true
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
+        #     deploymentMode: 'Incremental'
+        
+        # Deploy Big Data Pool 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: big_data_pool_001_deployment
+          displayName: Deploy Big Data Pool 001
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/deploy.bigDataPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/params.bigDataPool001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Machine Learning Synapse 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_synapse_001_deployment
+          displayName: Deploy Machine Learning Synapse 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/params.machineLearningSynapse001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Cognitive Services 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: cogitive_services_001_deployment
+          displayName: Deploy Cognitive Services 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/CognitiveServices/deploy.cognitiveService.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/CognitiveServices/params.cognitiveService001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Search 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: search_001_deployment
+          displayName: Deploy Search 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Search/deploy.search.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Search/params.search001.json'
+            deploymentMode: 'Incremental'
+        
+        # # Deploy Data Factory 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: data_factory_001_deployment
+        #   displayName: Deploy Data Factory 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/deploy.dataFactory.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json'
+        #     deploymentMode: 'Incremental'
