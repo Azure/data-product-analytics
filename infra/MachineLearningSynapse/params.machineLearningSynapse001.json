@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        },
+        "mlBigDataPoolName": {
+            "value": "dn001-dp001-bigdatapool001"
+        },
+        "mlWorkspaceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.MachineLearningServices/workspaces/dn001-dp001-machinelearning001"
+        },
+        "synapseWorkspaceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Synapse/workspaces/dn001dp001synapse001"
+        },
+        "synapseBigDataPoolId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Synapse/workspaces/dn001dp001synapse001/bigDataPools/bigdatapool001"
+        }
+    }
+}

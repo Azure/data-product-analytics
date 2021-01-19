@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "mlAksName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the Azure Machine Learning AKS."
+            }
+        },
+        "mlWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource ID of the Azure Machine Learning workspace."
+            }
+        },
+        "mlAksId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the AKS cluster."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "mlAksName": "[parameters('mlAksName')]",
+        "mlWorkspaceId": "[parameters('mlWorkspaceId')]",
+        "mlWorkspaceName": "[last(split(variables('mlWorkspaceId'), '/'))]",
+        "mlAksId": "[parameters('mlAksId')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.MachineLearningServices/workspaces/computes",
+            "apiVersion": "2020-09-01-preview",
+            "name": "[concat(variables('mlWorkspaceName'), '/', variables('mlAksName'))]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+            },
+            "properties": {
+                "computeLocation": "[variables('location')]",
+                "computeType": "AKS",
+                "resourceId": "[variables('mlAksId')]"
+            }
+        }
+    ],
+    "outputs": {}
+}

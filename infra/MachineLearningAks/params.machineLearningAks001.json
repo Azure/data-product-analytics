@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        },
+        "mlAksName": {
+            "value": "dn001-dp001-aks001"
+        },
+        "mlWorkspaceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.MachineLearningServices/workspaces/dn001-dp001-machinelearning001"
+        },
+        "mlAksId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-aks/providers/Microsoft.ContainerService/managedClusters/dn001-aks001"
+        }
+    }
+}
