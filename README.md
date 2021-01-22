@@ -1,3 +1,6 @@
+# Deploy to Azure
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-streaming%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json%3F)
 
 # Contributing
 
