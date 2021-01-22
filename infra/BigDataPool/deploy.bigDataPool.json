@@ -104,5 +104,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "bigDataPoolId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', variables('synapseWorkspaceName'), variables('bigDataPoolName'))]"
+        }
+    }
 }

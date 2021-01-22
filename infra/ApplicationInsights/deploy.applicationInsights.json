@@ -40,5 +40,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "applicationInsightsId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+        }
+    }
 }

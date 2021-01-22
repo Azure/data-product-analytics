@@ -304,5 +304,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "synapseWorkspaceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Synapse/workspaces', variables('synapseWorkspaceName'))]"
+        }
+    }
 }

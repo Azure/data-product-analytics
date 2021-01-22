@@ -173,5 +173,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "mlWorkspaceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('mlWorkspaceName'))]"
+        }
+    }
 }

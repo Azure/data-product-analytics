@@ -121,5 +121,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "containerRegistryId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]"
+        }
+    }
 }
