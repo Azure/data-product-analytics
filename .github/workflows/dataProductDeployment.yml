@@ -24,7 +24,7 @@ on:
 
 env:
   AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'
-  AZURE_RESOURCE_GROUP: 'dn001-dp001'
+  AZURE_RESOURCE_GROUP_NAME: 'dn001-dp001'
   AZURE_LOCATION: northeurope
 
 jobs:
@@ -46,8 +46,8 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          echo "Creating resource group ${{ env.AZURE_RESOURCE_GROUP }}"
-          az group create --location ${{ env.AZURE_LOCATION }} --name ${{ env.AZURE_RESOURCE_GROUP }}
+          echo "Creating resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
+          az group create --location ${{ env.AZURE_LOCATION }} --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
     
     # Log out from Azure
     - name: Log out from Azure
