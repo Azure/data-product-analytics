@@ -6,7 +6,7 @@
             "value": "northeurope"
         },
         "synapseWorkspaceName": {
-            "value": "dn001dd001synapse001"
+            "value": "dn001dp001synapse001"
         },
         "synapseDefaultStorageAccountName": {
             "value": "dn001workspacesa"
@@ -33,7 +33,7 @@
             "value": ""
         },
         "subnetId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dd001-privatelink-subnet"
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
         },
         "privateDnsZoneIdSql": {
             "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
