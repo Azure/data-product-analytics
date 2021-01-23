@@ -23,7 +23,8 @@ on:
       - '.github/workflows/dataProductDeployment.yml'
 
 env:
-  AZURE_RESOURCE_GROUP: dataproduct002
+  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'
+  AZURE_RESOURCE_GROUP: 'dn001-dp001'
   AZURE_LOCATION: northeurope
 
 jobs:
