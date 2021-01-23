@@ -18,7 +18,7 @@
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Storage/storageAccounts/dn001dp001storage001"
         },
         "containerRegistryId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.ContainerRegistry/registries/dn001-dp001-containerregistry001"
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.ContainerRegistry/registries/dn001dp001containerregistry001"
         },
         "subnetId": {
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
