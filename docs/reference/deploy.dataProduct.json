@@ -231,7 +231,7 @@
                         "value": "[variables('location')]"
                     },
                     "containerRegistryName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-containerregistry001')]"
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'containerregistry001')]"
                     },
                     "subnetId": {
                         "value": "[variables('privateLinkSubnetId')]"
