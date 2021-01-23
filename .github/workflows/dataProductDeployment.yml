@@ -261,7 +261,7 @@ jobs:
         resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
         region: ${{ env.AZURE_LOCATION }}
         template: ${{ github.workspace }}/infra/CognitiveServices/deploy.cognitiveService.json
-        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService.json
+        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService001.json
         deploymentMode: Validate
     
     # Deploy Search 001 - validation
@@ -502,7 +502,7 @@ jobs:
         resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
         region: ${{ env.AZURE_LOCATION }}
         template: ${{ github.workspace }}/infra/CognitiveServices/deploy.cognitiveService.json
-        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService.json
+        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService001.json
         deploymentMode: Incremental
     
     # Deploy Search 001
