@@ -8,6 +8,9 @@
         "cognitiveServiceName": {
             "value": "dn001-dp001-cognitiveservice001"
         },
+        "cognitiveServiceSku": {
+            "value": "S1"
+        },
         "cognitiveServiceKind": {
             "value": "ComputerVision"
         },

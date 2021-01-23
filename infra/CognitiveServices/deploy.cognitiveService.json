@@ -15,6 +15,12 @@
                 "description": "Specifies the name of the cognitive service."
             }
         },
+        "cognitiveServiceSku": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the sku of the cognitive service."
+            }
+        },
         "cognitiveServiceKind": {
             "type": "string",
             "defaultValue": "CognitiveServices",
@@ -55,6 +61,7 @@
     "variables": {
         "location": "[parameters('location')]",
         "cognitiveServiceName": "[parameters('cognitiveServiceName')]",
+        "cognitiveServiceSku": "[parameters('cognitiveServiceSku')]",
         "cognitiveServiceKind": "[parameters('cognitiveServiceKind')]",
         "subnetId": "[parameters('subnetId')]",
         "privateDnsZoneId": "[parameters('privateDnsZoneId')]",
@@ -70,7 +77,7 @@
                 "type": "SystemAssigned"
             },
             "sku": {
-                "name": "S0"
+                "name": "[variables('cognitiveServiceSku')]"
             },
             "kind": "[variables('cognitiveServiceKind')]",
             "properties": {
