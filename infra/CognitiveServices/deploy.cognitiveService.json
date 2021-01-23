@@ -90,8 +90,8 @@
                     "ipRules": [],
                     "virtualNetworkRules": []
                 },
-                "publicNetworkAccess": "Disabled",
-                "userOwnedStorage": []
+                "publicNetworkAccess": "Disabled"
+                // "userOwnedStorage": []
             }
         },
         {
