@@ -124,7 +124,7 @@
                         "value": "[variables('location')]"
                     },
                     "keyVaultName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
                         "value": "[variables('privateLinkSubnetId')]"
@@ -150,7 +150,7 @@
                         "value": "[variables('location')]"
                     },
                     "keyVaultName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault002')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault002', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
                         "value": "[variables('privateLinkSubnetId')]"
@@ -176,7 +176,7 @@
                         "value": "[variables('location')]"
                     },
                     "storageAccountName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'storage001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'storage001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "storageAccountType": {
                         "value": "Standard_ZRS"
@@ -211,7 +211,7 @@
                         "value": "[variables('location')]"
                     },
                     "applicationInsightsName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-appinsight001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-appinsight001'), 260)]"
                     }
                 }
             }
@@ -231,7 +231,7 @@
                         "value": "[variables('location')]"
                     },
                     "containerRegistryName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'containerregistry001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'containerregistry001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 50)]"
                     },
                     "subnetId": {
                         "value": "[variables('privateLinkSubnetId')]"
@@ -263,7 +263,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlWorkspaceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-machinelearning001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-machinelearning001'), 33)]"
                     },
                     "keyVaultId": {
                         "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
@@ -304,7 +304,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlClusterName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-machinelearningcluster001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-machinelearningcluster001'), 16)]"
                     },
                     "mlWorkspaceId": {
                         "value": "[reference('machineLearning001Deployment').outputs.mlWorkspaceId.value]"
@@ -342,7 +342,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlComputeInstanceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-computeinstance001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-computeinstance001'), 16)]"
                     },
                     "mlWorkspaceId": {
                         "value": "[reference('machineLearning001Deployment').outputs.mlWorkspaceId.value]"
@@ -380,7 +380,7 @@
                         "value": "[variables('location')]"
                     },
                     "dataFactoryName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-datafactory001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-datafactory001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "dataFactoryGitAccount": {
                         "value": ""
@@ -429,7 +429,7 @@
                         "value": "[variables('location')]"
                     },
                     "synapseWorkspaceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-synapse001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-synapse001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 50)]"
                     },
                     "synapseDefaultStorageAccountName": {
                         "value": "[variables('synapseDefaultStorageAccountName')]"
@@ -554,7 +554,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlBigDataPoolName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-bigdatapool001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-bigdatapool001'), 16)]"
                     },
                     "mlWorkspaceId": {
                         "value": "[reference('machineLearning001Deployment').outputs.mlWorkspaceId.value]"
@@ -583,7 +583,7 @@
                         "value": "[variables('location')]"
                     },
                     "cognitiveServiceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-cognitiveservice001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-cognitiveservice001'), 64)]"
                     },
                     "cognitiveServiceKind": {
                         "value": "ComputerVision"
@@ -612,7 +612,7 @@
                         "value": "[variables('location')]"
                     },
                     "searchName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-search001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-search001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 60)]"
                     },
                     "searchSku": {
                         "value": "standard"
