@@ -12,6 +12,7 @@
         "dataNodeName": {
             "type": "string",
             "defaultValue": "dn001",
+            "maxLength": 5,
             "metadata": {
                 "description": "Name of the data node."
             }
@@ -19,6 +20,7 @@
         "dataProductName": {
             "type": "string",
             "defaultValue": "dp001",
+            "maxLength": 5,
             "metadata": {
                 "description": "Name of the data product."
             }
