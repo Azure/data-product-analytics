@@ -89,17 +89,17 @@
                     "maxNodeCount": "[variables('bigDataPoolMaxNodes')]"
                 },
                 "defaultSparkLogFolder": "logs/",
-                "libraryRequirements": {
-                    "content": "",
-                    "filename": "requirements.txt"
-                },
+                // "libraryRequirements": {
+                //     "content": "",
+                //     "filename": "requirements.txt"
+                // },
                 "nodeSize": "[variables('bigDataPoolNodeSize')]",
                 "nodeSizeFamily": "MemoryOptimized",
                 "provisioningState": "Succeeded",
                 "sparkEventsFolder": "events/",
                 "sparkVersion": "2.4",
                 "sessionLevelPackagesEnabled": false,
-                "isComputeIsolationEnabled": true,
+                "isComputeIsolationEnabled": false,
                 "sparkConfigProperties": {}
             }
         }
