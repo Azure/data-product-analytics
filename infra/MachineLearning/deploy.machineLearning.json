@@ -141,7 +141,7 @@
                         "properties": {
                             "privateLinkServiceId": "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('mlWorkspaceName'))]",
                             "groupIds": [
-                                "workspace"
+                                "amlworkspace"
                             ]
                         }
                     }
