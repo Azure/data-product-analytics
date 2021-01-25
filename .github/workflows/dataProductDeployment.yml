@@ -393,6 +393,7 @@ jobs:
         template: ${{ github.workspace }}/infra/MachineLearning/deploy.machineLearning.json
         parameters: ${{ github.workspace }}/infra/MachineLearning/params.machineLearning001.json
         deploymentMode: Incremental
+      continue-on-error: true
     
     # Deploy Machine Learning Cluster 001
     - name: Deploy Machine Learning Cluster 001
@@ -407,18 +408,18 @@ jobs:
         parameters: ${{ github.workspace }}/infra/MachineLearningCluster/params.machineLearningCluster001.json
         deploymentMode: Incremental
     
-    # Deploy Machine Learning Compute Instance 001
-    - name: Deploy Machine Learning Compute Instance 001
-      id: machine_learning_compute_instance_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
-        deploymentMode: Incremental
+    # # Deploy Machine Learning Compute Instance 001
+    # - name: Deploy Machine Learning Compute Instance 001
+    #   id: machine_learning_compute_instance_001_deployment
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     scope: resourcegroup
+    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+    #     region: ${{ env.AZURE_LOCATION }}
+    #     template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
+    #     parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
+    #     deploymentMode: Incremental
     
     # # Deploy Machine Learning AKS 001
     # - name: Deploy Machine Learning AKS 001

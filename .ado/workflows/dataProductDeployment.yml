@@ -472,7 +472,7 @@ stages:
           name: machine_learning_001_deployment
           displayName: Deploy Machine Learning 001
           enabled: true
-          continueOnError: false
+          continueOnError: true
           inputs:
             deploymentScope: 'Resource Group'
             azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
@@ -503,23 +503,23 @@ stages:
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningCluster/params.machineLearningCluster001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy Machine Learning Compute Instance 001
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: machine_learning_compute_instance_001_deployment
-          displayName: Deploy Machine Learning Compute Instance 001
-          enabled: true
-          continueOnError: false
-          inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
-            deploymentMode: 'Incremental'
+        # # Deploy Machine Learning Compute Instance 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: machine_learning_compute_instance_001_deployment
+        #   displayName: Deploy Machine Learning Compute Instance 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
+        #     deploymentMode: 'Incremental'
         
         # # Deploy Machine Learning AKS 001
         # - task: AzureResourceManagerTemplateDeployment@3
