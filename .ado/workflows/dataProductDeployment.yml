@@ -609,23 +609,23 @@ stages:
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/params.bigDataPool001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy Machine Learning Synapse 001
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: machine_learning_synapse_001_deployment
-          displayName: Deploy Machine Learning Synapse 001
-          enabled: true
-          continueOnError: false
-          inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/params.machineLearningSynapse001.json'
-            deploymentMode: 'Incremental'
+        # # Deploy Machine Learning Synapse 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: machine_learning_synapse_001_deployment
+        #   displayName: Deploy Machine Learning Synapse 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningSynapse/params.machineLearningSynapse001.json'
+        #     deploymentMode: 'Incremental'
         
         # Deploy Cognitive Services 001
         - task: AzureResourceManagerTemplateDeployment@3

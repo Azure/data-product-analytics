@@ -480,18 +480,18 @@ jobs:
         parameters: ${{ github.workspace }}/infra/BigDataPool/params.bigDataPool001.json
         deploymentMode: Incremental
     
-    # Deploy Machine Learning Synapse 001
-    - name: Deploy Machine Learning Synapse 001
-      id: machine_learning_synapse_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningSynapse/params.machineLearningSynapse001.json
-        deploymentMode: Incremental
+    # # Deploy Machine Learning Synapse 001
+    # - name: Deploy Machine Learning Synapse 001
+    #   id: machine_learning_synapse_001_deployment
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     scope: resourcegroup
+    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+    #     region: ${{ env.AZURE_LOCATION }}
+    #     template: ${{ github.workspace }}/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json
+    #     parameters: ${{ github.workspace }}/infra/MachineLearningSynapse/params.machineLearningSynapse001.json
+    #     deploymentMode: Incremental
     
     # Deploy Cognitive Services 001
     - name: Deploy Cognitive Services 001
