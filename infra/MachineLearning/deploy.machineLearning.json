@@ -45,10 +45,16 @@
                 "description": "Specifies the resource id of the subnet which the private endpoint uses."
             }
         },
-        "privateDnsZoneId": {
+        "privateDnsZoneIdApi": {
             "type": "string",
             "metadata": {
-                "description": "Specifies the resource ID of the private dns zone."
+                "description": "Specifies the resource ID of the private dns zone for the AML APIs."
+            }
+        },
+        "privateDnsZoneIdNotebooks": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource ID of the private dns zone for the AML Notebooks."
             }
         }
     },
@@ -61,7 +67,8 @@
         "storageAccountId": "[parameters('storageAccountId')]",
         "containerRegistryId": "[parameters('containerRegistryId')]",
         "subnetId": "[parameters('subnetId')]",
-        "privateDnsZoneId": "[parameters('privateDnsZoneId')]",
+        "privateDnsZoneIdApi": "[parameters('privateDnsZoneIdApi')]",
+        "privateDnsZoneIdNotebooks": "[parameters('privateDnsZoneIdNotebooks')]",
         "privateEndpointName": "[concat(variables('mlWorkspaceName'), '-private-endpoint')]"
     },
     "resources": [
@@ -164,9 +171,15 @@
             "properties": {
                 "privateDnsZoneConfigs": [
                     {
-                        "name": "[concat(variables('privateEndpointName'), '-aRecord')]",
+                        "name": "[concat(variables('privateEndpointName'), '-api-aRecord')]",
                         "properties": {
-                            "privateDnsZoneId": "[variables('privateDnsZoneId')]"
+                            "privateDnsZoneId": "[variables('privateDnsZoneIdApi')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(variables('privateEndpointName'), '-notebooks-aRecord')]",
+                        "properties": {
+                            "privateDnsZoneId": "[variables('privateDnsZoneIdNotebooks')]"
                         }
                     }
                 ]
