@@ -46,13 +46,6 @@
                 "description": "Specifies the resource ID of the subnet for the data domain services."
             }
         },
-        "privateLinkSubnetId": {
-            "type": "string",
-            "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>/providers/Microsoft.Network/virtualNetworks/<your-vnet-name>/subnets/<your-subnet-name>",
-            "metadata": {
-                "description": "Specifies the resource ID of the subnet for the data domain private link services."
-            }
-        },
         "databaseAdministratorLoginPassword": {
             "type": "securestring",
             "metadata": {
@@ -92,28 +85,65 @@
         "location": "[parameters('location')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "subnetId": "[parameters('subnetId')]",
-        "privateLinkSubnetId": "[parameters('privateLinkSubnetId')]",
+        "subnetName": "[last(variables('subnetId'))]",
+        "vnetName": "[split(variables('subnetId'), '/')[8]]",
+        "vnetSubscriptionId": "[split(variables('subnetId'), '/')[2]]",
+        "vnetResourceGroupName": "[split(variables('subnetId'), '/')[4]]",
         "databaseAdministratorLoginPassword": "[parameters('databaseAdministratorLoginPassword')]",
         "sshKey": "[parameters('sshKey')]",
         "userObjectId": "[parameters('userObjectId')]",
         "synapseDefaultStorageAccountName": "[parameters('synapseDefaultStorageAccountName')]",
         "synapseDefaultStorageAccountFileSystem": "[parameters('synapseDefaultStorageAccountFileSystem')]",
-        "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/KeyVault/deploy.keyVault.json?token=AIHRGTR3PX3WDDEU4PKMPLDACQEUA",
-        "storageAccountTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlServer/deploy.sqlServer.json?token=AIHRGTS63P2BIAGICUA6MWDACQEVS",
-        "applicationInsightsTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlDatabase/deploy.sqlDatabase.json?token=AIHRGTQSLUAHB6JRPS7FWE3ACQEXM",
-        "containerRegistryTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MariaDb/deploy.mariaDb.json?token=AIHRGTVLWQYAF5PTVADQ2I3ACQEZE",
-        "machineLearningTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MySql/deploy.mySql.json?token=AIHRGTXWQ3YDTZT62YDURO3ACQE2U",
-        "machineLearningClusterTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PostgreSql/deploy.postgreSql.json?token=AIHRGTSPDNJLF5IC6S5LCHDACQE4G",
-        "machineLearningComputeInstanceTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PostgreSql/deploy.postgreSql.json?token=AIHRGTSPDNJLF5IC6S5LCHDACQE4G",
-        "machineLearningSynapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/CosmosDb/deploy.cosmosDb.json?token=AIHRGTSF5ACZZROCL776XMDACQE5S",
-        "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/DataFactory/deploy.dataFactory.json?token=AIHRGTSEPQOIPAN53YQXWO3ACQE7S",
-        "synapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/Synapse/deploy.synapse.json?token=AIHRGTTIYJCWL2RBIS7LSF3ACQFA6",
-        "sqlPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlPool/deploy.sqlPool.json?token=AIHRGTTPNIKPANVF5MG4MYLACQFCM",
-        "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/BigDataPool/deploy.bigDataPool.json?token=AIHRGTTL5BNRN6TUBQKFPZ3ACQFDK",
-        "cognitiveServicesTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/BigDataPool/deploy.bigDataPool.json?token=AIHRGTTL5BNRN6TUBQKFPZ3ACQFDK",
-        "searchTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/BigDataPool/deploy.bigDataPool.json?token=AIHRGTTL5BNRN6TUBQKFPZ3ACQFDK"
+        "applicationInsightsTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/ApplicationInsights/deploy.applicationInsights.json",
+        "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/BigDataPool/deploy.bigDataPool.json",
+        "cognitiveServicesTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/CognitiveServices/deploy.cognitiveServices.json",
+        "containerRegistryTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/ContainerRegistry/deploy.containerRegistry.json",
+        "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/DataFactory/deploy.dataFactory.json",
+        "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/KeyVault/deploy.keyVault.json",
+        "machineLearningTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/MachineLearning/deploy.machineLearning.json",
+        "machineLearningClusterTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/MachineLearningCluster/deploy.machineLearningCluster.json",
+        "machineLearningComputeInstanceTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json",
+        "machineLearningSynapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json",
+        "searchTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/Search/deploy.search.json",
+        "sqlPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/SqlPool/deploy.sqlPool.json",
+        "storageAccountTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/Storage/deploy.storage.json",
+        "synapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/Synapse/deploy.synapse.json"
     },
     "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "subnetUpdateDeployment",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/virtualNetworks/subnets",
+                            "apiVersion": "2019-09-01",
+                            "name": "[concat(variables('vnetName'), '/', variables('subnetName'))]",
+                            "id": "[variables('subnetId')]",
+                            "properties": {
+                                "addressPrefix": "[reference(variables('subnetId'), '2020-07-01').addressPrefix]",
+                                "networkSecurityGroup": {
+                                    "id": "[reference(variables('subnetId'), '2020-07-01').networkSecurityGroup.id]"
+                                },
+                                "routeTable": {
+                                    "id": "[reference(variables('subnetId'), '2020-07-01').routeTable.id]"
+                                },
+                                "delegations": [],
+                                "privateEndpointNetworkPolicies": "Disabled",
+                                "privateLinkServiceNetworkPolicies": "Disabled"
+                            }
+                        }
+                    ]
+                }
+            },
+            "subscriptionId": "[variables('vnetSubscriptionId')]",
+            "resourceGroup": "[variables('vnetResourceGroupName')]"
+        },
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
@@ -132,7 +162,7 @@
                         "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net')]"
@@ -158,7 +188,7 @@
                         "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault002', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net')]"
@@ -190,7 +220,7 @@
                         "value": false
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneIdBlob": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net')]"
@@ -239,7 +269,7 @@
                         "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataProductName'), 'containerregistry001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 50)]"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io')]"
@@ -283,7 +313,7 @@
                         "value": "[reference('keyVault001Deployment').outputs.containerRegistryId.value]"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms')]"
@@ -309,7 +339,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlClusterName": {
-                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-machinelearningcluster001'), 16)]"
+                        "value": "mlcluster001"
                     },
                     "mlWorkspaceId": {
                         "value": "[reference('machineLearning001Deployment').outputs.mlWorkspaceId.value]"
@@ -347,7 +377,7 @@
                         "value": "[variables('location')]"
                     },
                     "mlComputeInstanceName": {
-                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-computeinstance001'), 16)]"
+                        "value": "ci001"
                     },
                     "mlWorkspaceId": {
                         "value": "[reference('machineLearning001Deployment').outputs.mlWorkspaceId.value]"
@@ -406,7 +436,7 @@
                         "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneIdDataFactory": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net')]"
@@ -461,7 +491,7 @@
                         "value": ""
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneIdSql": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net')]"
@@ -594,7 +624,7 @@
                         "value": "ComputerVision"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com')]"
@@ -632,7 +662,7 @@
                         "value": "default"
                     },
                     "subnetId": {
-                        "value": "[variables('privateLinkSubnetId')]"
+                        "value": "[variables('subnetId')]"
                     },
                     "privateDnsZoneId": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net')]"
