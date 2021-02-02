@@ -88,9 +88,7 @@
         "parameters": {
             "parameters.location.value": "${Location}",
             "parameters.mlWorkspaceId.value": "/subscriptions/${DataLandingZoneSubscriptionId}/resourceGroups/${DataLandingZoneName}-rg/providers/Microsoft.MachineLearningServices/workspaces/${DataLandingZoneName}-machinelearning001",
-            "parameters.mlAksId.value": "/subscriptions/${DataLandingZoneSubscriptionId}/resourceGroups/${DataLandingZoneName}-rg/providers/Microsoft.ContainerService/managedClusters//${DataLandingZoneName}-aks001",
-            "parameters.subnetId.value": "${SubnetId}",
-            "parameters.privateDnsZoneId.value": "/subscriptions/${ManagementSubscriptionId}/resourceGroups/${GlobalDnsRgName}/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com"
+            "parameters.mlAksId.value": "/subscriptions/${DataLandingZoneSubscriptionId}/resourceGroups/${DataLandingZoneName}-rg/providers/Microsoft.ContainerService/managedClusters//${DataLandingZoneName}-aks001"
         }
     },
     {
