@@ -148,6 +148,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "keyVault001Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -174,6 +177,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "keyVault002Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -200,6 +206,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "storageAccount001Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -255,6 +264,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "containerRegistry001Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -282,6 +294,7 @@
             "apiVersion": "2020-06-01",
             "name": "machineLearning001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "keyVault002Deployment",
                 "storageAccount001Deployment",
                 "applicationInsights001Deployment",
@@ -326,6 +339,7 @@
             "apiVersion": "2020-06-01",
             "name": "machineLearningCluster001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "machineLearning001Deployment"
             ],
             "properties": {
@@ -364,6 +378,7 @@
             "apiVersion": "2020-06-01",
             "name": "machineLearningComputeInstance001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "machineLearning001Deployment"
             ],
             "properties": {
@@ -402,6 +417,7 @@
             "apiVersion": "2020-06-01",
             "name": "dataFactory001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "keyVault001Deployment"
             ],
             "properties": {
@@ -452,6 +468,7 @@
             "apiVersion": "2020-06-01",
             "name": "synapse001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -507,6 +524,7 @@
             "apiVersion": "2020-06-01",
             "name": "sqlPool001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "synapse001Deployment"
             ],
             "properties": {
@@ -536,6 +554,7 @@
             "apiVersion": "2020-06-01",
             "name": "bigDataPool001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "synapse001Deployment"
             ],
             "properties": {
@@ -574,6 +593,7 @@
             "apiVersion": "2020-06-01",
             "name": "machineLearningSynapse001Deployment",
             "dependsOn": [
+                "subnetUpdateDeployment",
                 "synapse001Deployment",
                 "machineLearning001Deployment",
                 "bigDataPool001Deployment"
@@ -607,6 +627,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "cognitiveServices001Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -636,6 +659,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "search001Deployment",
+            "dependsOn": [
+                "subnetUpdateDeployment"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
