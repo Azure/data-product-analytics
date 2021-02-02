@@ -179,7 +179,7 @@
                     //     "id": ""
                     // }
                     "isolatedNetwork": true,
-                    "enableNodePublicIp": true
+                    "enableNodePublicIp": false
                 }
             }
         }
