@@ -1,39 +1,39 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "value": "northeurope"
-        },
-        "dataFactoryName": {
-            "value": "dn001-dp001-datafactory001"
-        },
-        "dataFactoryGitAccount": {
-            "value": ""
-        },
-        "dataFactoryGitRepo": {
-            "value": ""
-        },
-        "dataFactoryGitCollaborationBranch": {
-            "value": ""
-        },
-        "dataFactoryGitRootFolder": {
-            "value": ""
-        },
-        "dataFactoryGitType": {
-            "value": "FactoryGitHubConfiguration"
-        },
-        "keyVaultId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.KeyVault/vaults/dn001-dp001-keyvault001"
-        },
-        "subnetId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
-        },
-        "privateDnsZoneIdDataFactory": {
-            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
-        },
-        "privateDnsZoneIdPortal": {
-            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "<my-region>"
+    },
+    "dataFactoryName": {
+      "value": "<my-data-landing-zone-name>-datafactory001"
+    },
+    "dataFactoryGitAccount": {
+      "value": ""
+    },
+    "dataFactoryGitRepo": {
+      "value": ""
+    },
+    "dataFactoryGitCollaborationBranch": {
+      "value": ""
+    },
+    "dataFactoryGitRootFolder": {
+      "value": ""
+    },
+    "dataFactoryGitType": {
+      "value": "FactoryGitHubConfiguration"
+    },
+    "keyVaultId": {
+      "value": "/subscriptions/<my-data-landing-zone-subscription-id>/resourceGroups/<my-data-landing-zone-name>-rg/providers/Microsoft.KeyVault/vaults/<my-data-landing-zone-name>-keyvault001"
+    },
+    "subnetId": {
+      "value": "<my-subnet-resource-id>"
+    },
+    "privateDnsZoneIdDataFactory": {
+      "value": "<my-global-dns-resource-group-resource-id>/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+    },
+    "privateDnsZoneIdPortal": {
+      "value": "<my-global-dns-resource-group-resource-id>/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com"
     }
+  }
 }
