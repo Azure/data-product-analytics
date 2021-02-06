@@ -142,6 +142,7 @@
     },
     "resources": [
         {
+            "condition": "[not(empty(variables('mlComputeInstanceSshKey')))]",
             "type": "Microsoft.Compute/sshPublicKeys",
             "apiVersion": "2020-06-01",
             "name": "[variables('sshKeyName')]",
@@ -171,7 +172,7 @@
                         "id": "[variables('subnetId')]"
                     },
                     "vmSize": "[variables('mlComputeInstanceVmSize')]",
-                    "applicationSharingPolicy": "Shared",
+                    "applicationSharingPolicy": "Personal",
                     "computeInstanceAuthorizationType": "personal",
                     "personalComputeInstanceSettings": {
                         "assignedUser": {
@@ -180,11 +181,11 @@
                         }
                     },
                     "sshSettings": {
-                        "sshPublicAccess": "Enabled",
-                        "adminPublicKey": "[reference(resourceId('Microsoft.Compute/sshPublicKeys', variables('sshKeyName')), '2020-06-01').publicKey]"
+                        "sshPublicAccess": "[if(empty(variables('mlComputeInstanceSshKey')), 'Disabled', 'Enabled')]",
+                        "adminPublicKey": "[if(empty(variables('mlComputeInstanceSshKey')), '', reference(resourceId('Microsoft.Compute/sshPublicKeys', variables('sshKeyName')), '2020-06-01').publicKey)]"
                     },
                     "isolatedNetwork": true,
-                    "enableNodePublicIp": true
+                    "enableNodePublicIp": false
                 }
             }
         }
