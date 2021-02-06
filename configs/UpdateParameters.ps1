@@ -116,6 +116,4 @@ foreach ($config in $configs) {
         Write-Error "File Type not Supported"
         throw "File Type not Supported"
     }
-
-    
 }
