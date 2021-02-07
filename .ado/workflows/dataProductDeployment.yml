@@ -17,6 +17,7 @@ trigger:
       - infra/MachineLearningAks/*
       - infra/MachineLearningCluster/*
       - infra/MachineLearningComputeInstance/*
+      - infra/MachineLearningDatabricks/*
       - infra/MachineLearningSynapse/*
       - infra/Search/*
       - infra/SqlPool/*
@@ -193,6 +194,24 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Machine Learning Databricks 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: machine_learning_databricks_001_validation
+          displayName: Deploy Machine Learning Databricks 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json'
             deploymentMode: 'Validation'
         
         # Deploy Machine Learning AKS 001 - validation
@@ -519,6 +538,24 @@ stages:
         #     templateLocation: 'Linked artifact'
         #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json'
         #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json'
+        #     deploymentMode: 'Incremental'
+        
+        # # Deploy Machine Learning Databricks 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: machine_learning_databricks_001_deployment
+        #   displayName: Deploy Machine Learning Databricks 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json'
         #     deploymentMode: 'Incremental'
         
         # # Deploy Machine Learning AKS 001

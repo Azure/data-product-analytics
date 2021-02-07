@@ -15,6 +15,7 @@ on:
       - 'infra/MachineLearningAks/**'
       - 'infra/MachineLearningCluster/**'
       - 'infra/MachineLearningComputeInstance/**'
+      - 'infra/MachineLearningDatabricks/**'
       - 'infra/MachineLearningSynapse/**'
       - 'infra/Search/**'
       - 'infra/SqlPool/**'
@@ -177,6 +178,19 @@ jobs:
         region: ${{ env.AZURE_LOCATION }}
         template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
         parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
+        deploymentMode: Validate
+    
+    # Deploy Machine Learning Databricks 001 - validation
+    - name: Deploy Machine Learning Databricks 001 - validation
+      id: machine_learning_databricks_001_validation
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json
+        parameters: ${{ github.workspace }}/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json
         deploymentMode: Validate
     
     # Deploy Machine Learning AKS 001 - validation
@@ -419,6 +433,19 @@ jobs:
     #     region: ${{ env.AZURE_LOCATION }}
     #     template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
     #     parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
+    #     deploymentMode: Incremental
+    
+    # # Deploy Machine Learning Databricks 001
+    # - name: Deploy Machine Learning Databricks 001
+    #   id: machine_learning_databricks_001_deployment
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     scope: resourcegroup
+    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+    #     region: ${{ env.AZURE_LOCATION }}
+    #     template: ${{ github.workspace }}/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json
+    #     parameters: ${{ github.workspace }}/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json
     #     deploymentMode: Incremental
     
     # # Deploy Machine Learning AKS 001

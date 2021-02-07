@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "mlDatabricksConnectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the Azure Machine Learning Databricks connection."
+            }
+        },
+        "mlWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource ID of the Azure Machine Learning workspace."
+            }
+        },
+        "databricksWorkspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the Databricks workpsace resource ID that should be connected to the Azure Machine Learning workspace."
+            }
+        },
+        "databricksAccessToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the Databricks access token that should be used for connecting to teh Databricks workspace from the Azure Machine Learning workspace."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "mlDatabricksConnectionName": "[parameters('mlDatabricksConnectionName')]",
+        "mlWorkspaceId": "[parameters('mlWorkspaceId')]",
+        "mlWorkspaceName": "[last(split(variables('mlWorkspaceId'), '/'))]",
+        "databricksWorkspaceId": "[parameters('databricksWorkspaceId')]",
+        "databricksAccessToken": "[parameters('databricksAccessToken')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.MachineLearningServices/workspaces/computes",
+            "apiVersion": "2020-09-01-preview",
+            "name": "[concat(variables('mlWorkspaceName'), '/', variables('mlDatabricksConnectionName'))]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+            },
+            "properties": {
+                "computeLocation": "[variables('location')]",
+                "computeType": "Databricks",
+                "description": "Data Node Databricks Workspace",
+                "resourceId": "[variables('databricksWorkspaceId')]",
+                "properties": {
+                    "databricksAccessToken": "[variables('databricksAccessToken')]"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

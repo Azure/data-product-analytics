@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        },
+        "mlDatabricksConnectionName": {
+            "value": "databricks001"
+        },
+        "mlWorkspaceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.MachineLearningServices/workspaces/dn001-dp001-machinelearning001"
+        },
+        "databricksWorkspaceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-processing-product/providers/Microsoft.Databricks/workspaces/dn001-databricks002-processing"
+        },
+        "databricksAccessToken": {
+            "value": "<your-secure-databricks-access-token>"
+        }
+    }
+}
