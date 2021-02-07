@@ -38,6 +38,11 @@ Param(
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string]
+    $DatabricksWorkspaceId,
+
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string]
     $SynapseStorageAccountName,
 
     [Parameter(Mandatory)]

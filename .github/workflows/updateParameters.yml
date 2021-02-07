@@ -14,6 +14,7 @@ env:
   LOCATION: '<my-region>'
   SUBNET_ID: '<my-subnet-resource-id>'
   ML_COMPUTE_INSTANCE_USER_OBJECT_ID: '<my-ml-compute-instance-user-object-id>'
+  DATABRICKS_WORKSPACE_ID: '<my-databricks-workspace-resource-id>'
   SYNAPSE_STORAGE_ACCOUNT_NAME: '<my-synapse-storage-account-name>'
   SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '<my-synapse-storage-account-file-system-name>'
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '<my-resource-manager-connection-name>'
@@ -49,6 +50,7 @@ jobs:
             -Location '${{ env.LOCATION }}' \
             -SubnetId '${{ env.SUBNET_ID }}' \
             -MlComputeInstanceUserObjectId '${{ env.ML_COMPUTE_INSTANCE_USER_OBJECT_ID }}' \
+            -DatabricksWorkspaceId '${{ env.DATABRICKS_WORKSPACE_ID }}' \
             -SynapseStorageAccountName '${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }}' \
             -SynapseStorageAccountFileSystemName '${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }}'
       

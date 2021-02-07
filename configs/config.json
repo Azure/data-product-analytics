@@ -111,6 +111,15 @@
         }
     },
     {
+        "filePath": "infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json",
+        "fileType": "json",
+        "parameters": {
+            "parameters.location.value": "${Location}",
+            "parameters.mlWorkspaceId.value": "/subscriptions/${DataLandingZoneSubscriptionId}/resourceGroups/${DataLandingZoneName}-rg/providers/Microsoft.MachineLearningServices/workspaces/${DataLandingZoneName}-machinelearning001",
+            "parameters.databricksWorkspaceId.value": "${DatabricksWorkspaceId}"
+        }
+    },
+    {
         "filePath": "infra/MachineLearningSynapse/params.machineLearningSynapse001.json",
         "fileType": "json",
         "parameters": {
