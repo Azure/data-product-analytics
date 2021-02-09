@@ -2,6 +2,10 @@
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-product-analytics%2Fmain%2Fdocs%2Freference%2Fdeploy.dataProduct.json)
 
+<p align="center">
+    <img src="./docs/media/ProductAnalytics.png" alt="Data Product - Analytics" width="500"/> 
+</p>
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
