@@ -1,57 +1,57 @@
 [CmdletBinding()]
 Param(
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $ConfigurationFilePath,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $GlobalDnsResourceGroupId,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $DataLandingZoneSubscriptionId,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $DataLandingZoneName,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $Location,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $SubnetId,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $MlComputeInstanceUserObjectId,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $DatabricksWorkspaceId,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $SynapseStorageAccountName,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
     $SynapseStorageAccountFileSystemName,
 
     [Parameter(Mandatory=$false)]
-    [Switch]
+    [string]
     $AzureResourceManagerConnectionName
 )
 
@@ -77,6 +77,10 @@ function Remove-SpecialCharsAndWhitespaces($InputString) {
 # Replace Special Characters
 Write-Host "Replacing Special Characters"
 $DataLandingZoneName = Remove-SpecialCharsAndWhitespaces -InputString $DataLandingZoneName
+
+# Reduce Length of DataLandingZoneName
+Write-Host "Reduce Length of DataLandingZoneName to max 11 Characters"
+$DataLandingZoneName = -join $DataLandingZoneName[0..11]
 
 # Loading Configuration File for Parameter Updates
 Write-Host "Loading Configuration File for Parameter Updates"
@@ -139,4 +143,3 @@ foreach ($config in $configs) {
 # Set output
 Write-Output "Setting output"
 Write-Output "::set-output name=landingZoneName::${DataLandingZoneName}"
-Write-Output "::set-output name=landingZoneSubscriptionId::${DataLandingZoneSubscriptionId}"
