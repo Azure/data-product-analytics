@@ -61,9 +61,35 @@ jobs:
         run: |
           body="**Great work!**  Just two more steps to start the deployment into your environment.
           
-          ## 1. Create Resource Group
+          ## 1. Create Resource Group and grant access
 
           [Create a resource group](https://ms.portal.azure.com/#create/Microsoft.ResourceGroup) with the name \`${{ steps.update_parameters.outputs.landingZoneName }}-rg\` in the subscription \`${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID}}\`.
+
+          Now, grant the service principal from earlier access to the resource group with the following commands (either with Azure CLI or with Powershell):
+
+          **For Azure CLI**
+          \`\`\`Shell
+          # Get Service Principal Object ID
+          az ad sp list --display-name \"{servicePrincipalName}\" --query \"[].{objectId:objectId}\" --output tsv
+
+          # Add role assignment
+          az role assignment create \\
+            --assignee \"{servicePrincipalObjectId}\" \\
+            --role \"Contributor\" \\
+            --resource-group \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
+          \`\`\`
+
+          **For Powershell**
+          \`\`\`Powershell
+          # Get Service Principal Object ID
+          \$spObjectId = (Get-AzADServicePrincipal -DisplayName \"{servicePrincipalName}\").id
+
+          # Add role assignment
+          New-AzRoleAssignment \`
+            -ObjectId \$spObjectId \`
+            -RoleDefinitionName \"Contributor\" \`
+            -ResourceGroupName \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
+          \`\`\`
           
           ## 2. Update Parameters in the workflow
           
