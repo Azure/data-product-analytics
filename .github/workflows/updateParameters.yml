@@ -59,7 +59,13 @@ jobs:
       - name: Define Pull Request Body
         id: define_pull_request_body
         run: |
-          body="**Great work!** Just one more step to start the deployment into your environment.
+          body="**Great work!**  Just two more steps to start the deployment into your environment.
+          
+          ## 1. Create Resource Group
+
+          [Create a resource group](https://ms.portal.azure.com/#create/Microsoft.ResourceGroup) with the name \`${{ steps.update_parameters.outputs.landingZoneName }}-rg\` in the subscription \`${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID}}\`.
+          
+          ## 2. Update Parameters in the workflow
           
           **For GitHub Actions**
           
