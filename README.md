@@ -233,10 +233,11 @@ env:
   DATA_LANDING_ZONE_NAME: '{dataLandingZoneName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
   LOCATION: '{regionName}'                        # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
   SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}'
+  ML_COMPUTE_INSTANCE_USER_OBJECT_ID: '{mlComputeInstanceObjectId}'
+  DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
   SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}'
   SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}'
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}'
-
 ```
 
 The parameters have the following meaning:
@@ -250,6 +251,8 @@ The parameters have the following meaning:
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account | `synapsestorageaccount`
 |**SYNAPSE_STORAGE_ACCOUNT_FILE _SYSTEM_NAME**| Specifies the name of the Synapse Account filesystem| `fs`| 
 | **AZURE_RESOURCE_MANAGER _CONNECTION_NAM**E   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value, if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
+| **ML_COMPUTE_INSTANCE_USER_OBJECT_ID** |
+| **DATABRICKS_WORKSPACE_ID** |
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
