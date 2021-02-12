@@ -43,7 +43,7 @@
             "type": "string",
             "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>/providers/Microsoft.Network/virtualNetworks/<your-vnet-name>/subnets/<your-subnet-name>",
             "metadata": {
-                "description": "Specifies the resource ID of the subnet for the data domain services."
+                "description": "Specifies the resource ID of the subnet for the data product services."
             }
         },
         "databaseAdministratorLoginPassword": {
