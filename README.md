@@ -73,7 +73,7 @@ If you don’t have an Azure subscription, [create your Azure free account today
 6. Optionally, to include the directory structure and files from all branches in the template and not just the default branch, select **Include all branches**.
 7. Click **Create repository from template**.
 
-## 2. Setting up the required Service Principal and access
+## 2. Setting up the required Service Principal
 
 A service principal needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure subscription. This is required to deploy resources to your environment. Just go to the `Azure Portal` to find the ID of your subscription. Then start Azure CLI or PowerShell, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
