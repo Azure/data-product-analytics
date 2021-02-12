@@ -90,16 +90,6 @@ az ad sp create-for-rbac \
   --sdk-auth
 ```
 
-**Azure Powershell**
-```PowerShell
-# Replace {service-principal-name} and {subscription-id} with your 
-# Azure subscription id and any name for your service principal.
-New-AzADServicePrincipal `
-  -DisplayName "{service-principal-name}" `
-  -Role "Contributor" `
-  -Scope "/subscriptions/{subscription-id}"
-```
-
 This will generate the following JSON output:
 ```JSON
 {
