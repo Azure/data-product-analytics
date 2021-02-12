@@ -4,11 +4,13 @@
 
 # Description
 
-Enterprise Scale analytics emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Domain and Data Product templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repos to quickly spin up environments based on their requirements. This Data Product template deploys a set of services, which can be used for data analytics and data science. The template includes tools such as Azure Machine Learning, Cognitive Services and Azure Search, which allows the teams to choose their tools based on their requirements and preferences.
+**Enterprise Scale Analytics** emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Domain and Data Product templates. `Data Domain` and `Data Product` templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repos to quickly spin up environments based on their requirements. This Data Product template deploys a set of services, which can be used for data analytics and data science. The template includes tools such as Azure Machine Learning, Cognitive Services and Azure Search, which allows the teams to choose their tools based on their requirements and preferences.
 
 ## What will be deployed?
 
 By default, all the services which come under Data Product Analytics are enabled, and you must explicitly disable services that you don't want to be deployed.
+
+> Note: Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
 
 <p align="center">
     <img src="./docs/media/ProductAnalytics.png" alt="Data Product - Analytics" width="500"/>
@@ -222,7 +224,7 @@ More information can be found [here](https://docs.microsoft.com/en-us/azure/devo
 
 ## 4. Parameter Update Process
 
-In order to deploy the ARM templates in this repository to the desired Azure subscription, you will need to modify some parameters in the forked repository. As updating each parameter file manually is a time-consuming and potentially error-prone process, we have simplified the task with a GitHub Action workflow. After successfully executing the previous steps, please open the <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml` YAML file</a>. In this file you need to update the environment variables. Once you commit the file with the updated values, a GitHub Action workflow will be triggered that modifies all of the parameter files with the appropriate values. Just click on <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a> and edit the following section: 
+In order to deploy the ARM templates in this repository to the desired Azure subscription, you will need to modify some parameters in the forked repository. As updating each parameter file manually is a time-consuming and potentially error-prone process, we have simplified the task with a GitHub Action workflow. After successfully executing the previous steps, please open the <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml` YAML file</a>. In this file you need to update the environment variables. Just click on <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a> and edit the following section: 
 
 
 ```YAML
@@ -257,7 +259,12 @@ The following table explains each of the parameters:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-After updating the values, please commit the updated version to the `main` branch of your repository. This will kick off a GitHub Action workflow, which will appear under the **Actions** tab of the main page of the repository. The `Update Parameter Files` workflow will update all parameters in your repository according to a certain naming convention. Once the process has finished, it will open a new pull request in your repository, where you can review the changes made by the workflow. Please follow the instructions in the pull request to complete the parameter update process. We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
+After updating the values, please commit the updated version to the `main` branch of your repository. This will kick off a GitHub Action workflow, which will appear under the **Actions** tab of the main page of the repository. The `Update Parameter Files` workflow will update all parameters in your repository according to a certain naming convention. Once the process has finished, it will open a new pull request in your repository, where you can review the changes made by the workflow. Please follow the instructions in the pull request to complete the parameter update process. The instructions will guide towards the following steps: 
+  - create a new `resource group` where all the resources specific to this Data Domain Batch will be deployed;
+  - add the required role assignments for the Service Principal created at step **2. Setting up the required Service Principal**;
+  - change the environment variables in the deployment workflow file
+
+>Note: We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
 
 After following the instructions in the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository.
 
@@ -328,6 +335,30 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 - [Implementation - Data Domain - Streaming](https://github.com/Azure/data-domain-streaming)
 - [Implementation - Data Product - Reporting](https://github.com/Azure/data-product-reporting)
 - [Implementation - Data Product - Analytics & Data Science](https://github.com/Azure/data-product-analytics)
+
+
+## Known issues
+
+### Error: MissingSubscriptionRegistration
+
+**Error Message:**
+
+```sh
+ERROR: Deployment failed. Correlation ID: ***
+  "error": ***
+    "code": "MissingSubscriptionRegistration",
+    "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions.",
+    "details": [
+      ***
+        "code": "MissingSubscriptionRegistration",
+        "target": "Microsoft.DocumentDB",
+        "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions."
+ 
+```
+**Solution:**
+
+This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the `Azure Portal`, `Azure Powershell` or `Azure CLI` as mentioned [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
+
 
 # Contributing
 
