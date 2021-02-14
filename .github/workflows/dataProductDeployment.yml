@@ -26,13 +26,12 @@ on:
 env:
   AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
   AZURE_RESOURCE_GROUP_NAME: 'dn001-dp001'                      # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: northeurope                                   # Update to '{regionName}'
+  AZURE_LOCATION: 'northeurope'                                 # Update to '{regionName}'
 
 jobs:
   create-resource-group:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Login to Azure
     - name: Azure Login
@@ -62,7 +61,6 @@ jobs:
     needs: [ create-resource-group ]
     runs-on: ubuntu-latest
     
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Check Out Repository
@@ -315,8 +313,7 @@ jobs:
   deployment:
     needs: [ create-resource-group, validation ]
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Check Out Repository
