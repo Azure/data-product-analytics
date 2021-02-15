@@ -22,6 +22,27 @@ on:
       - 'infra/Storage/**'
       - 'infra/Synapse/**'
       - '.github/workflows/dataProductDeployment.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'infra/ApplicationInsights/**'
+      - 'infra/BigDataPool/**'
+      - 'infra/CognitiveServices/**'
+      - 'infra/ContainerRegistry/**'
+      - 'infra/DataFactory/**'
+      - 'infra/KeyVault/**'
+      - 'infra/LogicApps/**'
+      - 'infra/MachineLearning/**'
+      - 'infra/MachineLearningAks/**'
+      - 'infra/MachineLearningCluster/**'
+      - 'infra/MachineLearningComputeInstance/**'
+      - 'infra/MachineLearningDatabricks/**'
+      - 'infra/MachineLearningSynapse/**'
+      - 'infra/Search/**'
+      - 'infra/SqlPool/**'
+      - 'infra/Storage/**'
+      - 'infra/Synapse/**'
+      - '.github/workflows/dataProductDeployment.yml'
 
 env:
   AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
