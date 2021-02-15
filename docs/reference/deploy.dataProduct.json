@@ -45,12 +45,6 @@
                 "description": "Specifies the admin password of the database servers."
             }
         },
-        "sshKey": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Specifies the sshKey which is use for the Machine Learning Compute Instance."
-            }
-        },
         "userObjectId": {
             "type": "string",
             "metadata": {
@@ -83,13 +77,12 @@
         "vnetSubscriptionId": "[split(variables('subnetId'), '/')[2]]",
         "vnetResourceGroupName": "[split(variables('subnetId'), '/')[4]]",
         "databaseAdministratorLoginPassword": "[parameters('databaseAdministratorLoginPassword')]",
-        "sshKey": "[parameters('sshKey')]",
         "userObjectId": "[parameters('userObjectId')]",
         "synapseDefaultStorageAccountName": "[parameters('synapseDefaultStorageAccountName')]",
         "synapseDefaultStorageAccountFileSystem": "[parameters('synapseDefaultStorageAccountFileSystem')]",
         "applicationInsightsTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/ApplicationInsights/deploy.applicationInsights.json",
         "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/BigDataPool/deploy.bigDataPool.json",
-        "cognitiveServicesTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/CognitiveServices/deploy.cognitiveServices.json",
+        "cognitiveServiceTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/CognitiveServices/deploy.cognitiveService.json",
         "containerRegistryTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/ContainerRegistry/deploy.containerRegistry.json",
         "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/DataFactory/deploy.dataFactory.json",
         "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-product-analytics/main/infra/KeyVault/deploy.keyVault.json",
@@ -155,7 +148,7 @@
                         "value": "[variables('location')]"
                     },
                     "keyVaultName": {
-                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-kv001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
                         "value": "[variables('subnetId')]"
@@ -184,7 +177,7 @@
                         "value": "[variables('location')]"
                     },
                     "keyVaultName": {
-                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-keyvault002', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-kv002', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
                         "value": "[variables('subnetId')]"
@@ -310,19 +303,22 @@
                         "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
                     },
                     "applicationInsightsId": {
-                        "value": "[reference('keyVault001Deployment').outputs.applicationInsightsId.value]"
+                        "value": "[reference('applicationInsights001Deployment').outputs.applicationInsightsId.value]"
                     },
                     "storageAccountId": {
-                        "value": "[reference('keyVault001Deployment').outputs.storageAccountId.value]"
+                        "value": "[reference('storageAccount001Deployment').outputs.storageAccountId.value]"
                     },
                     "containerRegistryId": {
-                        "value": "[reference('keyVault001Deployment').outputs.containerRegistryId.value]"
+                        "value": "[reference('containerRegistry001Deployment').outputs.containerRegistryId.value]"
                     },
                     "subnetId": {
                         "value": "[variables('subnetId')]"
                     },
-                    "privateDnsZoneId": {
+                    "privateDnsZoneIdApi": {
                         "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms')]"
+                    },
+                    "privateDnsZoneIdNotebooks": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net')]"
                     }
                 }
             }
@@ -394,7 +390,7 @@
                         "value": "[variables('userObjectId')]"
                     },
                     "mlComputeInstanceSshKey": {
-                        "value": "[variables('sshKey')]"
+                        "value": ""
                     },
                     "mlComputeInstanceVmSize": {
                         "value": "Standard_DS3_v2"
@@ -582,6 +578,7 @@
             }
         },
         {
+            "condition": false,
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "machineLearningSynapse001Deployment",
@@ -626,7 +623,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('cognitiveServicesTemplateLink')]",
+                    "uri": "[variables('cognitiveServiceTemplateLink')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -636,8 +633,11 @@
                     "cognitiveServiceName": {
                         "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataProductName'), '-cognitiveservice001'), 64)]"
                     },
+                    "cognitiveServiceSku": {
+                        "value": "S0"
+                    },
                     "cognitiveServiceKind": {
-                        "value": "ComputerVision"
+                        "value": "FormRecognizer"
                     },
                     "subnetId": {
                         "value": "[variables('subnetId')]"
