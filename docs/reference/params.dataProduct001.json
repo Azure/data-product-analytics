@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enterpriseScaleAnalyticsCompanyPrefix": {
+            "value": "esa"
+        },
+        "dataNodeName": {
+            "value": "dn001"
+        },
+        "dataProductName": {
+            "value": "dp001"
+        },
+        "privateDnsZoneResourceGroupId": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns"
+        },
+        "subnetId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
+        },
+        "databaseAdministratorLoginPassword": {
+            "value": "<your-secure-password>"
+        },
+        "userObjectId": {
+            "value": ""
+        },
+        "synapseDefaultStorageAccountName": {
+            "value": "dn001workspacesa"
+        },
+        "synapseDefaultStorageAccountFileSystem": {
+            "value": "data"
+        }
+    }
+}
