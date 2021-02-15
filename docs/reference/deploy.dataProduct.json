@@ -25,13 +25,6 @@
                 "description": "Name of the data product."
             }
         },
-        "location": {
-            "type": "string",
-            "defaultValue": "northeurope",
-            "metadata": {
-                "description": "Specifies the location for all resources."
-            }
-        },
         "privateDnsZoneResourceGroupId": {
             "type": "string",
             "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>",
@@ -82,10 +75,10 @@
         "enterpriseScaleAnalyticsCompanyPrefix": "[parameters('enterpriseScaleAnalyticsCompanyPrefix')]",
         "dataNodeName": "[parameters('dataNodeName')]",
         "dataProductName": "[parameters('dataProductName')]",
-        "location": "[parameters('location')]",
+        "location": "[resourceGroup().location]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "subnetId": "[parameters('subnetId')]",
-        "subnetName": "[last(variables('subnetId'))]",
+        "subnetName": "[last(split(variables('subnetId'), '/'))]",
         "vnetName": "[split(variables('subnetId'), '/')[8]]",
         "vnetSubscriptionId": "[split(variables('subnetId'), '/')[2]]",
         "vnetResourceGroupName": "[split(variables('subnetId'), '/')[4]]",
