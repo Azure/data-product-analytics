@@ -37,11 +37,11 @@ You have two options for deploying this reference architecture:
 2. Use GitHub Actions or Azure DevOps Pipelines for an automated, repeatable deployment
 
 # Prerequisites
-> Note: Please make sure you have succesfully deployed a [Data Management Subscription](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Domain relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone alsready creates a few subnets, which can be used for this Data Domain. 
+> Note: Please make sure you have succesfully deployed a [Data Management Subscription](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Product relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Product. 
 
 The following prerequisites are required to make this repository work:
 
-* A **Data Management Subscription** deployed.  For more information, check the [Data Management Subscription](https://github.com/Azure/data-management-zone) repo.
+* A **Data Management Subscription** deployed. For more information, check the [Data Management Subscription](https://github.com/Azure/data-management-zone) repo.
 * A **Data Landing Zone** deployed. For more information, check the [Data Landing Zone](https://github.com/Azure/data-landing-zone) repo.
 * A resource group within an Azure subscription
 * [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
