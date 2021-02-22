@@ -108,6 +108,12 @@
                     "keySource": "Microsoft.Storage"
                 },
                 "networkAcls": {
+                    "resourceAccessRules": [
+                        {
+                            "tenantId": "[subscription().tenantId]",
+                            "resourceId": "/subscriptions/*/resourceGroups/*/providers/Microsoft.Purview/Accounts/*"
+                        }
+                    ],
                     "bypass": "Metrics",
                     "virtualNetworkRules": [
                     ],
