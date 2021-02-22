@@ -50,11 +50,12 @@ The following prerequisites are required to make this repository work:
 
 If you don’t have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/en-us/free/).
 
-# Option 1: Deploy to Azure - Quickstart
+# Option 1: Deploy to Azure - Quickstart (Coming soon ...)
 
 | &nbsp;Data Product Analytics |
-|:---------------------|
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-product-analytics%2Fmain%2Fdocs%2Freference%2Fdeploy.dataProduct.json)
+|:-----------------------------|
+<!-- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-product-analytics%2Fmain%2Fdocs%2Freference%2Fdeploy.dataProduct.json) -->
+![Deploy to Azure](/docs/media/deploytoazuregrey.png)
 
 # Option 2: GitHub Actions or Azure DevOps Pipelines
 
