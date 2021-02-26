@@ -44,7 +44,7 @@
             "parameters.keyVaultId.value": "/subscriptions/${DataLandingZoneSubscriptionId}/resourceGroups/${DataLandingZoneName}-rg/providers/Microsoft.KeyVault/vaults/${DataLandingZoneName}-keyvault001",
             "parameters.subnetId.value": "${SubnetId}",
             "parameters.privateDnsZoneIdDataFactory.value": "${GlobalDnsResourceGroupId}/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net",
-            "parameters.privateDnsZoneIdPortal.value": "${GlobalDnsResourceGroupId}/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com"
+            "parameters.privateDnsZoneIdPortal.value": "${GlobalDnsResourceGroupId}/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
         }
     },
     {
