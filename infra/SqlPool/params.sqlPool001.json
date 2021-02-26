@@ -1,18 +1,18 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "value": "northeurope"
-        },
-        "sqlPoolName": {
-            "value": "sqlpool001"
-        },
-        "sqlPoolCapacity": {
-            "value": "DW100c"
-        },
-        "synapseWorkspaceId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Synapse/workspaces/dn001-dp001-synapse001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "{regionName}"
+    },
+    "sqlPoolName": {
+      "value": "sqlpool001"
+    },
+    "sqlPoolCapacity": {
+      "value": "DW100c"
+    },
+    "synapseWorkspaceId": {
+      "value": "/subscriptions/{dataLandingZoneSubscriptionId}/resourceGroups/dataLandingZ-rg/providers/Microsoft.Synapse/workspaces/dataLandingZ-synapse001"
     }
+  }
 }
