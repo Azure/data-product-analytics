@@ -17,6 +17,7 @@ env:
   DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
   SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}'
   SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}'
+  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}'
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}'
 
 jobs:
@@ -48,6 +49,7 @@ jobs:
             -DataLandingZoneSubscriptionId '${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }}' \
             -DataLandingZoneName '${{ env.DATA_LANDING_ZONE_NAME }}' \
             -Location '${{ env.LOCATION }}' \
+            -PurviewId '${{ env.PURVIEW_ID }}' \
             -SubnetId '${{ env.SUBNET_ID }}' \
             -MlComputeInstanceUserObjectId '${{ env.ML_COMPUTE_INSTANCE_USER_OBJECT_ID }}' \
             -DatabricksWorkspaceId '${{ env.DATABRICKS_WORKSPACE_ID }}' \
