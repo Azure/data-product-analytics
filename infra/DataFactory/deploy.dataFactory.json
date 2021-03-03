@@ -49,6 +49,12 @@
                 "description": "Specifies the type of git connection."
             }
         },
+        "purviewId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the purview data catalog that should be linked to the data factory."
+            }
+        },
         "keyVaultId": {
             "type": "string",
             "metadata": {
@@ -78,12 +84,13 @@
     "variables": {
         "location": "[parameters('location')]",
         "dataFactoryName": "[parameters('dataFactoryName')]",
-        "azureManagedVnetIntegrationRuntimeName": "azureManagedVnetIntegrationRuntime",
+        "defaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
         "dataFactoryGitAccount": "[parameters('dataFactoryGitAccount')]",
         "dataFactoryGitRepo": "[parameters('dataFactoryGitRepo')]",
         "dataFactoryGitCollaborationBranch": "[parameters('dataFactoryGitCollaborationBranch')]",
         "dataFactoryGitRootFolder": "[parameters('dataFactoryGitRootFolder')]",
         "dataFactoryGitType": "[parameters('dataFactoryGitType')]",
+        "purviewId": "[parameters('purviewId')]",
         "keyVaultId": "[parameters('keyVaultId')]",
         "keyVaultName": "[last(split(variables('keyVaultId'), '/'))]",
         "subnetId": "[parameters('subnetId')]",
@@ -111,7 +118,10 @@
                 // },
                 "globalParameters": {
                 },
-                "publicNetworkAccess": "Disabled"
+                "publicNetworkAccess": "Disabled",
+                "purviewConfiguration": {
+                    "purviewResourceId": "[variables('purviewId')]"
+                }
             },
             "resources": [
                 {
@@ -126,7 +136,7 @@
                 {
                     "type": "integrationRuntimes",
                     "apiVersion": "2018-06-01",
-                    "name": "AutoResolveIntegrationRuntime",
+                    "name": "[variables('defaultManagedVnetIntegrationRuntimeName')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]",
                         "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', variables('dataFactoryName'), 'default')]"
@@ -145,32 +155,6 @@
                     }
                 },
                 {
-                    "type": "integrationRuntimes",
-                    "apiVersion": "2018-06-01",
-                    "name": "[variables('azureManagedVnetIntegrationRuntimeName')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]",
-                        "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', variables('dataFactoryName'), 'default')]"
-                    ],
-                    "properties": {
-                        "type": "Managed",
-                        "typeProperties": {
-                            "computeProperties": {
-                                "location": "[variables('location')]",
-                                "dataFlowProperties": {
-                                    "computeType": "General",
-                                    "coreCount": 8,
-                                    "timeToLive": 0
-                                }
-                            }
-                        },
-                        "managedVirtualNetwork": {
-                            "type": "ManagedVirtualNetworkReference",
-                            "referenceName": "default"
-                        }
-                    }
-                },
-                {
                     "condition": "[not(empty(variables('keyVaultId')))]",
                     "type": "managedVirtualNetworks/managedPrivateEndpoints",
                     "apiVersion": "2018-06-01",
@@ -178,7 +162,7 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]",
                         "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', variables('dataFactoryName'), 'default')]",
-                        "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', variables('dataFactoryName'), variables('azureManagedVnetIntegrationRuntimeName'))]"
+                        "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', variables('dataFactoryName'), variables('defaultManagedVnetIntegrationRuntimeName'))]"
                     ],
                     "properties": {
                         "privateLinkResourceId": "[variables('keyVaultId')]",
@@ -193,7 +177,7 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]",
                         "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', variables('dataFactoryName'), 'default')]",
-                        "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', variables('dataFactoryName'), variables('azureManagedVnetIntegrationRuntimeName'))]",
+                        "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', variables('dataFactoryName'), variables('defaultManagedVnetIntegrationRuntimeName'))]",
                         "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints',  variables('dataFactoryName'), 'default', replace(variables('keyVaultName'), '-', ''))]"
                     ],
                     "properties": {
@@ -202,7 +186,7 @@
                         "additionalProperties": {},
                         "connectVia": {
                             "type": "IntegrationRuntimeReference",
-                            "referenceName": "[variables('azureManagedVnetIntegrationRuntimeName')]"
+                            "referenceName": "[variables('defaultManagedVnetIntegrationRuntimeName')]"
                         },
                         "description": "Key Vault for data product",
                         "parameters": {},

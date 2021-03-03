@@ -28,6 +28,11 @@ Param(
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string]
+    $PurviewId,
+
+    [Parameter(Mandatory=$true)]
+    [ValidateNotNullOrEmpty()]
+    [string]
     $SubnetId,
 
     [Parameter(Mandatory=$true)]

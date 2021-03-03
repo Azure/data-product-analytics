@@ -32,6 +32,13 @@
                 "description": "Specifies the resource ID of the resource group of the private dns zones."
             }
         },
+        "purviewId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>/providers/Microsoft.Purview/accounts/<your-purview-name>",
+            "metadata": {
+                "description": "Specifies the ID of the purview account."
+            }
+        },
         "subnetId": {
             "type": "string",
             "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>/providers/Microsoft.Network/virtualNetworks/<your-vnet-name>/subnets/<your-subnet-name>",
@@ -71,6 +78,7 @@
         "dataProductName": "[parameters('dataProductName')]",
         "location": "[resourceGroup().location]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
+        "purviewId": "[parameters('purviewId')]",
         "subnetId": "[parameters('subnetId')]",
         "subnetName": "[last(split(variables('subnetId'), '/'))]",
         "vnetName": "[split(variables('subnetId'), '/')[8]]",
@@ -437,6 +445,9 @@
                     "dataFactoryGitType": {
                         "value": "FactoryGitHubConfiguration"
                     },
+                    "purviewId": {
+                        "value": "[variables('purviewId')]"
+                    },
                     "keyVaultId": {
                         "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
                     },
@@ -495,6 +506,9 @@
                     },
                     "synapseSqlAdminGroupObjectID": {
                         "value": ""
+                    },
+                    "purviewId": {
+                        "value": "[variables('purviewId')]"
                     },
                     "subnetId": {
                         "value": "[variables('subnetId')]"
