@@ -92,45 +92,7 @@
                 "storageAccount": "[variables('storageAccountId')]",
                 "containerRegistry": "[variables('containerRegistryId')]",
                 "hbiWorkspace": true,
-                "allowPublicAccessWhenBehindVnet": false,
-                "sharedPrivateLinkResources": [
-                    {
-                        "name": "ContainerRegistry",
-                        "properties": {
-                            "groupId": "registry",
-                            "privateLinkResourceId": "[concat(variables('containerRegistryId'), '/privateLinkResources/registry')]",
-                            "requestMessage": "Approve for AML Private Communication",
-                            "status": "Pending"
-                        }
-                    }
-                    // {
-                    //     "name": "KeyVault",
-                    //     "properties": {
-                    //         "groupId": "vault",
-                    //         "privateLinkResourceId": "[concat(resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName')), '/privateLinkResources/vault')]",
-                    //         "requestMessage": "Approve",
-                    //         "status": "Pending"
-                    //     }
-                    // },
-                    // {
-                    //     "name": "BlobStorage",
-                    //     "properties": {
-                    //         "groupId": "blob",
-                    //         "privateLinkResourceId": "[concat(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '/privateLinkResources/blob')]",
-                    //         "requestMessage": "Approve",
-                    //         "status": "Approved"
-                    //     }
-                    // },
-                    // {
-                    //     "name": "FileStorage",
-                    //     "properties": {
-                    //         "groupId": "file",
-                    //         "privateLinkResourceId": "[concat(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '/privateLinkResources/file')]",
-                    //         "requestMessage": "Approve",
-                    //         "status": "Approved"
-                    //     }
-                    // }
-                ]
+                "allowPublicAccessWhenBehindVnet": false
             }
         },
         {
