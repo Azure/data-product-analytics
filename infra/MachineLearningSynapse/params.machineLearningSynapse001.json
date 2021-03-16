@@ -1,21 +1,21 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "value": "northeurope"
-        },
-        "mlBigDataPoolName": {
-            "value": "bigdatapool001"
-        },
-        "mlWorkspaceId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.MachineLearningServices/workspaces/dn001-dp001-machinelearning001"
-        },
-        "synapseWorkspaceId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Synapse/workspaces/dn001-dp001-synapse001"
-        },
-        "synapseBigDataPoolId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.Synapse/workspaces/dn001-dp001-synapse001/bigDataPools/bigdatapool001"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "{regionName}"
+    },
+    "mlBigDataPoolName": {
+      "value": "bigdatapool001"
+    },
+    "mlWorkspaceId": {
+      "value": "/subscriptions/{dataLandingZoneSubscriptionId}/resourceGroups/datalandingz-rg/providers/Microsoft.MachineLearningServices/workspaces/datalandingz-machinelearning001"
+    },
+    "synapseWorkspaceId": {
+      "value": "/subscriptions/{dataLandingZoneSubscriptionId}/resourceGroups/datalandingz-rg/providers/Microsoft.Synapse/workspaces/datalandingz-synapse001"
+    },
+    "synapseBigDataPoolId": {
+      "value": "/subscriptions/{dataLandingZoneSubscriptionId}/resourceGroups/datalandingz-rg/providers/Microsoft.Synapse/workspaces/datalandingz-synapse001/bigDataPools/bigdatapool001"
     }
+  }
 }
