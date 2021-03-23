@@ -116,7 +116,9 @@ jobs:
             AZURE_SUBSCRIPTION_ID: '${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID}}'
             AZURE_RESOURCE_GROUP_NAME: '${{ steps.update_parameters.outputs.landingZoneName }}-rg'
             AZURE_LOCATION: '${{ env.LOCATION }}'
-          \`\`\`"
+          \`\`\`
+          
+          Now, merge the pull request into your \`main\` branch."
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
