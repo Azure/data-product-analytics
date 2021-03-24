@@ -17,7 +17,7 @@ env:
   DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
   SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}'
   SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}'
-  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}'
+  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}' # If no Purview account is deployed, leave it empty string.
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}'
 
 jobs:
