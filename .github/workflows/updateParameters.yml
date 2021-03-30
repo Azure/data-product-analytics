@@ -10,8 +10,8 @@ on:
 env:
   GLOBAL_DNS_RESOURCE_GROUP_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
   DATA_LANDING_ZONE_SUBSCRIPTION_ID: '{dataLandingZoneSubscriptionId}'
-  DATA_LANDING_ZONE_NAME: '{dataLandingZoneName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
-  LOCATION: '{regionName}'                        # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
+  DATA_PRODUCT_NAME: '{dataProductName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
+  LOCATION: '{regionName}'               # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
   SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}'
   ML_COMPUTE_INSTANCE_USER_OBJECT_ID: '{mlComputeInstanceObjectId}'
   DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
@@ -47,7 +47,7 @@ jobs:
             -ConfigurationFilePath 'configs/config.json' \
             -GlobalDnsResourceGroupId '${{ env.GLOBAL_DNS_RESOURCE_GROUP_ID }}' \
             -DataLandingZoneSubscriptionId '${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }}' \
-            -DataLandingZoneName '${{ env.DATA_LANDING_ZONE_NAME }}' \
+            -DataLandingZoneName '${{ env.DATA_PRODUCT_NAME }}' \
             -Location '${{ env.LOCATION }}' \
             -PurviewId '${{ env.PURVIEW_ID }}' \
             -SubnetId '${{ env.SUBNET_ID }}' \
