@@ -1,27 +1,27 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "value": "northeurope"
-        },
-        "mlComputeInstanceName": {
-            "value": "ci001"
-        },
-        "mlWorkspaceId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dp001/providers/Microsoft.MachineLearningServices/workspaces/dn001-dp001-machinelearning001"
-        },
-        "mlComputeInstanceUserObjectId": {
-            "value": ""
-        },
-        "mlComputeInstanceSshKey": {
-            "value": ""
-        },
-        "mlComputeInstanceVmSize": {
-            "value": "Standard_DS3_v2"
-        },
-        "subnetId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dp001-privatelink-subnet"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "{regionName}"
+    },
+    "mlComputeInstanceName": {
+      "value": "ci001"
+    },
+    "mlWorkspaceId": {
+      "value": "/subscriptions/{dataLandingZoneSubscriptionId}/resourceGroups/dataproduct-rg/providers/Microsoft.MachineLearningServices/workspaces/dataproduct-machinelearning001"
+    },
+    "mlComputeInstanceUserObjectId": {
+      "value": "{mlComputeInstanceObjectId}"
+    },
+    "mlComputeInstanceSshKey": {
+      "value": ""
+    },
+    "mlComputeInstanceVmSize": {
+      "value": "Standard_DS3_v2"
+    },
+    "subnetId": {
+      "value": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}"
     }
+  }
 }
