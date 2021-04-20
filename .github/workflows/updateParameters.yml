@@ -65,7 +65,7 @@ jobs:
           
           ## 1. Create Resource Group and grant access
 
-          [Create a resource group](https://ms.portal.azure.com/#create/Microsoft.ResourceGroup) with the name \`${{ steps.update_parameters.outputs.landingZoneName }}-rg\` in the subscription \`${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID}}\`.
+          [Create a resource group](https://ms.portal.azure.com/#create/Microsoft.ResourceGroup) with the name \`${{ steps.update_parameters.outputs.landingZoneName }}-rg\` in the subscription \`${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID}}\` in the region \`${{ env.LOCATION }}\`.
 
           Now, grant the service principal from earlier access to the resource group with the following commands (either with Azure CLI or with Powershell):
 
