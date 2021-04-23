@@ -51,7 +51,7 @@ The following prerequisites are required to make this repository work:
 - A **Data Landing Zone** deployed. For more information, check the [Data Landing Zone](https://github.com/Azure/data-landing-zone) repo.
 - A resource group within an Azure subscription
 - [User Access Administrator](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
-- Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration.
+- Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration (subnets with suffix `-privatelink-subnet`).
 - For deployment, please choose one of the below **Supported Regions** list.
 
 #### **Supported Regions:** 
@@ -253,7 +253,7 @@ In order to deploy the ARM templates in this repository to the desired Azure sub
 
 >**Note:** There is only one 'updateParametes.yml', which can be found under the '.github' folder and this one will be used also for setting up the Azure DevOps Deployment
 
-To begin, please open the  [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml). In this file you need to update the environment variables. Just click on [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml) and edit the following section:
+To begin, please open [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml) and update the following environment variables:
 
 ```YAML
 env:
@@ -261,11 +261,13 @@ env:
   DATA_LANDING_ZONE_SUBSCRIPTION_ID: '{dataLandingZoneSubscriptionId}'
   DATA_PRODUCT_NAME: '{dataProductName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
   LOCATION: '{regionName}'               # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
-  SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}' # Resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**.
-  SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}' # Choose a storage account which was previously deployed in the Data Landing Zone. 
-  SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}' # Choose the name of the container inside the Storage Account which was referenced in the above SYNAPSE_STORAGE_ACCOUNT_NAME variable.
+  SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}'
+  ML_COMPUTE_INSTANCE_USER_OBJECT_ID: '{mlComputeInstanceObjectId}'
+  DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
+  SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}'
+  SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}'
   PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}' # If no Purview account is deployed, leave it empty string.
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}' # This is needed just for ADO Deployments.
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}'
 ```
 
 The following table explains each of the parameters:
@@ -275,7 +277,9 @@ The following table explains each of the parameters:
 | **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | **DATA_PRODUCT_NAME**                        | Specifies the name of your Data Product. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `myproduct01` |
 | **LOCATION**                                 | Specifies the region where you want the resources to be deployed. Please use the same region as for your Data Landing Zone. Otherwise the deployment will fail, since the Vnet and the Private Endpoints have to be in the same region. Also Check [Supported Regions](#supported-regions) | `northeurope` |
-| **SUBNET_ID**                                | Specifies the resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**. The subnet should be configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies`, as mentioned in the *Prerequisites* | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/{my}-privatelink-subnet` |
+| **SUBNET_ID**                                | Specifies the resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**. The subnet is already configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to `Disabled`, as mentioned in the *Prerequisites* | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/{my}-privatelink-subnet` |
+|**ML_COMPUTE_INSTANCE_USER_OBJECT_ID**        | Specifies the [object ID of a user account](https://docs.microsoft.com/en-us/azure/marketplace/find-tenant-object-id#find-user-object-id) for which an Azure Machine Learning Compute Instance should be created (on-behalf CI creation). The deployment of a compute instance is disabled by default. If you don't have a user object ID, then please leave this parameter as is.  | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+|**DATABRICKS_WORKSPACE_ID**        | Specifies the resource ID of a Databricks workspace to which your Azure Machine Learning workspace should be connected to. The deployment of this connection is disabled by default. Leave this parameter as is, if you don' have a Databricks workspace that you want to connect to the Machine Learning workspace. In general, we are recommending to use the shared Databricks workspace with the name `{my-prefix}-databricks002-processing` that gets deployed into the resource group `{myprefix}-shared-product` as part of the Data Landing Zone deployment.  | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myrgname/providers/Microsoft.Databricks/workspaces/mydatabricksworkspace` |
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account, which was previously deployed in the Data Landing Zone. Go to the `{DataLandingZoneName}-storage` resource group in your Data Landing Zone and copy the resource name (`{DataLandingZoneName}worksa`).  | `mydlzworksa` |
 |**SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME**| Specifies the name of the Synapse Account filesystem, which is the name of the container inside the Storage Account that was referenced in the above SYNAPSE_STORAGE_ACCOUNT_NAME variable. | `data`|
 | **PURVIEW_ID**                               | Specifies the resource ID of the Purview account to which the Synapse workspaces and Data Factories should connect to share data lineage and other metadata. In case you do not have a Purview account deployed at this stage, leave it empty string. | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-governance-rg/providers/Microsoft.Purview/accounts/my-purview` |
