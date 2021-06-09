@@ -40,7 +40,7 @@ You have two options for deploying this reference architecture:
 
 ## Prerequisites
 
-> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Product relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Product. 
+> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Product relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Product.
 
 The following prerequisites are required to make this repository work:
 
@@ -94,17 +94,17 @@ The following prerequisites are required to make this repository work:
 
 A service principal with *Contributor* role needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure **Data Landing Zone** subscription, where the data-product-analytics services will be deployed. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
-> **Note:** The purpose of this new **Service Principal** is to assign least-privilege rights. Therefore, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data product. The **Network Contributor** role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
+> **Note:** The purpose of this new **Service Principal** is to assign least-privilege rights. Therefore, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data product. The **Network Contributor** role assignment is required as well in this repository in order to add the private endpoint of resources to the dedicated subnet.
 
 #### Azure CLI
 
 ```sh
-# Replace {service-principal-name} and {subscription-id} with your 
+# Replace {service-principal-name} and {subscription-id} and {resource-group} with your
 # Azure subscription id and any name for your service principal.
 az ad sp create-for-rbac \
-  --name "{service-principal-name}" \
-  --role "Contributor" \
-  --scopes "/subscriptions/{subscription-id}" \
+  --name {service-principal-name} \
+  --role contributor \
+  --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group} \
   --sdk-auth
 ```
 
@@ -127,7 +127,6 @@ Now that the new Service Principal is created, as mentioned,  role assignments a
 | Role Name | Description | Scope |
 |:----------|:------------|:------|
 | [Private DNS Zone Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#private-dns-zone-contributor) | We expect you to deploy all Private DNS Zones for all data services into a single subscription and resource group. Therefor, the service principal needs to be Private DNS Zone Contributor on the global dns resource group which was created during the Data Management Zone deployment. This is required to deploy A-records for the respective private endpoints.| <div style="width: 36ch">(Resource Group Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
-| [Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-product-analytics services into a single resource group within the Data Landing Zone subscription. The service principal requires a **Contributor** role-assignment on that resource group.| <div style="width: 36ch">(Resource Group Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
 | [Network Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#network-contributor) | In order to deploy Private Endpoints to the specified privatelink-subnet which was created during the Data Landing Zone deployment, the service principal requires **Network Contributor** access on that specific subnet.| <div style="width: 36ch">(Child-Resource Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName} /providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"`</div> |
 
 To add these role assignments, you can use the [Azure Portal](https://portal.azure.com/) or run the following commands using Azure CLI/Azure Powershell:
@@ -150,9 +149,6 @@ az role assignment create \
   --assignee "{servicePrincipalObjectId}" \
   --role "{roleName}" \
   --resource-group "{resourceGroupName}"
-
-# For Child-Resource Scope level assignment
-# TBD
 ```
 
 #### Azure Powershell - Add role assignments
@@ -231,73 +227,85 @@ If you want to use Azure DevOps Pipelines for deploying the resources, you need 
 
 More information can be found [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal).
 
-### 4. Parameter Update Process
+### 4. Parameter Updates
 
 > **Note:** This section applies for both **Azure DevOps** and **GitHub** Deployment
 
-In order to deploy the ARM templates in this repository to the desired Azure subscription, you will need to modify some parameters in the forked repository, which will be used for updating the files which will be used during the deployment. Therefor, **this step should not be skipped for neither Azure DevOps/GitHub options**. As updating each parameter file manually is a time-consuming and potentially error-prone process, we have simplified the task with a GitHub Action workflow. You can update your deployment parameters by completing three steps:
+In order to deploy the Infrastructure as Code (IaC) templates to the desired Azure subscription, you will need to modify some parameters in the forked repository. Therefore, **this step should not be skipped for neither Azure DevOps/GitHub options**. There are two files that require updates:
 
-  1. Configure the `updateParameters` workflow
-  1. Execute the `updateParameters` workflow
-  1. Configure the deployment pipeline
-  1. Merge these changes back to the `main` branch of your repo
+- `.github/workflows/dataProductDeployment.yml` for GitHub Actions,
+- `.ado/workflows/dataProductDeployment.yml` for Azure DevOps and
+- `infra/params.dev.json`.
 
-#### Configure the `updateParameters` workflow
+Update these files in a seperate branch and then merge via Pull Request to trigger the initial deployment.
+#### Configure `dataProductDeployment.yml`
 
-> **Note:** There is only one 'updateParameters.yml', which can be found under the '.github' folder and this one will be used also for setting up the Azure DevOps Deployment
+##### For GitHub Actions
 
-To begin, please open [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml) and update the following environment variables:
+To begin, please open the [.github/workflows/dataProductDeployment.yml](/.github/workflows/dataProductDeployment.yml). In this file you need to update the environment variables section. Just click on [.github/workflows/dataProductDeployment.yml](/.github/workflows/dataProductDeployment.yml) and edit the following section:
 
 ```yaml
 env:
-  GLOBAL_DNS_RESOURCE_GROUP_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
-  DATA_LANDING_ZONE_SUBSCRIPTION_ID: '{dataLandingZoneSubscriptionId}'
-  DATA_PRODUCT_NAME: '{dataProductName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
-  LOCATION: '{regionName}'               # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
-  SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}' # Resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**.
-  ML_COMPUTE_INSTANCE_USER_OBJECT_ID: '{mlComputeInstanceObjectId}'
-  DATABRICKS_WORKSPACE_ID: '{databricksWorkspaceId}'
-  SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}' # Choose a storage account which was previously deployed in the Data Landing Zone.
-  SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}' # Choose the name of the container inside the Storage Account which was referenced in the above SYNAPSE_STORAGE_ACCOUNT_NAME variable.
-  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}' # If no Purview account is deployed, leave it empty string.
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}' # This is needed just for ADO Deployments.
+  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b" # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dp001"                  # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: "northeurope"                                 # Update to '{regionName}'
+```
+
+Further details about these parameters are provided in a table below.
+
+##### For Azure DevOps
+
+To begin, please open the [.ado/workflows/dataProductDeployment.yml](/.ado/workflows/dataProductDeployment.yml). In this file you need to update the variables section. Just click on [.ado/workflows/dataProductDeployment.yml](/.ado/workflows/dataProductDeployment.yml) and edit the following section:
+
+```yaml
+variables:
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "domain-product-service-connection" # Update to '{resourceManagerConnectionName}'
+  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b"               # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dp001"                                # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: "North Europe"                                              # Update to '{regionName}'
 ```
 
 The following table explains each of the parameters:
+
 | Parameter                                | Description  | Sample value |
 |:-----------------------------------------|:-------------|:-------------|
-| **GLOBAL_DNS_RESOURCE_GROUP_ID**             | Specifies the global DNS resource group resource ID which gets deployed with the [Data Management Landing Zone](https://github.com/Azure/data-management-zone)| <div style="width: 36ch">`/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-resource-group`</div> |
-| **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-| **DATA_PRODUCT_NAME**                        | Specifies the name of your Data Product. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `myproduct01` |
-| **LOCATION**                                 | Specifies the region where you want the resources to be deployed. Please use the same region as for your Data Landing Zone. Otherwise the deployment will fail, since the Vnet and the Private Endpoints have to be in the same region. Also Check [Supported Regions](#supported-regions) | `northeurope` |
-| **SUBNET_ID**                                | Specifies the resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**. The subnet is already configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to `Disabled`, as mentioned in the *Prerequisites* | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/{my}-privatelink-subnet` |
-|**ML_COMPUTE_INSTANCE_USER_OBJECT_ID**        | Specifies the [object ID of a user account](https://docs.microsoft.com/en-us/azure/marketplace/find-tenant-object-id#find-user-object-id) for which an Azure Machine Learning Compute Instance should be created (on-behalf CI creation). The deployment of a compute instance is disabled by default. If you don't have a user object ID, then please leave this parameter as is.  | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-|**DATABRICKS_WORKSPACE_ID**        | Specifies the resource ID of a Databricks workspace to which your Azure Machine Learning workspace should be connected to. The deployment of this connection is disabled by default. Leave this parameter as is, if you don' have a Databricks workspace that you want to connect to the Machine Learning workspace. In general, we are recommending to use the shared Databricks workspace with the name `{my-prefix}-databricks002-processing` that gets deployed into the resource group `{myprefix}-shared-product` as part of the Data Landing Zone deployment.  | <div style="width: 36ch">`/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myrgname/providers/Microsoft.Databricks/workspaces/mydatabricksworkspace`</div> |
-|**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account, which was previously deployed in the Data Landing Zone. Go to the `{DataLandingZoneName}-storage` resource group in your Data Landing Zone and copy the resource name (`{DataLandingZoneName}worksa`).  | `mydlzworksa` |
-|**SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME**| Specifies the name of the Synapse Account filesystem, which is the name of the container inside the Storage Account that was referenced in the above SYNAPSE_STORAGE_ACCOUNT_NAME variable. | `data`|
-| **PURVIEW_ID**                               | Specifies the resource ID of the Purview account to which the Synapse workspaces and Data Factories should connect to share data lineage and other metadata. In case you do not have a Purview account deployed at this stage, leave it empty string. | <div style="width: 36ch">`/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-governance-rg/providers/Microsoft.Purview/accounts/my-purview`</div> |
-| **AZURE_RESOURCE_MANAGER_CONNECTION_NAME**   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
+| **AZURE_SUBSCRIPTION_ID**             | Specifies the subscription ID of the Data Management Zone where all the resources will be deployed | <div style="width: 36ch">`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`</div> |
+| **AZURE_LOCATION**                                 | Specifies the region where you want the resources to be deployed. Please check [Supported Regions](#supported-regions)  | `northeurope` |
+| **AZURE_RESOURCE_GROUP_NAME** | Specifies the name of an existing resource group in your data landing zone, where the resources will be deployed. | `my-rg-name` |
+| **AZURE_RESOURCE_MANAGER _CONNECTION_NAME**   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
 
-#### Execute the `updateParameters` workflow
+#### Configure `params.dev.json`
 
-After updating the values, please commit the updated version to the `main` branch of your repository. This will kick off a GitHub Action workflow, which will appear under the **Actions** tab of the main page of the repository. The `Update Parameter Files` workflow will update all parameters in your repository according to a pre-defined naming convention.
+To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In this file you need to update the variable values. Just click on [infra/params.dev.json](/infra/params.dev.json) and edit the values. An explanation of the values is given in the table below:
 
-#### Configure the deployment pipeline
-
-The workflow above will make changes to all of the ARM config files.  These changes will be stored in a new branch. Once the process has finished, it will open a new pull request in your repository where you can review the changes made by the workflow.  The pull request will also provide the values you need to use to configure the deployment pipeline. Please follow the instructions in the pull request to complete the parameter update process.
-
-If you are using GitHub Actions for your deployment, you will need to modify the `.github/workflows/dataProductDeployment.yml` file.  If you are using Azure Pipelines, you only need to modify the `.ado/workflows/dataProductDeployment.yml` file.  **You only need to modify one of these files. You do not need to modify both of them.**
-Please follow the instructions in the pull request to complete the parameter update process. The instructions will guide towards the following steps:
-
-- create a new `resource group` where all the resources specific to this Data Product Analytics template will be deployed;
-- add the required role assignments for the Service Principal created at step [2. Setting up the required Service Principal and access](#2-setting-up-the-required-service-principal-and-access)
-- change the environment variables in the deployment workflow file
-
-> **Note:** We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
-
-#### Merge these changes back to the `main` branch of your repo
-
-After following the instructions in the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository.
+| Parameter                                | Description  | Sample value |
+|:-----------------------------------------|:-------------|:-------------|
+| location | Specifies the location for all resources. | `northeurope` |
+| environment | Specifies the environment of the deployment. | `dev`, `test` or `prod` |
+| prefix | Specifies the prefix for all resources created in this deployment. | `prefi` |
+| aksId | Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.ContainerService/managedClusters/{aks-name}` |
+| machineLearningComputeInstance001AdministratorObjectId | Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. | `my-aad--user-object-id` |
+| machineLearningComputeInstance001AdministratorPublicSshKey | Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace. Use a secret for this parameter and overwrite as part of the deployment pipelines. | `my-aad--user-object-id` |
+| administratorPassword | Specifies the administrator password of the sql servers. Will be automatically set in the workflow. **Leave this value as is.** | `<your-secure-password>` |
+| synapseDefaultStorageAccountFileSystemId | Specifies the resource ID of the default storage account file system for synapse. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Storage/storageAccounts/{storage-name}/blobServices/default/containers/{container-name}` |
+| subnetId | Specifies the resource ID of the subnet to which all services will connect. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/virtualNetworks/{vnet-name}/subnets/{subnet-name}` |
+| purviewId | Specifies the resource ID of the central purview instance. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Purview/accounts/{purview-name}` |
+| databricksWorkspaceId | Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Databricks/workspaces/{databricks-name}` |
+| databricksWorkspaceUrl | Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. | `adb-{databricks-workspace-id}.azuredatabricks.net` |
+| databricksAccessToken | Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace. Use a secret for this parameter and overwrite as part of the deployment pipelines. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Purview/accounts/{purview-name}` |
+| enableRoleAssignments | Specifies whether role assignments should be enabled. **Leave this value as is.** | `true` or `false` |
+| privateDnsZoneIdKeyVault | Specifies the resource ID of the private DNS zone for KeyVault. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net` |
+| privateDnsZoneIdSynapseDev | Specifies the resource ID of the private DNS zone for Synapse Dev. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net` |
+| privateDnsZoneIdSynapseSql | Specifies the resource ID of the private DNS zone for Synapse Sql. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net` |
+| privateDnsZoneIdDataFactory | Specifies the resource ID of the private DNS zone for Data Factory. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net` |
+| privateDnsZoneIdDataFactoryPortal | Specifies the resource ID of the private DNS zone for Data Factory Portal. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com` |
+| privateDnsZoneIdCognitiveService | Specifies the resource ID of the private DNS zone for Cognitive Services. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com` |
+| privateDnsZoneIdContainerRegistry | Specifies the resource ID of the private DNS zone for Container Registry. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io` |
+| privateDnsZoneIdSearch | Specifies the resource ID of the private DNS zone for Azure Search. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net` |
+| privateDnsZoneIdBlob | Specifies the resource ID of the private DNS zone for Blob Storage. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net` |
+| privateDnsZoneIdFile | Specifies the resource ID of the private DNS zone for File Storage. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net` |
+| privateDnsZoneIdMachineLearningApi | Specifies the resource ID of the private DNS zone for Machine Learning API. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms` |
+| privateDnsZoneIdMachineLearningNotebooks | Specifies the resource ID of the private DNS zone for Machine Learning Notebooks. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net` |
 
 ### 5. (not applicable for GH Actions) Reference pipeline from GitHub repository in Azure DevOps Pipelines
 
@@ -339,7 +347,11 @@ As a last step, you need to create an Azure DevOps pipeline in your project base
 
 1. Click on **Continue** and then on **Run**.
 
-### 6. Follow the workflow deployment
+### 6. Merge these changes back to the `main` branch of your repo
+
+After following the instructions and updating the parameters and variables in your repository in a separate branch and opening the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository. By doing this, you trigger the deployment workflow.
+
+### 7. Follow the workflow deployment
 
 **Congratulations!** You have successfully executed all steps to deploy the template into your environment through GitHub Actions or Azure DevOps.
 
@@ -354,11 +366,10 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 | File/folder                   | Description                                |
 | ----------------------------- | ------------------------------------------ |
 | `.ado/workflows`              | Folder for ADO workflows. The `dataProductDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
-| `.github/workflows`           | Folder for GitHub workflows. The `updateParameters.yml` workflow is used for the parameter update process, while the `dataProductDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
+| `.github/workflows`           | Folder for GitHub workflows. The `dataProductDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
 | `code`                        | Sample password generation script that will be run in the deployment workflow for resources that require a password during the deployment. |
-| `configs`                     | Folder containing a script and configuration file that is used for the parameter update process. |
 | `docs`                        | Resources for this README.                 |
-| `infra`                       | Folder containing all the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`). |
+| `infra`                       | Folder containing all the ARM and Bicep templates for each of the resources that will be deployed. |
 | `CODE_OF_CONDUCT.md`          | Microsoft Open Source Code of Conduct.     |
 | `LICENSE`                     | The license for the sample.                |
 | `README.md`                   | This README file.                          |
