@@ -21,7 +21,7 @@
             "value": ""
         },
         "administratorPassword": {
-            "value": "Qwertz12345!"
+            "value": "<your-secure-password>"
         },
         "synapseDefaultStorageAccountFileSystemId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-dev-storage/providers/Microsoft.Storage/storageAccounts/dlz01devwork/blobServices/default/containers/dp001"
@@ -36,7 +36,7 @@
             "value": "adb-7034657454293931.11.azuredatabricks.net"
         },
         "databricksAccessToken": {
-            "value": "dapi4f54261b33baa3cd5580fceefbd00374-2"
+            "value": ""
         },
         "enableRoleAssignments": {
             "value": false
