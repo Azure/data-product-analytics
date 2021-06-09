@@ -7,6 +7,23 @@ param tags object
 param subnetId string
 param cognitiveServiceName string
 param cognitiveServiceSkuName string = 'S0'
+@allowed([
+  'AnomalyDetector'
+  'ComputerVision'
+  'CognitiveServices'
+  'ContentModerator'
+  'CustomVision.Training'
+  'CustomVision.Prediction'
+  'Face'
+  'FormRecognizer'
+  'ImmersiveReader'
+  'LUIS'
+  'Personalizer'
+  'SpeechServices'
+  'TextAnalytics'
+  'QnAMaker'
+  'TranslatorText'
+])
 param cognitiveServiceKind string
 param privateDnsZoneIdCognitiveService string
 
@@ -40,7 +57,7 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     }
     publicNetworkAccess: 'Disabled'
     restrictOutboundNetworkAccess: true
-    // userOwnedStorage: []  // Uncomment, if you want to enable user owned storage. Only available for selected services.
+    // userOwnedStorage: []  // Uncomment if you want to enable user owned storage. Only available for select set of cognitive service kinds.
   }
 }
 
