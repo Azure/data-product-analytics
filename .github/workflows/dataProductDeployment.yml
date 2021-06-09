@@ -2,586 +2,116 @@ name: Data Product Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'infra/ApplicationInsights/**'
-      - 'infra/BigDataPool/**'
-      - 'infra/CognitiveServices/**'
-      - 'infra/ContainerRegistry/**'
-      - 'infra/DataFactory/**'
-      - 'infra/KeyVault/**'
-      - 'infra/LogicApps/**'
-      - 'infra/MachineLearning/**'
-      - 'infra/MachineLearningAks/**'
-      - 'infra/MachineLearningCluster/**'
-      - 'infra/MachineLearningComputeInstance/**'
-      - 'infra/MachineLearningDatabricks/**'
-      - 'infra/MachineLearningSynapse/**'
-      - 'infra/Search/**'
-      - 'infra/SqlPool/**'
-      - 'infra/Storage/**'
-      - 'infra/Synapse/**'
-      - '.github/workflows/dataProductDeployment.yml'
+      - "code/**"
+      - "infra/**"
+      - ".github/workflows/dataProductDeployment.yml"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'infra/ApplicationInsights/**'
-      - 'infra/BigDataPool/**'
-      - 'infra/CognitiveServices/**'
-      - 'infra/ContainerRegistry/**'
-      - 'infra/DataFactory/**'
-      - 'infra/KeyVault/**'
-      - 'infra/LogicApps/**'
-      - 'infra/MachineLearning/**'
-      - 'infra/MachineLearningAks/**'
-      - 'infra/MachineLearningCluster/**'
-      - 'infra/MachineLearningComputeInstance/**'
-      - 'infra/MachineLearningDatabricks/**'
-      - 'infra/MachineLearningSynapse/**'
-      - 'infra/Search/**'
-      - 'infra/SqlPool/**'
-      - 'infra/Storage/**'
-      - 'infra/Synapse/**'
-      - '.github/workflows/dataProductDeployment.yml'
+      - "code/**"
+      - "infra/**"
+      - ".github/workflows/dataProductDeployment.yml"
 
 env:
-  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
-  AZURE_RESOURCE_GROUP_NAME: 'dn001-dp001'                      # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: 'northeurope'                                 # Update to '{regionName}'
+  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b" # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dp001"                  # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: "northeurope"                                 # Update to '{regionName}'
 
 jobs:
-  create-resource-group:
-    runs-on: ubuntu-latest
-
-    steps:
-    # Login to Azure
-    - name: Azure Login
-      id: azure_login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    # Create resource group
-    - name: Create resource group
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Validating existence of resource group ${{ env.AZURE_RESOURCE_GROUP_NAME }}"
-          az group exists --name ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    
-    # Log out from Azure
-    - name: Log out from Azure
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az logout
-
   validation:
-    needs: [ create-resource-group ]
+    name: "Validation of IaC templates"
     runs-on: ubuntu-latest
-    
+    continue-on-error: false
+
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Check Out Repository
-      id: checkout_repository
-      uses: actions/checkout@v2
-    
-    # Login to Azure
-    - name: Azure Login
-      id: azure_login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    # Deploy Key Vault 001 - validation
-    - name: Deploy Key Vault 001 - validation
-      id: key_vault_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/KeyVault/deploy.keyVault.json
-        parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault001.json
-        deploymentMode: Validate
-    
-    # Deploy Key Vault 002 - validation
-    - name: Deploy Key Vault 002 - validation
-      id: key_vault_002_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/KeyVault/deploy.keyVault.json
-        parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault002.json
-        deploymentMode: Validate
-    
-    # Deploy Storage Account 001 - validation
-    - name: Deploy Storage Account 001 - validation
-      id: storage_account_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Storage/deploy.storage.json
-        parameters: ${{ github.workspace }}/infra/Storage/params.storage001.json
-        deploymentMode: Validate
-    
-    # Deploy Application Insights 001 - validation
-    - name: Deploy Application Insights 001 - validation
-      id: application_insights_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/ApplicationInsights/deploy.applicationInsights.json
-        parameters: ${{ github.workspace }}/infra/ApplicationInsights/params.applicationInsights001.json
-        deploymentMode: Validate
-    
-    # Deploy Container Registry 001 - validation
-    - name: Deploy Container Registry 001 - validation
-      id: container_registry_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/ContainerRegistry/deploy.containerRegistry.json
-        parameters: ${{ github.workspace }}/infra/ContainerRegistry/params.containerRegistry001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning 001 - validation
-    - name: Deploy Machine Learning 001 - validation
-      id: machine_learning_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearning/deploy.machineLearning.json
-        parameters: ${{ github.workspace }}/infra/MachineLearning/params.machineLearning001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning Cluster 001 - validation
-    - name: Deploy Machine Learning Cluster 001 - validation
-      id: machine_learning_cluster_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningCluster/deploy.machineLearningCluster.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningCluster/params.machineLearningCluster001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning Compute Instance 001 - validation
-    - name: Deploy Machine Learning Compute Instance 001 - validation
-      id: machine_learning_compute_instance_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning Databricks 001 - validation
-    - name: Deploy Machine Learning Databricks 001 - validation
-      id: machine_learning_databricks_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning AKS 001 - validation
-    - name: Deploy Machine Learning AKS 001 - validation
-      id: machine_learning_aks_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningAks/deploy.machineLearningAks.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningAks/params.machineLearningAks001.json
-        deploymentMode: Validate
-    
-    # Generate Password 001
-    - name: Generate Password 001
-      id: generate_password_001
-      run: |
-        echo "Generating Password"
-        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
-    
-    # Deploy Synapse 001 - validation
-    - name: Deploy Synapse 001 - validation
-      id: synapse_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Synapse/deploy.synapse.json
-        parameters: ${{ github.workspace }}/infra/Synapse/params.synapse001.json synapseSqlAdministratorPassword="${{ steps.generate_password_001.outputs.password }}"
-        deploymentMode: Validate
-    
-    # Deploy Sql Pool 001 - validation
-    - name: Deploy Sql Pool 001 - validation
-      id: sql_pool_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/SqlPool/deploy.sqlPool.json
-        parameters: ${{ github.workspace }}/infra/SqlPool/params.sqlPool001.json
-        deploymentMode: Validate
-    
-    # Deploy Big Data Pool 001 - validation
-    - name: Deploy Big Data Pool 001 - validation
-      id: big_data_pool_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/BigDataPool/deploy.bigDataPool.json
-        parameters: ${{ github.workspace }}/infra/BigDataPool/params.bigDataPool001.json
-        deploymentMode: Validate
-    
-    # Deploy Machine Learning Synapse 001 - validation
-    - name: Deploy Machine Learning Synapse 001 - validation
-      id: machine_learning_synapse_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningSynapse/params.machineLearningSynapse001.json
-        deploymentMode: Validate
-    
-    # Deploy Cognitive Services 001 - validation
-    - name: Deploy Cognitive Services 001 - validation
-      id: cogitive_services_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/CognitiveServices/deploy.cognitiveService.json
-        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService001.json
-        deploymentMode: Validate
-    
-    # Deploy Search 001 - validation
-    - name: Deploy Search 001 - validation
-      id: search_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Search/deploy.search.json
-        parameters: ${{ github.workspace }}/infra/Search/params.search001.json
-        deploymentMode: Validate
-    
-    # Deploy Data Factory 001 - validation
-    - name: Deploy Data Factory 001 - validation
-      id: data_factory_001_validation
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/DataFactory/deploy.dataFactory.json
-        parameters: ${{ github.workspace }}/infra/DataFactory/params.dataFactory001.json
-        deploymentMode: Validate
-    
-    # Log out from Azure
-    - name: Log out from Azure
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az logout
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Generate Password 001
+      - name: Generate Password 001
+        id: generate_password_001
+        run: |
+          echo "Generating Password"
+          pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+
+      # Deploy Data Product - validation
+      - name: Deploy Data Product - validation
+        id: data_product_validation
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_LOCATION }}
+          template: ${{ github.workspace }}/infra/main.json
+          parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
+          deploymentMode: Validate
+        continue-on-error: true
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout
 
   deployment:
-    needs: [ create-resource-group, validation ]
+    needs: [create-resource-group, validation]
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    
+
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Check Out Repository
-      id: checkout_repository
-      uses: actions/checkout@v2
-    
-    # Login to Azure
-    - name: Azure Login
-      id: azure_login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    # Deploy Key Vault 001
-    - name: Deploy Key Vault 001
-      id: key_vault_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/KeyVault/deploy.keyVault.json
-        parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault001.json
-        deploymentMode: Incremental
-    
-    # Deploy Key Vault 002
-    - name: Deploy Key Vault 002
-      id: key_vault_002_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/KeyVault/deploy.keyVault.json
-        parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault002.json
-        deploymentMode: Incremental
-    
-    # Deploy Storage Account 001
-    - name: Deploy Storage Account 001
-      id: storage_account_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Storage/deploy.storage.json
-        parameters: ${{ github.workspace }}/infra/Storage/params.storage001.json
-        deploymentMode: Incremental
-    
-    # Deploy Application Insights 001
-    - name: Deploy Application Insights 001
-      id: application_insights_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/ApplicationInsights/deploy.applicationInsights.json
-        parameters: ${{ github.workspace }}/infra/ApplicationInsights/params.applicationInsights001.json
-        deploymentMode: Incremental
-    
-    # Deploy Container Registry 001
-    - name: Deploy Container Registry 001
-      id: container_registry_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/ContainerRegistry/deploy.containerRegistry.json
-        parameters: ${{ github.workspace }}/infra/ContainerRegistry/params.containerRegistry001.json
-        deploymentMode: Incremental
-    
-    # Deploy Machine Learning 001
-    - name: Deploy Machine Learning 001
-      id: machine_learning_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearning/deploy.machineLearning.json
-        parameters: ${{ github.workspace }}/infra/MachineLearning/params.machineLearning001.json
-        deploymentMode: Incremental
-      continue-on-error: true
-    
-    # Deploy Machine Learning Cluster 001
-    - name: Deploy Machine Learning Cluster 001
-      id: machine_learning_cluster_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/MachineLearningCluster/deploy.machineLearningCluster.json
-        parameters: ${{ github.workspace }}/infra/MachineLearningCluster/params.machineLearningCluster001.json
-        deploymentMode: Incremental
-    
-    # # Deploy Machine Learning Compute Instance 001
-    # - name: Deploy Machine Learning Compute Instance 001
-    #   id: machine_learning_compute_instance_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/MachineLearningComputeInstance/deploy.machineLearningComputeInstance.json
-    #     parameters: ${{ github.workspace }}/infra/MachineLearningComputeInstance/params.machineLearningComputeInstance001.json
-    #     deploymentMode: Incremental
-    
-    # # Deploy Machine Learning Databricks 001
-    # - name: Deploy Machine Learning Databricks 001
-    #   id: machine_learning_databricks_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/MachineLearningDatabricks/deploy.machineLearningDatabricks.json
-    #     parameters: ${{ github.workspace }}/infra/MachineLearningDatabricks/params.machineLearningDatabricks001.json
-    #     deploymentMode: Incremental
-    
-    # # Deploy Machine Learning AKS 001
-    # - name: Deploy Machine Learning AKS 001
-    #   id: machine_learning_aks_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/MachineLearningAks/deploy.machineLearningAks.json
-    #     parameters: ${{ github.workspace }}/infra/MachineLearningAks/params.machineLearningAks001.json
-    #     deploymentMode: Incremental
-    
-    # Generate Password 001
-    - name: Generate Password 001
-      id: generate_password_001
-      run: |
-        echo "Generating Password"
-        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
-    
-    # Deploy Synapse 001
-    - name: Deploy Synapse 001
-      id: synapse_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Synapse/deploy.synapse.json
-        parameters: ${{ github.workspace }}/infra/Synapse/params.synapse001.json synapseSqlAdministratorPassword="${{ steps.generate_password_001.outputs.password }}"
-        deploymentMode: Incremental
-    
-    # # Deploy Sql Pool 001
-    # - name: Deploy Sql Pool 001
-    #   id: sql_pool_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/SqlPool/deploy.sqlPool.json
-    #     parameters: ${{ github.workspace }}/infra/SqlPool/params.sqlPool001.json
-    #     deploymentMode: Incremental
-    
-    # Deploy Big Data Pool 001
-    - name: Deploy Big Data Pool 001
-      id: big_data_pool_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/BigDataPool/deploy.bigDataPool.json
-        parameters: ${{ github.workspace }}/infra/BigDataPool/params.bigDataPool001.json
-        deploymentMode: Incremental
-    
-    # # Deploy Machine Learning Synapse 001
-    # - name: Deploy Machine Learning Synapse 001
-    #   id: machine_learning_synapse_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/MachineLearningSynapse/deploy.machineLearningSynapse.json
-    #     parameters: ${{ github.workspace }}/infra/MachineLearningSynapse/params.machineLearningSynapse001.json
-    #     deploymentMode: Incremental
-    
-    # Deploy Cognitive Services 001
-    - name: Deploy Cognitive Services 001
-      id: cogitive_services_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/CognitiveServices/deploy.cognitiveService.json
-        parameters: ${{ github.workspace }}/infra/CognitiveServices/params.cognitiveService001.json
-        deploymentMode: Incremental
-    
-    # Deploy Search 001
-    - name: Deploy Search 001
-      id: search_001_deployment
-      uses: azure/arm-deploy@v1
-      with:
-        scope: resourcegroup
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-        region: ${{ env.AZURE_LOCATION }}
-        template: ${{ github.workspace }}/infra/Search/deploy.search.json
-        parameters: ${{ github.workspace }}/infra/Search/params.search001.json
-        deploymentMode: Incremental
-    
-    # # Deploy Data Factory 001
-    # - name: Deploy Data Factory 001
-    #   id: data_factory_001_deployment
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     scope: resourcegroup
-    #     subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-    #     region: ${{ env.AZURE_LOCATION }}
-    #     template: ${{ github.workspace }}/infra/DataFactory/deploy.dataFactory.json
-    #     parameters: ${{ github.workspace }}/infra/DataFactory/params.dataFactory001.json
-    #     deploymentMode: Incremental
-    
-    # Log out from Azure
-    - name: Log out from Azure
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az logout
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Generate Password 001
+      - name: Generate Password 001
+        id: generate_password_001
+        run: |
+          echo "Generating Password"
+          pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+
+      # Deploy Data Domain
+      - name: Deploy Data Domain
+        id: data_domain_deployment
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_LOCATION }}
+          template: ${{ github.workspace }}/infra/main.json
+          parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
+          deploymentMode: Incremental
+        continue-on-error: true
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout
