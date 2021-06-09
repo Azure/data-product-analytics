@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "9498275084357667877"
+      "templateHash": "14923973188986763909"
     }
   },
   "parameters": {
@@ -2004,6 +2004,9 @@
           },
           "privateDnsZoneIdMachineLearningNotebooks": {
             "value": "[parameters('privateDnsZoneIdMachineLearningNotebooks')]"
+          },
+          "enableRoleAssignments": {
+            "value": "[parameters('enableRoleAssignments')]"
           }
         },
         "template": {
@@ -2013,7 +2016,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "5432870764782928731"
+              "templateHash": "1381514849579221320"
             }
           },
           "parameters": {
@@ -2070,6 +2073,9 @@
             },
             "privateDnsZoneIdMachineLearningNotebooks": {
               "type": "string"
+            },
+            "enableRoleAssignments": {
+              "type": "bool"
             }
           },
           "functions": [],
@@ -2126,7 +2132,7 @@
               ]
             },
             {
-              "condition": "[and(and(not(empty(parameters('databricksWorkspaceId'))), not(empty(parameters('databricksWorkspaceUrl')))), not(empty(parameters('databricksAccessToken'))))]",
+              "condition": "[and(and(and(parameters('enableRoleAssignments'), not(empty(parameters('databricksWorkspaceId')))), not(empty(parameters('databricksWorkspaceUrl')))), not(empty(parameters('databricksAccessToken'))))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'databricks001')]",
@@ -2148,7 +2154,7 @@
               ]
             },
             {
-              "condition": "[not(empty(parameters('synapseId')))]",
+              "condition": "[and(parameters('enableRoleAssignments'), not(empty(parameters('synapseId'))))]",
               "type": "Microsoft.MachineLearningServices/workspaces/linkedServices",
               "apiVersion": "2020-09-01-preview",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'synapse001')]",
@@ -2165,7 +2171,7 @@
               ]
             },
             {
-              "condition": "[and(not(empty(parameters('synapseId'))), not(empty(parameters('synapseBigDataPoolId'))))]",
+              "condition": "[and(and(parameters('enableRoleAssignments'), not(empty(parameters('synapseId')))), not(empty(parameters('synapseBigDataPoolId'))))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'bigdatapool001')]",

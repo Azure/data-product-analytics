@@ -230,5 +230,6 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     machineLearningComputeInstance001AdministratorPublicSshKey: machineLearningComputeInstance001AdministratorPublicSshKey
     privateDnsZoneIdMachineLearningApi: privateDnsZoneIdMachineLearningApi
     privateDnsZoneIdMachineLearningNotebooks: privateDnsZoneIdMachineLearningNotebooks
+    enableRoleAssignments: enableRoleAssignments
   }
 }

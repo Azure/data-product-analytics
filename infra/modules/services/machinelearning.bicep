@@ -22,6 +22,7 @@ param machineLearningComputeInstance001AdministratorObjectId string
 param machineLearningComputeInstance001AdministratorPublicSshKey string
 param privateDnsZoneIdMachineLearningApi string
 param privateDnsZoneIdMachineLearningNotebooks string
+param enableRoleAssignments bool
 
 // Variables
 var machineLearningPrivateEndpointName = '${machineLearning.name}-private-endpoint'
@@ -70,7 +71,7 @@ resource machineLearningKubernetes001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningDatabricks001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (!empty(databricksWorkspaceId) && !empty(databricksWorkspaceUrl) && !empty(databricksAccessToken)) {
+resource machineLearningDatabricks001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (enableRoleAssignments && !empty(databricksWorkspaceId) && !empty(databricksWorkspaceUrl) && !empty(databricksAccessToken)) {
   parent: machineLearning
   name: 'databricks001'
   location: location
@@ -88,7 +89,7 @@ resource machineLearningDatabricks001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningSynapse001 'Microsoft.MachineLearningServices/workspaces/linkedServices@2020-09-01-preview' = if (!empty(synapseId)) {
+resource machineLearningSynapse001 'Microsoft.MachineLearningServices/workspaces/linkedServices@2020-09-01-preview' = if (enableRoleAssignments && !empty(synapseId)) {
   parent: machineLearning
   name: 'synapse001'
   location: location
@@ -101,7 +102,7 @@ resource machineLearningSynapse001 'Microsoft.MachineLearningServices/workspaces
   }
 }
 
-resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (!empty(synapseId) && !empty(synapseBigDataPoolId)) {
+resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (enableRoleAssignments && !empty(synapseId) && !empty(synapseBigDataPoolId)) {
   parent: machineLearning
   name: 'bigdatapool001'
   location: location
