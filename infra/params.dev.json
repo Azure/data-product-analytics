@@ -11,6 +11,9 @@
         "prefix": {
             "value": "pro01"
         },
+        "processingService": {
+            "value": "dataFactory"
+        },
         "aksId": {
             "value": ""
         },

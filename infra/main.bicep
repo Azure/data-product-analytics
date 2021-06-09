@@ -16,6 +16,12 @@ param environment string
 param prefix string
 
 // Resource parameters
+@allowed([
+  'dataFactory'
+  'synapse'
+])
+@description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
+param processingService string
 @description('Specifies the resource ID of a shared AKS cluster.')
 param aksId string
 @description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace.')
@@ -95,7 +101,7 @@ module keyvault001 'modules/services/keyvault.bicep' = {
   }
 }
 
-module synapse001 'modules/services/synapse.bicep' = {
+module synapse001 'modules/services/synapse.bicep' = if (processingService == 'synapse') {
   name: 'synapse001'
   scope: resourceGroup()
   params: {
@@ -114,7 +120,7 @@ module synapse001 'modules/services/synapse.bicep' = {
   }
 }
 
-module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
+module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (processingService == 'synapse' && enableRoleAssignments) {
   name: 'synapse001RoleAssignmentStorage'
   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
   params: {
@@ -123,7 +129,7 @@ module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentS
   }
 }
 
-module datafactory001 'modules/services/datafactory.bicep' = {
+module datafactory001 'modules/services/datafactory.bicep' = if (processingService == 'dataFactory') {
   name: 'datafactory001'
   scope: resourceGroup()
   params: {
@@ -135,6 +141,7 @@ module datafactory001 'modules/services/datafactory.bicep' = {
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
+    machineLearning001Id: machineLearning001.outputs.machineLearningId
   }
 }
 

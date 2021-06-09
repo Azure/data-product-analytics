@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "14923973188986763909"
+      "templateHash": "3807510248106573726"
     }
   },
   "parameters": {
@@ -33,6 +33,16 @@
       },
       "maxLength": 5,
       "minLength": 2
+    },
+    "processingService": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the data engineering service that will be deployed (Data Factory, Synapse)."
+      },
+      "allowedValues": [
+        "dataFactory",
+        "synapse"
+      ]
     },
     "aksId": {
       "type": "string",
@@ -332,6 +342,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001",
@@ -697,7 +708,7 @@
       }
     },
     {
-      "condition": "[parameters('enableRoleAssignments')]",
+      "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001RoleAssignmentStorage",
@@ -761,6 +772,7 @@
       ]
     },
     {
+      "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "datafactory001",
@@ -793,6 +805,9 @@
           },
           "purviewId": {
             "value": "[parameters('purviewId')]"
+          },
+          "machineLearning001Id": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2019-10-01').outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -802,7 +817,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "10008589956347591599"
+              "templateHash": "1294260236015860239"
             }
           },
           "parameters": {
@@ -824,6 +839,9 @@
             "keyVault001Id": {
               "type": "string"
             },
+            "machineLearning001Id": {
+              "type": "string"
+            },
             "privateDnsZoneIdDataFactory": {
               "type": "string"
             },
@@ -834,6 +852,9 @@
           "functions": [],
           "variables": {
             "keyVault001Name": "[last(split(parameters('keyVault001Id'), '/'))]",
+            "machineLearning001SubscriptionId": "[split(parameters('machineLearning001Id'), '/')[2]]",
+            "machineLearning001ResourceGroupName": "[split(parameters('machineLearning001Id'), '/')[4]]",
+            "machineLearning001Name": "[last(split(parameters('machineLearning001Id'), '/'))]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
             "datafactoryPrivateEndpointNameDatafactory": "[format('{0}-datafactory-private-endpoint', parameters('datafactoryName'))]",
             "datafactoryPrivateEndpointNamePortal": "[format('{0}-portal-private-endpoint', parameters('datafactoryName'))]"
@@ -1014,6 +1035,47 @@
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', parameters('datafactoryName'), variables('datafactoryDefaultManagedVnetIntegrationRuntimeName'))]"
               ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', replace(variables('machineLearning001Name'), '-', ''))]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "amlworkspace",
+                "privateLinkResourceId": "[parameters('machineLearning001Id')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/linkedservices",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('datafactoryName'), replace(variables('machineLearning001Name'), '-', ''))]",
+              "properties": {
+                "type": "AzureMLService",
+                "annotations": [],
+                "connectVia": {
+                  "type": "IntegrationRuntimeReference",
+                  "referenceName": "[variables('datafactoryDefaultManagedVnetIntegrationRuntimeName')]",
+                  "parameters": {}
+                },
+                "description": "Machine Learning for executing Pipelines.",
+                "parameters": {},
+                "typeProperties": {
+                  "tenant": "[subscription().tenantId]",
+                  "subscriptionId": "[variables('machineLearning001SubscriptionId')]",
+                  "resourceGroupName": "[variables('machineLearning001ResourceGroupName')]",
+                  "mlWorkspaceName": "[variables('machineLearning001Name')]",
+                  "authentication": "MSI"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', parameters('datafactoryName'), variables('datafactoryDefaultManagedVnetIntegrationRuntimeName'))]"
+              ]
             }
           ],
           "outputs": {
@@ -1025,7 +1087,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]"
+        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
     },
     {
@@ -2016,7 +2079,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "1381514849579221320"
+              "templateHash": "1248401576812655165"
             }
           },
           "parameters": {
@@ -2329,7 +2392,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "machineLearningId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+            }
+          }
         }
       },
       "dependsOn": [
