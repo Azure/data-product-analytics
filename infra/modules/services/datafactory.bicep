@@ -171,41 +171,41 @@ resource keyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservice
   }
 }
 
-resource machineLearning001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
-  parent: datafactoryManagedVirtualNetwork
-  name: replace(machineLearning001Name, '-', '')
-  properties: {
-    fqdns: []
-    groupId: 'amlworkspace'
-    privateLinkResourceId: machineLearning001Id
-  }
-}
+// resource machineLearning001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {  // Not supported yet, as a Machine Learning workspace only supports a single private endpoint today. Will be updated as soon as this is supported.
+//   parent: datafactoryManagedVirtualNetwork
+//   name: replace(machineLearning001Name, '-', '')
+//   properties: {
+//     fqdns: []
+//     groupId: 'amlworkspace'
+//     privateLinkResourceId: machineLearning001Id
+//   }
+// }
 
-resource machineLearning001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
-  parent: datafactory
-  name: replace(machineLearning001Name, '-', '')
-  dependsOn: [
-    machineLearning001ManagedPrivateEndpoint
-  ]
-  properties: {
-    type: 'AzureMLService'
-    annotations: []
-    connectVia: {
-      type: 'IntegrationRuntimeReference'
-      referenceName: datafactoryManagedIntegrationRuntime001.name
-      parameters: {}
-    }
-    description: 'Machine Learning for executing Pipelines.'
-    parameters: {}
-    typeProperties: {
-      tenant: subscription().tenantId
-      subscriptionId: machineLearning001SubscriptionId
-      resourceGroupName: machineLearning001ResourceGroupName
-      mlWorkspaceName: machineLearning001Name
-      authentication: 'MSI'
-    }
-  }
-}
+// resource machineLearning001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+//   parent: datafactory
+//   name: replace(machineLearning001Name, '-', '')
+//   dependsOn: [
+//     machineLearning001ManagedPrivateEndpoint
+//   ]
+//   properties: {
+//     type: 'AzureMLService'
+//     annotations: []
+//     connectVia: {
+//       type: 'IntegrationRuntimeReference'
+//       referenceName: datafactoryManagedIntegrationRuntime001.name
+//       parameters: {}
+//     }
+//     description: 'Machine Learning for executing Pipelines.'
+//     parameters: {}
+//     typeProperties: {
+//       tenant: subscription().tenantId
+//       subscriptionId: machineLearning001SubscriptionId
+//       resourceGroupName: machineLearning001ResourceGroupName
+//       mlWorkspaceName: machineLearning001Name
+//       authentication: 'MSI'
+//     }
+//   }
+// }
 
 // Outputs
 output datafactoryId string = datafactory.id
