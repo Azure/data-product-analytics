@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "14923973188986763909"
+      "templateHash": "16444687674050563589"
     }
   },
   "parameters": {
@@ -33,6 +33,16 @@
       },
       "maxLength": 5,
       "minLength": 2
+    },
+    "processingService": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the data engineering service that will be deployed (Data Factory, Synapse)."
+      },
+      "allowedValues": [
+        "dataFactory",
+        "synapse"
+      ]
     },
     "aksId": {
       "type": "string",
@@ -332,6 +342,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001",
@@ -697,7 +708,7 @@
       }
     },
     {
-      "condition": "[parameters('enableRoleAssignments')]",
+      "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001RoleAssignmentStorage",
@@ -761,6 +772,7 @@
       ]
     },
     {
+      "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "datafactory001",
@@ -793,6 +805,9 @@
           },
           "purviewId": {
             "value": "[parameters('purviewId')]"
+          },
+          "machineLearning001Id": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2019-10-01').outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -802,7 +817,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "10008589956347591599"
+              "templateHash": "8830816445675587327"
             }
           },
           "parameters": {
@@ -824,6 +839,9 @@
             "keyVault001Id": {
               "type": "string"
             },
+            "machineLearning001Id": {
+              "type": "string"
+            },
             "privateDnsZoneIdDataFactory": {
               "type": "string"
             },
@@ -834,6 +852,9 @@
           "functions": [],
           "variables": {
             "keyVault001Name": "[last(split(parameters('keyVault001Id'), '/'))]",
+            "machineLearning001SubscriptionId": "[split(parameters('machineLearning001Id'), '/')[2]]",
+            "machineLearning001ResourceGroupName": "[split(parameters('machineLearning001Id'), '/')[4]]",
+            "machineLearning001Name": "[last(split(parameters('machineLearning001Id'), '/'))]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
             "datafactoryPrivateEndpointNameDatafactory": "[format('{0}-datafactory-private-endpoint', parameters('datafactoryName'))]",
             "datafactoryPrivateEndpointNamePortal": "[format('{0}-portal-private-endpoint', parameters('datafactoryName'))]"
@@ -1012,6 +1033,7 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints', parameters('datafactoryName'), 'default', replace(variables('keyVault001Name'), '-', ''))]",
                 "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', parameters('datafactoryName'), variables('datafactoryDefaultManagedVnetIntegrationRuntimeName'))]"
               ]
             }
@@ -1025,7 +1047,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]"
+        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
     },
     {
@@ -2016,7 +2039,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "1381514849579221320"
+              "templateHash": "1248401576812655165"
             }
           },
           "parameters": {
@@ -2329,7 +2352,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "machineLearningId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+            }
+          }
         }
       },
       "dependsOn": [

@@ -283,6 +283,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | location | Specifies the location for all resources. | `northeurope` |
 | environment | Specifies the environment of the deployment. | `dev`, `test` or `prod` |
 | prefix | Specifies the prefix for all resources created in this deployment. | `prefi` |
+| processingService | Specifies the data engineering service that will be deployed (Data Factory, Synapse). | `dataFactory` or `synapse` |
 | aksId | Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.ContainerService/managedClusters/{aks-name}` |
 | machineLearningComputeInstance001AdministratorObjectId | Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. | `my-aad--user-object-id` |
 | machineLearningComputeInstance001AdministratorPublicSshKey | Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace. Use a secret for this parameter and overwrite as part of the deployment pipelines. | `my-aad--user-object-id` |

@@ -8,11 +8,15 @@ param subnetId string
 param datafactoryName string
 param purviewId string
 param keyVault001Id string
+param machineLearning001Id string
 param privateDnsZoneIdDataFactory string
 param privateDnsZoneIdDataFactoryPortal string
 
 // Variables
 var keyVault001Name = last(split(keyVault001Id, '/'))
+var machineLearning001SubscriptionId = split(machineLearning001Id, '/')[2]
+var machineLearning001ResourceGroupName = split(machineLearning001Id, '/')[4]
+var machineLearning001Name = last(split(machineLearning001Id, '/'))
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 var datafactoryPrivateEndpointNameDatafactory = '${datafactory.name}-datafactory-private-endpoint'
 var datafactoryPrivateEndpointNamePortal = '${datafactory.name}-portal-private-endpoint'
@@ -145,9 +149,12 @@ resource datafactoryKeyVault001ManagedPrivateEndpoint 'Microsoft.DataFactory/fac
   }
 }
 
-resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+resource keyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
   parent: datafactory
   name: replace(keyVault001Name, '-', '')
+  dependsOn: [
+    datafactoryKeyVault001ManagedPrivateEndpoint
+  ]
   properties: {
     type: 'AzureKeyVault'
     annotations: []
@@ -163,6 +170,42 @@ resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/li
     }
   }
 }
+
+// resource machineLearning001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {  // Not supported yet, as a Machine Learning workspace only supports a single private endpoint today. Will be updated as soon as this is supported.
+//   parent: datafactoryManagedVirtualNetwork
+//   name: replace(machineLearning001Name, '-', '')
+//   properties: {
+//     fqdns: []
+//     groupId: 'amlworkspace'
+//     privateLinkResourceId: machineLearning001Id
+//   }
+// }
+
+// resource machineLearning001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+//   parent: datafactory
+//   name: replace(machineLearning001Name, '-', '')
+//   dependsOn: [
+//     machineLearning001ManagedPrivateEndpoint
+//   ]
+//   properties: {
+//     type: 'AzureMLService'
+//     annotations: []
+//     connectVia: {
+//       type: 'IntegrationRuntimeReference'
+//       referenceName: datafactoryManagedIntegrationRuntime001.name
+//       parameters: {}
+//     }
+//     description: 'Machine Learning for executing Pipelines.'
+//     parameters: {}
+//     typeProperties: {
+//       tenant: subscription().tenantId
+//       subscriptionId: machineLearning001SubscriptionId
+//       resourceGroupName: machineLearning001ResourceGroupName
+//       mlWorkspaceName: machineLearning001Name
+//       authentication: 'MSI'
+//     }
+//   }
+// }
 
 // Outputs
 output datafactoryId string = datafactory.id
