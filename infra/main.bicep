@@ -231,8 +231,8 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     databricksAccessToken: databricksAccessToken
     databricksWorkspaceId: databricksWorkspaceId
     databricksWorkspaceUrl: databricksWorkspaceUrl
-    synapseId: synapse001.outputs.synapseId
-    synapseBigDataPoolId: synapse001.outputs.synapseBigDataPool001Id
+    synapseId: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
+    synapseBigDataPoolId: processingService == 'synapse' ? synapse001.outputs.synapseBigDataPool001Id : ''
     machineLearningComputeInstance001AdministratorObjectId: machineLearningComputeInstance001AdministratorObjectId
     machineLearningComputeInstance001AdministratorPublicSshKey: machineLearningComputeInstance001AdministratorPublicSshKey
     privateDnsZoneIdMachineLearningApi: privateDnsZoneIdMachineLearningApi

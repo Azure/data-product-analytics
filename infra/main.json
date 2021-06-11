@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "16444687674050563589"
+      "templateHash": "9648504894398688961"
     }
   },
   "parameters": {
@@ -2011,10 +2011,10 @@
             "value": "[parameters('databricksWorkspaceUrl')]"
           },
           "synapseId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value, '')]"
           },
           "synapseBigDataPoolId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseBigDataPool001Id.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseBigDataPool001Id.value, '')]"
           },
           "machineLearningComputeInstance001AdministratorObjectId": {
             "value": "[parameters('machineLearningComputeInstance001AdministratorObjectId')]"
