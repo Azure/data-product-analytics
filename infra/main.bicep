@@ -11,7 +11,7 @@ param location string
 @description('Specifies the environment of the deployment.')
 param environment string
 @minLength(2)
-@maxLength(5)
+@maxLength(10)
 @description('Specifies the prefix for all resources created in this deployment.')
 param prefix string
 
@@ -231,8 +231,8 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     databricksAccessToken: databricksAccessToken
     databricksWorkspaceId: databricksWorkspaceId
     databricksWorkspaceUrl: databricksWorkspaceUrl
-    synapseId: synapse001.outputs.synapseId
-    synapseBigDataPoolId: synapse001.outputs.synapseBigDataPool001Id
+    synapseId: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
+    synapseBigDataPoolId: processingService == 'synapse' ? synapse001.outputs.synapseBigDataPool001Id : ''
     machineLearningComputeInstance001AdministratorObjectId: machineLearningComputeInstance001AdministratorObjectId
     machineLearningComputeInstance001AdministratorPublicSshKey: machineLearningComputeInstance001AdministratorPublicSshKey
     privateDnsZoneIdMachineLearningApi: privateDnsZoneIdMachineLearningApi
