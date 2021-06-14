@@ -125,7 +125,7 @@ module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentS
   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
   params: {
     storageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
-    synapseId: synapse001.outputs.synapseId
+    synapseId: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
   }
 }
 
