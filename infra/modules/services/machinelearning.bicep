@@ -200,7 +200,6 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
         id: subnetId
       }
       vmSize: 'Standard_DS3_v2'
-
     }
   }
 }
