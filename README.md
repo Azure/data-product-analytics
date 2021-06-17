@@ -6,7 +6,7 @@
 
 ## Description
 
-[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Domain and Data Product templates. `Data Domain` and `Data Product` templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Product template deploys a set of services, which can be used for data analytics and data science. The template includes tools such as Azure Machine Learning, Cognitive Services and Azure Search, which allows the teams to choose their tools based on their requirements and preferences.
+[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Integration and Data Product templates. `Data Integration` and `Data Product` templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Product template deploys a set of services, which can be used for data analytics and data science. The template includes tools such as Azure Machine Learning, Cognitive Services and Azure Search, which allows the teams to choose their tools based on their requirements and preferences.
 
 ## What will be deployed?
 
@@ -259,10 +259,10 @@ To begin, please open the [.ado/workflows/dataProductDeployment.yml](/.ado/workf
 
 ```yaml
 variables:
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "domain-product-service-connection" # Update to '{resourceManagerConnectionName}'
-  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b"               # Update to '{dataLandingZoneSubscriptionId}'
-  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dp001"                                # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: "North Europe"                                              # Update to '{regionName}'
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "integration-product-service-connection" # Update to '{resourceManagerConnectionName}'
+  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b"                    # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dp001"                                     # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: "North Europe"                                                   # Update to '{regionName}'
 ```
 
 The following table explains each of the parameters:
@@ -281,7 +281,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | Parameter                                | Description  | Sample value |
 |:-----------------------------------------|:-------------|:-------------|
 | location | Specifies the location for all resources. | `northeurope` |
-| environment | Specifies the environment of the deployment. | `dev`, `test` or `prod` |
+| environment | Specifies the environment of the deployment. | `dev`, `tst` or `prd` |
 | prefix | Specifies the prefix for all resources created in this deployment. | `prefi` |
 | processingService | Specifies the data engineering service that will be deployed (Data Factory, Synapse). | `dataFactory` or `synapse` |
 | aksId | Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.ContainerService/managedClusters/{aks-name}` |
@@ -381,8 +381,8 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 - [Documentation](https://github.com/Azure/Enterprise-Scale-Analytics)
 - [Implementation - Data Management](https://github.com/Azure/data-management-zone)
 - [Implementation - Data Landing Zone](https://github.com/Azure/data-landing-zone)
-- [Implementation - Data Domain - Batch](https://github.com/Azure/data-domain-batch)
-- [Implementation - Data Domain - Streaming](https://github.com/Azure/data-domain-streaming)
+- [Implementation - Data Integration - Batch](https://github.com/Azure/data-integration-batch)
+- [Implementation - Data Integration - Streaming](https://github.com/Azure/data-integration-streaming)
 - [Implementation - Data Product - Reporting](https://github.com/Azure/data-product-reporting)
 - [Implementation - Data Product - Analytics & Data Science](https://github.com/Azure/data-product-analytics)
 
