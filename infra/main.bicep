@@ -5,8 +5,8 @@ targetScope = 'resourceGroup'
 param location string
 @allowed([
   'dev'
-  'test'
-  'prod'
+  'tst'
+  'prd'
 ])
 @description('Specifies the environment of the deployment.')
 param environment string
@@ -240,3 +240,5 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     enableRoleAssignments: enableRoleAssignments
   }
 }
+
+// Outputs
