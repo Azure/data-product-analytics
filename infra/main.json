@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "7655041290110435084"
+      "templateHash": "5518314312055099835"
     }
   },
   "parameters": {
@@ -1511,7 +1511,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "9297662564898857407"
+              "templateHash": "11924213579882647929"
             }
           },
           "parameters": {
@@ -1572,8 +1572,7 @@
                     "type": "Notary"
                   }
                 },
-                "publicNetworkAccess": "Disabled",
-                "zoneRedundancy": "Enabled"
+                "publicNetworkAccess": "Disabled"
               }
             },
             {
