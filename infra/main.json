@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "14812028426306271459"
+      "templateHash": "11686764472949358305"
     }
   },
   "parameters": {
@@ -213,8 +213,8 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
-    "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], 'incorrectSegmentLength')]",
-    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], 'incorrectSegmentLength')]"
+    "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
+    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]"
   },
   "resources": [
     {
@@ -753,7 +753,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "5445572653323932575"
+              "templateHash": "2815223340327973240"
             }
           },
           "parameters": {
@@ -768,8 +768,8 @@
           "variables": {
             "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 12), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 12), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
-            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[2], 'incorrectSegmentLength')]",
-            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[4], 'incorrectSegmentLength')]",
+            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[2], subscription().subscriptionId)]",
+            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[4], resourceGroup().name)]",
             "synapseName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), last(split(parameters('synapseId'), '/')), 'incorrectSegmentLength')]"
           },
           "resources": [
@@ -836,7 +836,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "424036432626507194"
+              "templateHash": "12255501432081598986"
             }
           },
           "parameters": {
@@ -871,8 +871,8 @@
           "functions": [],
           "variables": {
             "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 8), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
-            "machineLearning001SubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[2], 'incorrectSegmentLength')]",
-            "machineLearning001ResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[4], 'incorrectSegmentLength')]",
+            "machineLearning001SubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[2], subscription().subscriptionId)]",
+            "machineLearning001ResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[4], resourceGroup().name)]",
             "machineLearning001Name": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), last(split(parameters('machineLearning001Id'), '/')), 'incorrectSegmentLength')]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
             "datafactoryPrivateEndpointNameDatafactory": "[format('{0}-datafactory-private-endpoint', parameters('datafactoryName'))]",

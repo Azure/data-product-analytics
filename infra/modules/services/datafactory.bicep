@@ -14,8 +14,8 @@ param privateDnsZoneIdDataFactoryPortal string
 
 // Variables
 var keyVault001Name = length(split(keyVault001Id, '/')) >= 8 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
-var machineLearning001SubscriptionId = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[2] : 'incorrectSegmentLength'
-var machineLearning001ResourceGroupName = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[4] : 'incorrectSegmentLength'
+var machineLearning001SubscriptionId = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[2] : subscription().subscriptionId
+var machineLearning001ResourceGroupName = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[4] : resourceGroup().name
 var machineLearning001Name = length(split(machineLearning001Id, '/')) >= 8 ? last(split(machineLearning001Id, '/')) : 'incorrectSegmentLength'
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 var datafactoryPrivateEndpointNameDatafactory = '${datafactory.name}-datafactory-private-endpoint'
