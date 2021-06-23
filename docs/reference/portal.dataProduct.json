@@ -427,7 +427,7 @@
                                     "label": "Create Data Processing Service",
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
-                                    "defaultValue": "",
+                                    "defaultValue": "Data Factory",
                                     "toolTip": "Specify an additional data processing engine that you want to deploy. This can be used as Spark engine as well as for workflow orchestration.",
                                     "multiselect": false,
                                     "selectAll": false,
