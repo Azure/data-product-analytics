@@ -8,8 +8,8 @@ param synapseId string
 // Variables
 var storageAccountFileSystemName = length(split(storageAccountFileSystemId, '/')) >= 12 ? last(split(storageAccountFileSystemId, '/')) : 'incorrectSegmentLength'
 var storageAccountName = length(split(storageAccountFileSystemId, '/')) >= 12 ? split(storageAccountFileSystemId, '/')[8] : 'incorrectSegmentLength'
-var synapseSubscriptionId = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[2] : 'incorrectSegmentLength'
-var synapseResourceGroupName = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[4] : 'incorrectSegmentLength'
+var synapseSubscriptionId = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[2] : subscription().subscriptionId
+var synapseResourceGroupName = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[4] : resourceGroup().name
 var synapseName = length(split(synapseId, '/')) >= 8 ? last(split(synapseId, '/')) : 'incorrectSegmentLength'
 
 // Resources
