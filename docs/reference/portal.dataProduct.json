@@ -402,7 +402,7 @@
                                     "multiLine": true,
                                     "constraints": {
                                         "allowedValues": "[map(filter(steps('generalSettings').machineLearningSettings.aksApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
-                                        "required": false
+                                        "required": true
                                     }
                                 }
                             ]
