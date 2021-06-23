@@ -14,6 +14,8 @@ param environment string = 'dev'
 @maxLength(10)
 @description('Specifies the prefix for all resources created in this deployment.')
 param prefix string
+@description('Specifies the tags that you want to apply to all resources.')
+param tags object = {}
 
 // Resource parameters
 @allowed([
@@ -78,13 +80,14 @@ param privateDnsZoneIdMachineLearningNotebooks string
 
 // Variables
 var name = toLower('${prefix}-${environment}')
-var tags = {
+var tagsDefault = {
   Owner: 'Enterprise Scale Analytics'
   Project: 'Enterprise Scale Analytics'
   Environment: environment
   Toolkit: 'bicep'
   Name: name
 }
+var tagsJoined = union(tagsDefault, tags)
 var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAccountFileSystemId, '/')[2]
 var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
 
@@ -94,7 +97,7 @@ module keyvault001 'modules/services/keyvault.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     keyvaultName: '${name}-vault001'
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
@@ -107,7 +110,7 @@ module synapse001 'modules/services/synapse.bicep' = if (processingService == 's
   params: {
     location: location
     synapseName: '${name}-synapse001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
@@ -134,7 +137,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     datafactoryName: '${name}-datafactory001'
     keyVault001Id: keyvault001.outputs.keyvaultId
@@ -150,7 +153,7 @@ module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     cognitiveServiceName: '${name}-cognitiveservice001'
     cognitiveServiceKind: 'FormRecognizer'
@@ -164,7 +167,7 @@ module search001 'modules/services/search.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     searchName: '${name}-search001'
     searchHostingMode: 'default'
@@ -180,7 +183,7 @@ module applicationInsights001 'modules/services/applicationinsights.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     applicationInsightsName: '${name}-insights001'
     logAnalyticsWorkspaceId: ''
   }
@@ -191,7 +194,7 @@ module containerRegistry001 'modules/services/containerregistry.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     containerRegistryName: '${name}-containerregistry001'
     privateDnsZoneIdContainerRegistry: privateDnsZoneIdContainerRegistry
@@ -203,7 +206,7 @@ module storage001 'modules/services/storage.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     storageName: '${name}-storage001'
     storageContainerNames: [
@@ -220,7 +223,7 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     machineLearningName: '${name}-machinelearning001'
     applicationInsightsId: applicationInsights001.outputs.applicationInsightsId

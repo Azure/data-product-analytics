@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "16718078430214870063"
+      "templateHash": "2409698022270835576"
     }
   },
   "parameters": {
@@ -34,6 +34,13 @@
       },
       "maxLength": 10,
       "minLength": 2
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the tags that you want to apply to all resources."
+      }
     },
     "processingService": {
       "type": "string",
@@ -198,13 +205,14 @@
   "functions": [],
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
-    "tags": {
+    "tagsDefault": {
       "Owner": "Enterprise Scale Analytics",
       "Project": "Enterprise Scale Analytics",
       "Environment": "[parameters('environment')]",
       "Toolkit": "bicep",
       "Name": "[variables('name')]"
     },
+    "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
     "synapseDefaultStorageAccountSubscriptionId": "[split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2]]",
     "synapseDefaultStorageAccountResourceGroupName": "[split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4]]"
   },
@@ -223,7 +231,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -370,7 +378,7 @@
             "value": "[format('{0}-synapse001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -797,7 +805,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1076,7 +1084,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1244,7 +1252,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1424,7 +1432,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "applicationInsightsName": {
             "value": "[format('{0}-insights001', variables('name'))]"
@@ -1503,7 +1511,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1656,7 +1664,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1988,7 +1996,7 @@
             "value": "[parameters('location')]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"

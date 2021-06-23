@@ -11,6 +11,9 @@
         "prefix": {
             "value": "pro01"
         },
+        "tags": {
+            "value": {}
+        },
         "processingService": {
             "value": "dataFactory"
         },
