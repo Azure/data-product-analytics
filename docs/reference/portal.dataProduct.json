@@ -456,18 +456,21 @@
                                         "password": "Password",
                                         "confirmPassword": "Confirm password"
                                     },
-                                    "type": "Microsoft.Common.PasswordBox",
+                                    "type": "Microsoft.Compute.CredentialsCombo",
                                     "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
                                     "defaultValue": "",
-                                    "toolTip": "Specify an administrator password for the Synapse workspace.",
+                                    "toolTip": {
+                                        "password": "Specify an administrator password for the Synapse workspace."
+                                    },
                                     "constraints": {
                                         "required": true,
-                                        "customPasswordRegex": "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{12,}$",
-                                        "customValidationMessage": "The password must be alphanumeric, contain at least 12 characters, and have at least 1 letter and 1 number."
+                                        "customPasswordRegex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
+                                        "customValidationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
                                     },
                                     "options": {
                                         "hideConfirmation": false
-                                    }
+                                    },
+                                    "osPlatform": "Windows"
                                 },
                                 {
                                     "name": "synapseDefaultStorageAccountId",
@@ -673,7 +676,7 @@
                                     "name": "privateDnsZoneIdSynapseDev",
                                     "label": "Private DNS Zone Synapse Dev (privatelink.dev.azuresynapse.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "visible": true,
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Synapse Dev (privatelink.dev.azuresynapse.net).",
                                     "multiselect": false,
@@ -690,7 +693,7 @@
                                     "name": "privateDnsZoneIdSynapseSql",
                                     "label": "Private DNS Zone Synapse Sql (privatelink.sql.azuresynapse.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "visible": true,
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Synapse Sql (privatelink.sql.azuresynapse.net).",
                                     "multiselect": false,
@@ -707,7 +710,7 @@
                                     "name": "privateDnsZoneIdDataFactory",
                                     "label": "Private DNS Zone DataFactory (privatelink.datafactory.azure.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'dataFactory')]",
+                                    "visible": true,
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for DataFactory (privatelink.datafactory.azure.net).",
                                     "multiselect": false,
@@ -724,7 +727,7 @@
                                     "name": "privateDnsZoneIdDataFactoryPortal",
                                     "label": "Private DNS Zone DataFactory Portal (privatelink.adf.azure.com)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'dataFactory')]",
+                                    "visible": true,
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for DataFactory Portal (privatelink.adf.azure.com).",
                                     "multiselect": false,
@@ -892,7 +895,7 @@
                 "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
                 "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
                 "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
-                "aksId": "",
+                "aksId": "[if(empty(steps('generalSettings').machineLearningSettings.aksId), '', steps('generalSettings').machineLearningSettings.aksId)]",
                 "machineLearningComputeInstance001AdministratorObjectId": "[if(empty(steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorObjectId), '', steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorObjectId)]",
                 "machineLearningComputeInstance001AdministratorPublicSshKey": "[if(empty(steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorPublicSshKey), '', steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorPublicSshKey)]",
                 "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword)]",
@@ -914,7 +917,8 @@
                 "privateDnsZoneIdBlob": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob)]",
                 "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
                 "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
-                "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]"
+                "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
+                "tags": "[if(empty(steps('tags').tagsByResource.EnterpriseScaleAnalytics), '{}', steps('tags').tagsByResource.EnterpriseScaleAnalytics)]"
             }
         }
     }

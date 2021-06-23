@@ -9,11 +9,13 @@ param location string
   'prd'
 ])
 @description('Specifies the environment of the deployment.')
-param environment string
+param environment string = 'dev'
 @minLength(2)
 @maxLength(10)
 @description('Specifies the prefix for all resources created in this deployment.')
 param prefix string
+@description('Specifies the tags that you want to apply to all resources.')
+param tags object = {}
 
 // Resource parameters
 @allowed([
@@ -21,29 +23,29 @@ param prefix string
   'synapse'
 ])
 @description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
-param processingService string
-@description('Specifies the resource ID of a shared AKS cluster.')
-param aksId string
-@description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace.')
-param machineLearningComputeInstance001AdministratorObjectId string
+param processingService string = 'dataFactory'
+@description('Specifies the resource ID of an Azure Kubernetes cluster to connect it with Machine Learning for model deployments. If you do not want to connect an AKS cluster to Machine Learning, leave this value empty as is.')
+param aksId string = ''
+@description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. If you do not want to create a Compute Instance, leave this value empty as is.')
+param machineLearningComputeInstance001AdministratorObjectId string = ''
 @secure()
-@description('Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace.')
-param machineLearningComputeInstance001AdministratorPublicSshKey string
+@description('Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace. This parameter is optional and allows the user to connect via Visual Studio Code to the Compute Instance.')
+param machineLearningComputeInstance001AdministratorPublicSshKey string = ''
 @secure()
-@description('Specifies the administrator password of the sql servers.')
-param administratorPassword string
-@description('Specifies the resource ID of the default storage account file system for synapse.')
-param synapseDefaultStorageAccountFileSystemId string
-@description('Specifies the resource ID of the central purview instance.')
-param purviewId string
-@description('Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksWorkspaceId string
-@description('Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksWorkspaceUrl string
+@description('Specifies the administrator password of the sql servers in Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+param administratorPassword string = ''
+@description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+param synapseDefaultStorageAccountFileSystemId string = ''
+@description('Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is.')
+param purviewId string = ''
+@description('Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksWorkspaceId string = ''
+@description('Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksWorkspaceUrl string = ''
 @secure()
-@description('Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksAccessToken string
-@description('Specifies whether role assignments should be enabled.')
+@description('Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksAccessToken string = ''
+@description('Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account).')
 param enableRoleAssignments bool = false
 
 // Network parameters
@@ -78,13 +80,14 @@ param privateDnsZoneIdMachineLearningNotebooks string
 
 // Variables
 var name = toLower('${prefix}-${environment}')
-var tags = {
+var tagsDefault = {
   Owner: 'Enterprise Scale Analytics'
   Project: 'Enterprise Scale Analytics'
   Environment: environment
   Toolkit: 'bicep'
   Name: name
 }
+var tagsJoined = union(tagsDefault, tags)
 var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAccountFileSystemId, '/')[2]
 var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
 
@@ -94,7 +97,7 @@ module keyvault001 'modules/services/keyvault.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     keyvaultName: '${name}-vault001'
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
@@ -107,7 +110,7 @@ module synapse001 'modules/services/synapse.bicep' = if (processingService == 's
   params: {
     location: location
     synapseName: '${name}-synapse001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
@@ -134,7 +137,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     datafactoryName: '${name}-datafactory001'
     keyVault001Id: keyvault001.outputs.keyvaultId
@@ -150,7 +153,7 @@ module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     cognitiveServiceName: '${name}-cognitiveservice001'
     cognitiveServiceKind: 'FormRecognizer'
@@ -164,7 +167,7 @@ module search001 'modules/services/search.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     searchName: '${name}-search001'
     searchHostingMode: 'default'
@@ -180,7 +183,7 @@ module applicationInsights001 'modules/services/applicationinsights.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     applicationInsightsName: '${name}-insights001'
     logAnalyticsWorkspaceId: ''
   }
@@ -191,7 +194,7 @@ module containerRegistry001 'modules/services/containerregistry.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     containerRegistryName: '${name}-containerregistry001'
     privateDnsZoneIdContainerRegistry: privateDnsZoneIdContainerRegistry
@@ -203,7 +206,7 @@ module storage001 'modules/services/storage.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     storageName: '${name}-storage001'
     storageContainerNames: [
@@ -220,7 +223,7 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     machineLearningName: '${name}-machinelearning001'
     applicationInsightsId: applicationInsights001.outputs.applicationInsightsId
