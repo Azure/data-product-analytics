@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "5518314312055099835"
+      "templateHash": "16718078430214870063"
     }
   },
   "parameters": {
@@ -17,6 +17,7 @@
     },
     "environment": {
       "type": "string",
+      "defaultValue": "dev",
       "metadata": {
         "description": "Specifies the environment of the deployment."
       },
@@ -36,6 +37,7 @@
     },
     "processingService": {
       "type": "string",
+      "defaultValue": "dataFactory",
       "metadata": {
         "description": "Specifies the data engineering service that will be deployed (Data Factory, Synapse)."
       },
@@ -46,63 +48,72 @@
     },
     "aksId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of a shared AKS cluster."
+        "description": "Specifies the resource ID of an Azure Kubernetes cluster to connect it with Machine Learning for model deployments. If you do not want to connect an AKS cluster to Machine Learning, leave this value empty as is."
       }
     },
     "machineLearningComputeInstance001AdministratorObjectId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace."
+        "description": "Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. If you do not want to create a Compute Instance, leave this value empty as is."
       }
     },
     "machineLearningComputeInstance001AdministratorPublicSshKey": {
       "type": "secureString",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace."
+        "description": "Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace. This parameter is optional and allows the user to connect via Visual Studio Code to the Compute Instance."
       }
     },
     "administratorPassword": {
       "type": "secureString",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the administrator password of the sql servers."
+        "description": "Specifies the administrator password of the sql servers in Synapse. If you selected dataFactory as processingService, leave this value empty as is."
       }
     },
     "synapseDefaultStorageAccountFileSystemId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the default storage account file system for synapse."
+        "description": "Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is."
       }
     },
     "purviewId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the central purview instance."
+        "description": "Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is."
       }
     },
     "databricksWorkspaceId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace."
+        "description": "Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is."
       }
     },
     "databricksWorkspaceUrl": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace."
+        "description": "Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is."
       }
     },
     "databricksAccessToken": {
       "type": "secureString",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace."
+        "description": "Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is."
       }
     },
     "enableRoleAssignments": {
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Specifies whether role assignments should be enabled."
+        "description": "Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account)."
       }
     },
     "subnetId": {

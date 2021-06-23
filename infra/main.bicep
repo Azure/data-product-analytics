@@ -9,7 +9,7 @@ param location string
   'prd'
 ])
 @description('Specifies the environment of the deployment.')
-param environment string
+param environment string = 'dev'
 @minLength(2)
 @maxLength(10)
 @description('Specifies the prefix for all resources created in this deployment.')
@@ -21,29 +21,29 @@ param prefix string
   'synapse'
 ])
 @description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
-param processingService string
-@description('Specifies the resource ID of a shared AKS cluster.')
-param aksId string
-@description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace.')
-param machineLearningComputeInstance001AdministratorObjectId string
+param processingService string = 'dataFactory'
+@description('Specifies the resource ID of an Azure Kubernetes cluster to connect it with Machine Learning for model deployments. If you do not want to connect an AKS cluster to Machine Learning, leave this value empty as is.')
+param aksId string = ''
+@description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. If you do not want to create a Compute Instance, leave this value empty as is.')
+param machineLearningComputeInstance001AdministratorObjectId string = ''
 @secure()
-@description('Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace.')
-param machineLearningComputeInstance001AdministratorPublicSshKey string
+@description('Specifies the public ssh key for compute instance 001 in the Machine Learning Workspace. This parameter is optional and allows the user to connect via Visual Studio Code to the Compute Instance.')
+param machineLearningComputeInstance001AdministratorPublicSshKey string = ''
 @secure()
-@description('Specifies the administrator password of the sql servers.')
-param administratorPassword string
-@description('Specifies the resource ID of the default storage account file system for synapse.')
-param synapseDefaultStorageAccountFileSystemId string
-@description('Specifies the resource ID of the central purview instance.')
-param purviewId string
-@description('Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksWorkspaceId string
-@description('Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksWorkspaceUrl string
+@description('Specifies the administrator password of the sql servers in Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+param administratorPassword string = ''
+@description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+param synapseDefaultStorageAccountFileSystemId string = ''
+@description('Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is.')
+param purviewId string = ''
+@description('Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksWorkspaceId string = ''
+@description('Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksWorkspaceUrl string = ''
 @secure()
-@description('Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace.')
-param databricksAccessToken string
-@description('Specifies whether role assignments should be enabled.')
+@description('Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
+param databricksAccessToken string = ''
+@description('Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account).')
 param enableRoleAssignments bool = false
 
 // Network parameters
