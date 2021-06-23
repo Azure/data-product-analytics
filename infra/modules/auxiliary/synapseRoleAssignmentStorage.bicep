@@ -6,11 +6,11 @@ param storageAccountFileSystemId string
 param synapseId string
 
 // Variables
-var storageAccountFileSystemName = length(split(storageAccountFileSystemId, '/')) >= 12 ? last(split(storageAccountFileSystemId, '/')) : 'error'
-var storageAccountName = length(split(storageAccountFileSystemId, '/')) >= 12 ? split(storageAccountFileSystemId, '/')[8] : 'error'
-var synapseSubscriptionId = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[2] : 'error'
-var synapseResourceGroupName = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[4] : 'error'
-var synapseName = length(split(synapseId, '/')) >= 8 ? last(split(synapseId, '/')) : 'error'
+var storageAccountFileSystemName = length(split(storageAccountFileSystemId, '/')) >= 12 ? last(split(storageAccountFileSystemId, '/')) : 'incorrectSegmentLength'
+var storageAccountName = length(split(storageAccountFileSystemId, '/')) >= 12 ? split(storageAccountFileSystemId, '/')[8] : 'incorrectSegmentLength'
+var synapseSubscriptionId = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[2] : 'incorrectSegmentLength'
+var synapseResourceGroupName = length(split(synapseId, '/')) >= 8 ? split(synapseId, '/')[4] : 'incorrectSegmentLength'
+var synapseName = length(split(synapseId, '/')) >= 8 ? last(split(synapseId, '/')) : 'incorrectSegmentLength'
 
 // Resources
 resource storageAccountFileSystem 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' existing = {

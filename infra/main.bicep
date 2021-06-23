@@ -88,8 +88,8 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
-var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAccountFileSystemId, '/')[2]
-var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
+var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 12 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : 'incorrectSegmentLength'
+var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 12 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : 'incorrectSegmentLength'
 
 // Resources
 module keyvault001 'modules/services/keyvault.bicep' = {
