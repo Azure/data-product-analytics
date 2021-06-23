@@ -427,7 +427,7 @@
                                     "label": "Create Data Processing Service",
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
-                                    "defaultValue": "",
+                                    "defaultValue": "Data Factory",
                                     "toolTip": "Specify an additional data processing engine that you want to deploy. This can be used as Spark engine as well as for workflow orchestration.",
                                     "multiselect": false,
                                     "selectAll": false,
@@ -892,7 +892,7 @@
                 "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
                 "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
                 "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
-                "aksId": "[steps('generalSettings').machineLearningSettings.aksId]",
+                "aksId": "[if(empty(steps('generalSettings').machineLearningSettings.aksId), '', steps('generalSettings').machineLearningSettings.aksId)]",
                 "machineLearningComputeInstance001AdministratorObjectId": "[if(empty(steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorObjectId), '', steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorObjectId)]",
                 "machineLearningComputeInstance001AdministratorPublicSshKey": "[if(empty(steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorPublicSshKey), '', steps('generalSettings').machineLearningSettings.machineLearningComputeInstance001AdministratorPublicSshKey)]",
                 "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword)]",
@@ -914,7 +914,8 @@
                 "privateDnsZoneIdBlob": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdBlob)]",
                 "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
                 "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
-                "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]"
+                "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
+                "tags": "[if(empty(steps('tags').tagsByResource.EnterpriseScaleAnalytics), '{}', steps('tags').tagsByResource.EnterpriseScaleAnalytics)]"
             }
         }
     }
