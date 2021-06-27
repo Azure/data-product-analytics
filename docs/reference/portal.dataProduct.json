@@ -103,8 +103,7 @@
                                     "visible": true,
                                     "options": {
                                         "text": "Since not all service features are available in all regions, Enterprise Scale Analytics is available in a subset of regions.",
-                                        "style": "Info",
-                                        "uri": ""
+                                        "style": "Info"
                                     }
                                 },
                                 {
@@ -121,7 +120,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "",
-                                    "toolTip": "Select the Location for your Data Product Deployment.",
+                                    "toolTip": "Select the Location for your Deployment.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -171,7 +170,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": true,
                                     "defaultValue": "Development",
-                                    "toolTip": "Select the environment for the deployment.",
+                                    "toolTip": "Select the environment for the deployment. This is currently only used for the naming of resources.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
@@ -209,8 +208,8 @@
 						"preValidation": "Provide settings for your data product analytics deployment.",
                         "postValidation": "Done"
 					},
-					"bladeTitle": "Data Product Settings",
-                    "bladeSubtitle": "Data Product Settings",
+					"bladeTitle": "General Settings",
+                    "bladeSubtitle": "General Settings",
 					"elements": [
                         {
 							"name": "machineLearningSettings",
@@ -218,6 +217,18 @@
 							"type": "Microsoft.Common.Section",
                             "visible": true,
 							"elements": [
+                                {
+									"name": "machineLearningSettingsText",
+									"type": "Microsoft.Common.TextBlock",
+									"visible": true,
+									"options": {
+										"text": "Specify the external services you want to connect to Machine Learning.",
+										"link": {
+											"label": "Learn more",
+											"uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target"
+										}
+									}
+								},
                                 {
                                     "name": "enableComputeInstance",
                                     "label": "Create Machine Learning Compute Instance",
@@ -243,8 +254,9 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": "[equals(steps('generalSettings').machineLearningSettings.enableComputeInstance, 'yes')]",
                                     "options": {
-                                        "text": "Please provide an AAD User Object ID of the user for which you want to deploy an Azure Machine Learning Compute Instance (CI). The public SSH key is optional and allows the user to to connect to the CI using VS Code.",
-                                        "style": "Info"
+                                        "text": "Please provide an AAD User Object ID of the user for which you want to deploy an Azure Machine Learning Compute Instance (CI). The public SSH key is optional and allows the user to to connect to the CI using Visual Studio Code.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance"
                                     }
                                 },
                                 {
@@ -298,7 +310,8 @@
                                     "visible": "[equals(steps('generalSettings').machineLearningSettings.enableDatabricks, 'yes')]",
                                     "options": {
                                         "text": "As per Enterprise Scale Analytics recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
-                                        "style": "Info"
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-attach-compute-targets#databricks"
                                     }
                                 },
                                 {
@@ -377,7 +390,8 @@
                                     "visible": "[equals(steps('generalSettings').machineLearningSettings.enableAks, 'yes')]",
                                     "options": {
                                         "text": "Select an existing Kubernetes Cluster to connect Machine Learning with the cluster for model deployments. Please be aware that an AKS Cluster can only be connected with a single Machine Learning workspace.",
-                                        "style": "Info"
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-create-attach-kubernetes?tabs=python"
                                     }
                                 },
                                 {
@@ -545,6 +559,18 @@
                             "visible": true,
 							"elements": [
                                 {
+									"name": "dataGovernanceText",
+									"type": "Microsoft.Common.TextBlock",
+									"visible": true,
+									"options": {
+										"text": "Select the Purview account to which you want to connect Synapse or Data Factory.",
+										"link": {
+											"label": "Learn more",
+											"uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
+										}
+									}
+								},
+                                {
                                     "name": "purviewId",
                                     "label": "Connect to Purview Account",
                                     "type": "Microsoft.Solutions.ResourceSelector",
@@ -630,6 +656,18 @@
 							"type": "Microsoft.Common.Section",
                             "visible": true,
 							"elements": [
+                                {
+									"name": "privateDnsZonesText",
+									"type": "Microsoft.Common.TextBlock",
+									"visible": true,
+									"options": {
+										"text": "Select the Private DNS Zones for your deployment.",
+										"link": {
+											"label": "",
+											"uri": ""
+										}
+									}
+								},
                                 {
                                     "name": "infoBoxPrivateDnsZone",
                                     "type": "Microsoft.Common.InfoBox",
