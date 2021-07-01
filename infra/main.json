@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "11686764472949358305"
+      "templateHash": "11496303208816660866"
     }
   },
   "parameters": {
@@ -250,7 +250,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "7462647776196913756"
+              "templateHash": "1839621709434224338"
             }
           },
           "parameters": {
@@ -333,6 +333,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdKeyVault')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('keyVaultPrivateEndpointName'), 'aRecord')]",
@@ -415,7 +416,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "7543536576091937614"
+              "templateHash": "3234187961873133908"
             }
           },
           "parameters": {
@@ -560,7 +561,7 @@
               ]
             },
             {
-              "condition": "[and(not(equals(parameters('synapseSqlAdminGroupName'), '')), not(equals(parameters('synapseSqlAdminGroupObjectID'), '')))]",
+              "condition": "[and(not(empty(parameters('synapseSqlAdminGroupName'))), not(empty(parameters('synapseSqlAdminGroupObjectID'))))]",
               "type": "Microsoft.Synapse/workspaces/administrators",
               "apiVersion": "2021-03-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'activeDirectory')]",
@@ -603,6 +604,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSql'), 'aRecord')]",
@@ -649,6 +651,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSqlOnDemand'), 'aRecord')]",
@@ -695,6 +698,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseDev')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameDev'), 'aRecord')]",
@@ -836,7 +840,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "12255501432081598986"
+              "templateHash": "10988992501565832536"
             }
           },
           "parameters": {
@@ -925,6 +929,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdDataFactory')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('datafactoryPrivateEndpointNameDatafactory'), 'aRecord')]",
@@ -971,6 +976,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdDataFactoryPortal')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('datafactoryPrivateEndpointNamePortal'), 'aRecord')]",
@@ -1109,7 +1115,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "14965380790662167497"
+              "templateHash": "12593433235557688610"
             }
           },
           "parameters": {
@@ -1217,6 +1223,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdCognitiveService')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('cognitiveServicePrivateEndpointName'), 'aRecord')]",
@@ -1283,7 +1290,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "2177344817340216062"
+              "templateHash": "11024479091406157004"
             }
           },
           "parameters": {
@@ -1397,6 +1404,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSearch')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('searchPrivateEndpointName'), 'aRecord')]",
@@ -1530,7 +1538,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "11924213579882647929"
+              "templateHash": "1004030920580262297"
             }
           },
           "parameters": {
@@ -1623,6 +1631,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdContainerRegistry')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('containerRegistryPrivateEndpointName'), 'aRecord')]",
@@ -1694,7 +1703,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "461187052199085568"
+              "templateHash": "11359784343950466488"
             }
           },
           "parameters": {
@@ -1909,6 +1918,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdBlob')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('storagePrivateEndpointNameBlob'), 'aRecord')]",
@@ -1955,6 +1965,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdFile')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('storagePrivateEndpointNameFile'), 'aRecord')]",
@@ -2057,7 +2068,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "1248401576812655165"
+              "templateHash": "17028786088679968864"
             }
           },
           "parameters": {
@@ -2236,7 +2247,7 @@
             {
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
-              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'cluster001')]",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'cpucluster001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "identity": {
@@ -2262,6 +2273,43 @@
                   },
                   "vmPriority": "Dedicated",
                   "vmSize": "Standard_DS3_v2"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', variables('machineLearningPrivateEndpointName'), 'aRecord')]"
+              ]
+            },
+            {
+              "type": "Microsoft.MachineLearningServices/workspaces/computes",
+              "apiVersion": "2021-04-01",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'gpucluster001')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "computeType": "AmlCompute",
+                "computeLocation": "[parameters('location')]",
+                "description": "Machine Learning cluster 001",
+                "disableLocalAuth": true,
+                "properties": {
+                  "enableNodePublicIp": false,
+                  "isolatedNetwork": false,
+                  "osType": "Linux",
+                  "remoteLoginPortPublicAccess": "Disabled",
+                  "scaleSettings": {
+                    "minNodeCount": 0,
+                    "maxNodeCount": 4,
+                    "nodeIdleTimeBeforeScaleDown": "PT120S"
+                  },
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "vmPriority": "Dedicated",
+                  "vmSize": "Standard_NC6"
                 }
               },
               "dependsOn": [
@@ -2347,6 +2395,7 @@
               ]
             },
             {
+              "condition": "[and(not(empty(parameters('privateDnsZoneIdMachineLearningApi'))), not(empty(parameters('privateDnsZoneIdMachineLearningNotebooks'))))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('machineLearningPrivateEndpointName'), 'aRecord')]",

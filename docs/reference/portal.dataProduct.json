@@ -10,6 +10,16 @@
                     "label": "Data Product",
                     "elements": [
                         {
+                            "name": "infoBoxEnterpriseScaleAnalytics",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "text": "Enterprise-Scale Analytics is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
+                                "style": "Info",
+                                "uri": "https://aka.ms/adopt/datamanagement"
+                            }
+                        },
+                        {
 							"name": "deploymentDetails",
 							"label": "Deployment Details",
 							"type": "Microsoft.Common.Section",
@@ -27,16 +37,6 @@
 										}
 									}
 								},
-                                {
-                                    "name": "infoBoxEnterpriseScaleAnalytics",
-                                    "type": "Microsoft.Common.InfoBox",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "Enterprise-Scale Analytics is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
-                                        "style": "Info",
-                                        "uri": "https://aka.ms/adopt/datamanagement"
-                                    }
-                                },
                                 {
                                     "name": "infoBoxPrerequisites",
                                     "type": "Microsoft.Common.InfoBox",
@@ -661,7 +661,7 @@
 									"type": "Microsoft.Common.TextBlock",
 									"visible": true,
 									"options": {
-										"text": "Select the Private DNS Zones for your deployment.",
+										"text": "Select the Private DNS Zone settings for your deployment.",
 										"link": {
 											"label": "",
 											"uri": ""
@@ -673,31 +673,69 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "We are deploying all services with private endpoints and disabled public network access to reduce the data exfiltration risk. For each private endpoint, DNS A-records need to be created in a Private DNS Zones. Therefore, you have to provide the Private DNS Zones that should be used for this deployment. We are assuming that all Private DNS Zones are created in the same subscription.",
-                                        "style": "Info"
+                                        "text": "We are deploying all services with private endpoints and disabled public network access to reduce the data exfiltration risk. For each private endpoint, DNS A-records need to be created in a Private DNS Zones. Therefore, these either need to deployed through Azure Policies or you have to provide the Private DNS Zones that should be used for this deployment. We are assuming that all Private DNS Zones are created in the same subscription. Deploying DNS A-Records through Private Endpoints is the recommended solution.",
+                                        "style": "Info",
+                                        "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale"
                                     }
                                 },
                                 {
-									"name": "privateDnsZonesSub",
-									"label": "Private DNS Zone Subscription",
-									"type":"Microsoft.Common.SubscriptionSelector",
+                                    "name": "automatedPrivateDnsZoneGroups",
+                                    "label": "DNS A-Records are deployed through Azure Policy",
+                                    "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
+                                    "toolTip": "If 'No' is selected, you will have to choose private DNS Zones that will be used for the A-Record deployment of the private DNS Zones.",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "privateDnsZonesSub",
+                                    "label": "Private DNS Zone Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
-                                    "toolTip": "Subscription of Private DNS Zones."
-								},
+                                    "toolTip": "Select the Subscription of your Private DNS Zones.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('connectivitySettings').privateDnsZones.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
                                 {
                                     "name": "privateDnsZonesApi",
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
                                         "method": "GET",
-                                        "path": "[concat('/subscriptions/', steps('connectivitySettings').privateDnsZones.privateDnsZonesSub.subscriptionId, '/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01')]"
+                                        "path": "[concat(steps('connectivitySettings').privateDnsZones.privateDnsZonesSub, '/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01')]"
                                     }
                                 },
                                 {
                                     "name": "privateDnsZoneIdKeyVault",
                                     "label": "Private DNS Zone Key Vault (privatelink.vaultcore.azure.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Key Vault (privatelink.vaultcore.azure.net).",
                                     "multiselect": false,
@@ -714,7 +752,7 @@
                                     "name": "privateDnsZoneIdSynapseDev",
                                     "label": "Private DNS Zone Synapse Dev (privatelink.dev.azuresynapse.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Synapse Dev (privatelink.dev.azuresynapse.net).",
                                     "multiselect": false,
@@ -731,7 +769,7 @@
                                     "name": "privateDnsZoneIdSynapseSql",
                                     "label": "Private DNS Zone Synapse Sql (privatelink.sql.azuresynapse.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Synapse Sql (privatelink.sql.azuresynapse.net).",
                                     "multiselect": false,
@@ -748,7 +786,7 @@
                                     "name": "privateDnsZoneIdDataFactory",
                                     "label": "Private DNS Zone DataFactory (privatelink.datafactory.azure.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for DataFactory (privatelink.datafactory.azure.net).",
                                     "multiselect": false,
@@ -765,7 +803,7 @@
                                     "name": "privateDnsZoneIdDataFactoryPortal",
                                     "label": "Private DNS Zone DataFactory Portal (privatelink.adf.azure.com)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for DataFactory Portal (privatelink.adf.azure.com).",
                                     "multiselect": false,
@@ -782,7 +820,7 @@
                                     "name": "privateDnsZoneIdCognitiveService",
                                     "label": "Private DNS Zone Cognitive Service (privatelink.cognitiveservices.azure.com)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Cognitive Service (privatelink.cognitiveservices.azure.com).",
                                     "multiselect": false,
@@ -799,7 +837,7 @@
                                     "name": "privateDnsZoneIdContainerRegistry",
                                     "label": "Private DNS Zone Container Registry (privatelink.azurecr.io)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Container Registry (privatelink.azurecr.io).",
                                     "multiselect": false,
@@ -816,7 +854,7 @@
                                     "name": "privateDnsZoneIdSearch",
                                     "label": "Private DNS Zone Azure Search (privatelink.search.windows.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Azure Search (privatelink.search.windows.net).",
                                     "multiselect": false,
@@ -833,7 +871,7 @@
                                     "name": "privateDnsZoneIdBlob",
                                     "label": "Private DNS Zone Blob Storage (privatelink.blob.core.windows.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Blob Storage (privatelink.blob.core.windows.net).",
                                     "multiselect": false,
@@ -850,7 +888,7 @@
                                     "name": "privateDnsZoneIdFile",
                                     "label": "Private DNS Zone File Storage (privatelink.file.core.windows.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for File Storage (privatelink.file.core.windows.net).",
                                     "multiselect": false,
@@ -867,7 +905,7 @@
                                     "name": "privateDnsZoneIdMachineLearningApi",
                                     "label": "Private DNS Zone Machine Learning (privatelink.api.azureml.ms)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Machine Learning (privatelink.api.azureml.ms).",
                                     "multiselect": false,
@@ -884,7 +922,7 @@
                                     "name": "privateDnsZoneIdMachineLearningNotebooks",
                                     "label": "Private DNS Zone Machine Learning Notebooks (privatelink.notebooks.azure.net)",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
                                     "toolTip": "Private DNS Zone for Machine Learning Notebooks (privatelink.notebooks.azure.net).",
                                     "multiselect": false,

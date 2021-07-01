@@ -220,7 +220,7 @@ resource storagePrivateEndpointBlob 'Microsoft.Network/privateEndpoints@2020-11-
   }
 }
 
-resource storagePrivateEndpointBlobARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource storagePrivateEndpointBlobARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdBlob)) {
   parent: storagePrivateEndpointBlob
   name: 'aRecord'
   properties: {
@@ -259,7 +259,7 @@ resource storagePrivateEndpointFile 'Microsoft.Network/privateEndpoints@2020-11-
   }
 }
 
-resource storagePrivateEndpointFileARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource storagePrivateEndpointFileARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdFile)) {
   parent: storagePrivateEndpointFile
   name: 'aRecord'
   properties: {

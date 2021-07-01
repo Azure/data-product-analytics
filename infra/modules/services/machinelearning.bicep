@@ -122,9 +122,9 @@ resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServi
   }
 }
 
-resource machineLearningCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
   parent: machineLearning
-  name: 'cluster001'
+  name: 'cpucluster001'
   dependsOn: [
     machineLearningPrivateEndpoint
     machineLearningPrivateEndpointARecord
@@ -154,6 +154,42 @@ resource machineLearningCluster001 'Microsoft.MachineLearningServices/workspaces
       }
       vmPriority: 'Dedicated'
       vmSize: 'Standard_DS3_v2'
+    }
+  }
+}
+
+resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+  parent: machineLearning
+  name: 'gpucluster001'
+  dependsOn: [
+    machineLearningPrivateEndpoint
+    machineLearningPrivateEndpointARecord
+  ]
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    computeType: 'AmlCompute'
+    computeLocation: location
+    description: 'Machine Learning cluster 001'
+    disableLocalAuth: true
+    properties: {
+      enableNodePublicIp: false
+      isolatedNetwork: false
+      osType: 'Linux'
+      remoteLoginPortPublicAccess: 'Disabled'
+      scaleSettings: {
+        minNodeCount: 0
+        maxNodeCount: 4
+        nodeIdleTimeBeforeScaleDown: 'PT120S'
+      }
+      subnet: {
+        id: subnetId
+      }
+      vmPriority: 'Dedicated'
+      vmSize: 'Standard_NC6'
     }
   }
 }
@@ -228,7 +264,7 @@ resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020
   }
 }
 
-resource machineLearningPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource machineLearningPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMachineLearningApi) && !empty(privateDnsZoneIdMachineLearningNotebooks)) {
   parent: machineLearningPrivateEndpoint
   name: 'aRecord'
   properties: {
