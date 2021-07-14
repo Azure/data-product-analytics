@@ -24,8 +24,12 @@ param tags object = {}
 ])
 @description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
 param processingService string = 'dataFactory'
+@description('Specifies the list of resource IDs of Data Lake Gen2 Containers which will be connected as datastores in the Machine Learning workspace. If you do not want to connect any datastores, provide an empty list.')
+param datalakeFileSystemIds array = []
 @description('Specifies the resource ID of an Azure Kubernetes cluster to connect it with Machine Learning for model deployments. If you do not want to connect an AKS cluster to Machine Learning, leave this value empty as is.')
 param aksId string = ''
+@description('Specifies the resource ID of a Conatiner Registry to which the Machine Learning MSI can be assigned. If you do not want to connect an external Container Registry, leave this value empty as is.')
+param externalContainerRegistryId string = ''
 @description('Specifies the object ID of the user who gets assigned to compute instance 001 in the Machine Learning Workspace. If you do not want to create a Compute Instance, leave this value empty as is.')
 param machineLearningComputeInstance001AdministratorObjectId string = ''
 @secure()
@@ -90,6 +94,8 @@ var tagsDefault = {
 var tagsJoined = union(tagsDefault, tags)
 var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 12 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 12 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
+var externalContainerRegistrySubscriptionId = length(split(externalContainerRegistryId, '/')) >= 8 ? split(externalContainerRegistryId, '/')[2] : subscription().subscriptionId
+var externalContainerRegistryResourceGroupName = length(split(externalContainerRegistryId, '/')) >= 8 ? split(externalContainerRegistryId, '/')[4] : resourceGroup().name
 
 // Resources
 module keyvault001 'modules/services/keyvault.bicep' = {
@@ -230,6 +236,7 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     containerRegistryId: containerRegistry001.outputs.containerRegistryId
     keyVaultId: keyvault001.outputs.keyvaultId
     storageAccountId: storage001.outputs.storageId
+    datalakeFileSystemIds: datalakeFileSystemIds
     aksId: aksId
     databricksAccessToken: databricksAccessToken
     databricksWorkspaceId: databricksWorkspaceId
@@ -241,6 +248,15 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     privateDnsZoneIdMachineLearningApi: privateDnsZoneIdMachineLearningApi
     privateDnsZoneIdMachineLearningNotebooks: privateDnsZoneIdMachineLearningNotebooks
     enableRoleAssignments: enableRoleAssignments
+  }
+}
+
+module machineLearning001RoleAssignmentContainerRegistry 'modules/auxiliary/machineLearningRoleAssignmentContainerRegistry.bicep' = if (!empty(externalContainerRegistryId) && enableRoleAssignments) {
+  name: 'machineLearning001RoleAssignmentContainerRegistry'
+  scope: resourceGroup(externalContainerRegistrySubscriptionId, externalContainerRegistryResourceGroupName)
+  params: {
+    containerRegistryId: externalContainerRegistryId
+    machineLearningId: machineLearning001.outputs.machineLearningId
   }
 }
 

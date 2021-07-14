@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "11496303208816660866"
+      "templateHash": "10402417844653843978"
     }
   },
   "parameters": {
@@ -53,11 +53,25 @@
         "synapse"
       ]
     },
+    "datalakeFileSystemIds": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Specifies the list of resource IDs of Data Lake Gen2 Containers which will be connected as datastores in the Machine Learning workspace. If you do not want to connect any datastores, provide an empty list."
+      }
+    },
     "aksId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of an Azure Kubernetes cluster to connect it with Machine Learning for model deployments. If you do not want to connect an AKS cluster to Machine Learning, leave this value empty as is."
+      }
+    },
+    "externalContainerRegistryId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of a Conatiner Registry to which the Machine Learning MSI can be assigned. If you do not want to connect an external Container Registry, leave this value empty as is."
       }
     },
     "machineLearningComputeInstance001AdministratorObjectId": {
@@ -214,7 +228,9 @@
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
-    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]"
+    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
+    "externalContainerRegistrySubscriptionId": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 8), split(parameters('externalContainerRegistryId'), '/')[2], subscription().subscriptionId)]",
+    "externalContainerRegistryResourceGroupName": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 8), split(parameters('externalContainerRegistryId'), '/')[4], resourceGroup().name)]"
   },
   "resources": [
     {
@@ -2027,6 +2043,9 @@
           "storageAccountId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
           },
+          "datalakeFileSystemIds": {
+            "value": "[parameters('datalakeFileSystemIds')]"
+          },
           "aksId": {
             "value": "[parameters('aksId')]"
           },
@@ -2068,7 +2087,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "17028786088679968864"
+              "templateHash": "522436044807663244"
             }
           },
           "parameters": {
@@ -2095,6 +2114,9 @@
             },
             "storageAccountId": {
               "type": "string"
+            },
+            "datalakeFileSystemIds": {
+              "type": "array"
             },
             "aksId": {
               "type": "string"
@@ -2367,6 +2389,37 @@
               ]
             },
             {
+              "condition": "[greaterOrEquals(length(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')), 12)]",
+              "copy": {
+                "name": "machineLearningDatastores",
+                "count": "[length(parameters('datalakeFileSystemIds'))]"
+              },
+              "type": "Microsoft.MachineLearningServices/workspaces/datastores",
+              "apiVersion": "2021-03-01-preview",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), format('{0}{1}', split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8], last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/'))))]",
+              "properties": {
+                "tags": "[parameters('tags')]",
+                "contents": {
+                  "contentsType": "AzureDataLakeGen2",
+                  "accountName": "[split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8]]",
+                  "containerName": "[last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/'))]",
+                  "credentials": {
+                    "credentialsType": "None",
+                    "secrets": {
+                      "secretsType": "None"
+                    }
+                  },
+                  "endpoint": "[environment().suffixes.storage]",
+                  "protocol": "https"
+                },
+                "description": "[format('Data Lake Gen2 - {0}', split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8])]",
+                "isDefault": false
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]"
+              ]
+            },
+            {
               "type": "Microsoft.Network/privateEndpoints",
               "apiVersion": "2020-11-01",
               "name": "[variables('machineLearningPrivateEndpointName')]",
@@ -2434,6 +2487,69 @@
         "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]",
         "[resourceId('Microsoft.Resources/deployments', 'storage001')]",
         "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
+    },
+    {
+      "condition": "[and(not(empty(parameters('externalContainerRegistryId'))), parameters('enableRoleAssignments'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "machineLearning001RoleAssignmentContainerRegistry",
+      "subscriptionId": "[variables('externalContainerRegistrySubscriptionId')]",
+      "resourceGroup": "[variables('externalContainerRegistryResourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "containerRegistryId": {
+            "value": "[parameters('externalContainerRegistryId')]"
+          },
+          "machineLearningId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2019-10-01').outputs.machineLearningId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.63.48766",
+              "templateHash": "9104221014036884290"
+            }
+          },
+          "parameters": {
+            "containerRegistryId": {
+              "type": "string"
+            },
+            "machineLearningId": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "containerRegistryName": "[if(greaterOrEquals(length(split(parameters('containerRegistryId'), '/')), 8), last(split(parameters('containerRegistryId'), '/')), 'incorrectSegmentLength')]",
+            "machineLearningSubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), split(parameters('machineLearningId'), '/')[2], subscription().subscriptionId)]",
+            "machineLearningResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), split(parameters('machineLearningId'), '/')[4], resourceGroup().name)]",
+            "machineLearningName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), last(split(parameters('machineLearningId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.ContainerRegistry/registries/{0}', variables('containerRegistryName'))]",
+              "name": "[guid(uniqueString(resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName'))))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
+                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName')), '2021-04-01', 'full').identity.principalId]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
     }
   ]

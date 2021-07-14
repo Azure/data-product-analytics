@@ -10,6 +10,7 @@ param applicationInsightsId string
 param containerRegistryId string
 param keyVaultId string
 param storageAccountId string
+param datalakeFileSystemIds array
 param aksId string
 param synapseId string
 param synapseBigDataPoolId string
@@ -239,6 +240,29 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
     }
   }
 }
+
+resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for datalakeFileSystemId in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
+  parent: machineLearning
+  name: '${split(datalakeFileSystemId, '/')[8]}${last(split(datalakeFileSystemId, '/'))}'
+  properties: {
+    tags: tags
+    contents: {
+      contentsType: 'AzureDataLakeGen2'
+      accountName: split(datalakeFileSystemId, '/')[8]
+      containerName: last(split(datalakeFileSystemId, '/'))
+      credentials: {
+        credentialsType: 'None'
+        secrets: {
+          secretsType: 'None'
+        }
+      }
+      endpoint: environment().suffixes.storage
+      protocol: 'https'
+    }
+    description: 'Data Lake Gen2 - ${split(datalakeFileSystemId, '/')[8]}'
+    isDefault: false
+  }
+}]
 
 resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' = {
   name: machineLearningPrivateEndpointName
