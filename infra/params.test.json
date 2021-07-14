@@ -17,7 +17,13 @@
         "processingService": {
             "value": "dataFactory"
         },
+        "datalakeFileSystemIds": {
+            "value": []
+        },
         "aksId": {
+            "value": ""
+        },
+        "externalContainerRegistryId": {
             "value": ""
         },
         "machineLearningComputeInstance001AdministratorObjectId": {
