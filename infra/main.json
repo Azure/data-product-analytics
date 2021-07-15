@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "16559823045082281006"
+      "templateHash": "11935227787810626370"
     }
   },
   "parameters": {
@@ -2561,8 +2561,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "[format('machineLearning001RoleAssignmentStorage-{0}', copyIndex())]",
-      "subscriptionId": "[split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[2]]",
-      "resourceGroup": "[split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[4]]",
+      "subscriptionId": "[if(not(empty(parameters('datalakeFileSystemIds')[copyIndex()])), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[2], subscription().subscriptionId)]",
+      "resourceGroup": "[if(not(empty(parameters('datalakeFileSystemIds')[copyIndex()])), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[4], resourceGroup().name)]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
