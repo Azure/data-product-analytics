@@ -6,10 +6,10 @@ param containerRegistryId string
 param machineLearningId string
 
 // Variables
-var containerRegistryName = length(split(containerRegistryId, '/')) >= 8 ? last(split(containerRegistryId, '/')) : 'incorrectSegmentLength'
-var machineLearningSubscriptionId = length(split(machineLearningId, '/')) >= 8 ? split(machineLearningId, '/')[2] : subscription().subscriptionId
-var machineLearningResourceGroupName = length(split(machineLearningId, '/')) >= 8 ? split(machineLearningId, '/')[4] : resourceGroup().name
-var machineLearningName = length(split(machineLearningId, '/')) >= 8 ? last(split(machineLearningId, '/')) : 'incorrectSegmentLength'
+var containerRegistryName = length(split(containerRegistryId, '/')) >= 9 ? last(split(containerRegistryId, '/')) : 'incorrectSegmentLength'
+var machineLearningSubscriptionId = length(split(machineLearningId, '/')) >= 9 ? split(machineLearningId, '/')[2] : subscription().subscriptionId
+var machineLearningResourceGroupName = length(split(machineLearningId, '/')) >= 9 ? split(machineLearningId, '/')[4] : resourceGroup().name
+var machineLearningName = length(split(machineLearningId, '/')) >= 9 ? last(split(machineLearningId, '/')) : 'incorrectSegmentLength'
 
 // Resources
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' existing = {

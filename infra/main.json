@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "10402417844653843978"
+      "templateHash": "16559823045082281006"
     }
   },
   "parameters": {
@@ -227,10 +227,10 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
-    "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
-    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 12), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
-    "externalContainerRegistrySubscriptionId": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 8), split(parameters('externalContainerRegistryId'), '/')[2], subscription().subscriptionId)]",
-    "externalContainerRegistryResourceGroupName": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 8), split(parameters('externalContainerRegistryId'), '/')[4], resourceGroup().name)]"
+    "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
+    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
+    "externalContainerRegistrySubscriptionId": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[2], subscription().subscriptionId)]",
+    "externalContainerRegistryResourceGroupName": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[4], resourceGroup().name)]"
   },
   "resources": [
     {
@@ -773,7 +773,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "2815223340327973240"
+              "templateHash": "2795854549699647595"
             }
           },
           "parameters": {
@@ -786,11 +786,11 @@
           },
           "functions": [],
           "variables": {
-            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 12), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
-            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 12), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
-            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[2], subscription().subscriptionId)]",
-            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), split(parameters('synapseId'), '/')[4], resourceGroup().name)]",
-            "synapseName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 8), last(split(parameters('synapseId'), '/')), 'incorrectSegmentLength')]"
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[2], subscription().subscriptionId)]",
+            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[4], resourceGroup().name)]",
+            "synapseName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), last(split(parameters('synapseId'), '/')), 'incorrectSegmentLength')]"
           },
           "resources": [
             {
@@ -856,7 +856,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "10988992501565832536"
+              "templateHash": "7135958850365111943"
             }
           },
           "parameters": {
@@ -890,10 +890,10 @@
           },
           "functions": [],
           "variables": {
-            "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 8), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
-            "machineLearning001SubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[2], subscription().subscriptionId)]",
-            "machineLearning001ResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), split(parameters('machineLearning001Id'), '/')[4], resourceGroup().name)]",
-            "machineLearning001Name": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 8), last(split(parameters('machineLearning001Id'), '/')), 'incorrectSegmentLength')]",
+            "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 9), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
+            "machineLearning001SubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 9), split(parameters('machineLearning001Id'), '/')[2], subscription().subscriptionId)]",
+            "machineLearning001ResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 9), split(parameters('machineLearning001Id'), '/')[4], resourceGroup().name)]",
+            "machineLearning001Name": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 9), last(split(parameters('machineLearning001Id'), '/')), 'incorrectSegmentLength')]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
             "datafactoryPrivateEndpointNameDatafactory": "[format('{0}-datafactory-private-endpoint', parameters('datafactoryName'))]",
             "datafactoryPrivateEndpointNamePortal": "[format('{0}-portal-private-endpoint', parameters('datafactoryName'))]"
@@ -2087,7 +2087,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "522436044807663244"
+              "templateHash": "15629519865156905761"
             }
           },
           "parameters": {
@@ -2389,7 +2389,7 @@
               ]
             },
             {
-              "condition": "[greaterOrEquals(length(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')), 12)]",
+              "condition": "[equals(length(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')), 13)]",
               "copy": {
                 "name": "machineLearningDatastores",
                 "count": "[length(parameters('datalakeFileSystemIds'))]"
@@ -2516,7 +2516,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "9104221014036884290"
+              "templateHash": "6853835093630750134"
             }
           },
           "parameters": {
@@ -2529,10 +2529,10 @@
           },
           "functions": [],
           "variables": {
-            "containerRegistryName": "[if(greaterOrEquals(length(split(parameters('containerRegistryId'), '/')), 8), last(split(parameters('containerRegistryId'), '/')), 'incorrectSegmentLength')]",
-            "machineLearningSubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), split(parameters('machineLearningId'), '/')[2], subscription().subscriptionId)]",
-            "machineLearningResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), split(parameters('machineLearningId'), '/')[4], resourceGroup().name)]",
-            "machineLearningName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 8), last(split(parameters('machineLearningId'), '/')), 'incorrectSegmentLength')]"
+            "containerRegistryName": "[if(greaterOrEquals(length(split(parameters('containerRegistryId'), '/')), 9), last(split(parameters('containerRegistryId'), '/')), 'incorrectSegmentLength')]",
+            "machineLearningSubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), split(parameters('machineLearningId'), '/')[2], subscription().subscriptionId)]",
+            "machineLearningResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), split(parameters('machineLearningId'), '/')[4], resourceGroup().name)]",
+            "machineLearningName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), last(split(parameters('machineLearningId'), '/')), 'incorrectSegmentLength')]"
           },
           "resources": [
             {
@@ -2542,6 +2542,74 @@
               "name": "[guid(uniqueString(resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName')), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName'))))]",
               "properties": {
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
+                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName')), '2021-04-01', 'full').identity.principalId]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
+      ]
+    },
+    {
+      "condition": "[and(parameters('enableRoleAssignments'), equals(length(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')), 13))]",
+      "copy": {
+        "name": "machineLearning001RoleAssignmentStorage",
+        "count": "[length(parameters('datalakeFileSystemIds'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "[format('machineLearning001RoleAssignmentStorage-{0}', copyIndex())]",
+      "subscriptionId": "[split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[2]]",
+      "resourceGroup": "[split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[4]]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "machineLearningId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2019-10-01').outputs.machineLearningId.value]"
+          },
+          "storageAccountFileSystemId": {
+            "value": "[parameters('datalakeFileSystemIds')[copyIndex()]]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.63.48766",
+              "templateHash": "7010529744447977935"
+            }
+          },
+          "parameters": {
+            "storageAccountFileSystemId": {
+              "type": "string"
+            },
+            "machineLearningId": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "machineLearningSubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), split(parameters('machineLearningId'), '/')[2], subscription().subscriptionId)]",
+            "machineLearningResourceGroupName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), split(parameters('machineLearningId'), '/')[4], resourceGroup().name)]",
+            "machineLearningName": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), last(split(parameters('machineLearningId'), '/')), 'incorrectSegmentLength')]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[0], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[1], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[2])]",
+              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[0], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[1], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[2]), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName'))))]",
+              "properties": {
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
                 "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('machineLearningSubscriptionId'), variables('machineLearningResourceGroupName')), 'Microsoft.MachineLearningServices/workspaces', variables('machineLearningName')), '2021-04-01', 'full').identity.principalId]"
               }
             }
