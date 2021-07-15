@@ -241,9 +241,9 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
   }
 }
 
-resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for datalakeFileSystemId in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
+resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
   parent: machineLearning
-  name: '${split(datalakeFileSystemId, '/')[8]}${last(split(datalakeFileSystemId, '/'))}'
+  name: '${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : split(datalakeFileSystemId, '/')[8]}${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : last(split(datalakeFileSystemId, '/'))}'
   properties: {
     tags: tags
     contents: {

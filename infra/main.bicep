@@ -266,7 +266,7 @@ module machineLearning001RoleAssignmentContainerRegistry 'modules/auxiliary/mach
 
 module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearningRoleAssignmentStorage.bicep' = [ for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(enableRoleAssignments) {
   name: 'machineLearning001RoleAssignmentStorage-${i}'
-  scope: resourceGroup(datalakeFileSystemScopes[i].subscriptionId, datalakeFileSystemScopes[i].resourceGroupName)
+  scope: resourceGroup(length(datalakeFileSystemIds) <= 0 ? subscription().subscriptionId : datalakeFileSystemScopes[i].subscriptionId, length(datalakeFileSystemIds) <= 0 ? resourceGroup().name : datalakeFileSystemScopes[i].resourceGroupName)
   params: {
     machineLearningId: machineLearning001.outputs.machineLearningId
     storageAccountFileSystemId: datalakeFileSystemId

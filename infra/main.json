@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "17414629310961592106"
+      "templateHash": "368087806447416371"
     }
   },
   "parameters": {
@@ -2097,7 +2097,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.63.48766",
-              "templateHash": "15629519865156905761"
+              "templateHash": "8988999914110586924"
             }
           },
           "parameters": {
@@ -2406,7 +2406,7 @@
               },
               "type": "Microsoft.MachineLearningServices/workspaces/datastores",
               "apiVersion": "2021-03-01-preview",
-              "name": "[format('{0}/{1}', parameters('machineLearningName'), format('{0}{1}', split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8], last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/'))))]",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), format('{0}{1}', if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8]), if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')))))]",
               "properties": {
                 "tags": "[parameters('tags')]",
                 "contents": {
@@ -2571,8 +2571,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "[format('machineLearning001RoleAssignmentStorage-{0}', copyIndex())]",
-      "subscriptionId": "[variables('datalakeFileSystemScopes')[copyIndex()].subscriptionId]",
-      "resourceGroup": "[variables('datalakeFileSystemScopes')[copyIndex()].resourceGroupName]",
+      "subscriptionId": "[if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), subscription().subscriptionId, variables('datalakeFileSystemScopes')[copyIndex()].subscriptionId)]",
+      "resourceGroup": "[if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), resourceGroup().name, variables('datalakeFileSystemScopes')[copyIndex()].resourceGroupName)]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
