@@ -96,6 +96,10 @@ var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStor
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 var externalContainerRegistrySubscriptionId = length(split(externalContainerRegistryId, '/')) >= 9 ? split(externalContainerRegistryId, '/')[2] : subscription().subscriptionId
 var externalContainerRegistryResourceGroupName = length(split(externalContainerRegistryId, '/')) >= 9 ? split(externalContainerRegistryId, '/')[4] : resourceGroup().name
+var datalakeFileSystemScopes = [for datalakeFileSystemId in datalakeFileSystemIds : {
+  subscriptionId: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[2] : subscription().subscriptionId
+  resourceGroupName: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[4] : resourceGroup().name
+}]
 
 // Resources
 module keyvault001 'modules/services/keyvault.bicep' = {
@@ -260,9 +264,9 @@ module machineLearning001RoleAssignmentContainerRegistry 'modules/auxiliary/mach
   }
 }
 
-module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearningRoleAssignmentStorage.bicep' = [ for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(enableRoleAssignments && length(split(datalakeFileSystemId, '/')) == 13) {
+module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearningRoleAssignmentStorage.bicep' = [ for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(enableRoleAssignments) {
   name: 'machineLearning001RoleAssignmentStorage-${i}'
-  scope: resourceGroup(!empty(datalakeFileSystemId) ? split(datalakeFileSystemId, '/')[2] : subscription().subscriptionId, !empty(datalakeFileSystemId) ? split(datalakeFileSystemId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup(datalakeFileSystemScopes[i].subscriptionId, datalakeFileSystemScopes[i].resourceGroupName)
   params: {
     machineLearningId: machineLearning001.outputs.machineLearningId
     storageAccountFileSystemId: datalakeFileSystemId

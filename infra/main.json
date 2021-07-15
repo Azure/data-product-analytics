@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "11935227787810626370"
+      "templateHash": "17414629310961592106"
     }
   },
   "parameters": {
@@ -218,6 +218,16 @@
   },
   "functions": [],
   "variables": {
+    "copy": [
+      {
+        "name": "datalakeFileSystemScopes",
+        "count": "[length(parameters('datalakeFileSystemIds'))]",
+        "input": {
+          "subscriptionId": "[if(greaterOrEquals(length(split(parameters('datalakeFileSystemIds')[copyIndex('datalakeFileSystemScopes')], '/')), 13), split(parameters('datalakeFileSystemIds')[copyIndex('datalakeFileSystemScopes')], '/')[2], subscription().subscriptionId)]",
+          "resourceGroupName": "[if(greaterOrEquals(length(split(parameters('datalakeFileSystemIds')[copyIndex('datalakeFileSystemScopes')], '/')), 13), split(parameters('datalakeFileSystemIds')[copyIndex('datalakeFileSystemScopes')], '/')[4], resourceGroup().name)]"
+        }
+      }
+    ],
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "tagsDefault": {
       "Owner": "Enterprise Scale Analytics",
@@ -2553,7 +2563,7 @@
       ]
     },
     {
-      "condition": "[and(parameters('enableRoleAssignments'), equals(length(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')), 13))]",
+      "condition": "[parameters('enableRoleAssignments')]",
       "copy": {
         "name": "machineLearning001RoleAssignmentStorage",
         "count": "[length(parameters('datalakeFileSystemIds'))]"
@@ -2561,8 +2571,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "[format('machineLearning001RoleAssignmentStorage-{0}', copyIndex())]",
-      "subscriptionId": "[if(not(empty(parameters('datalakeFileSystemIds')[copyIndex()])), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[2], subscription().subscriptionId)]",
-      "resourceGroup": "[if(not(empty(parameters('datalakeFileSystemIds')[copyIndex()])), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[4], resourceGroup().name)]",
+      "subscriptionId": "[variables('datalakeFileSystemScopes')[copyIndex()].subscriptionId]",
+      "resourceGroup": "[variables('datalakeFileSystemScopes')[copyIndex()].resourceGroupName]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
