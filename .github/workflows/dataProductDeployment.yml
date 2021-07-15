@@ -57,7 +57,7 @@ jobs:
           template: ${{ github.workspace }}/infra/main.json
           parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
           deploymentMode: Validate
-        continue-on-error: true
+          failOnStdErr: false
 
       # Log out from Azure
       - name: Log out from Azure
@@ -105,7 +105,7 @@ jobs:
           template: ${{ github.workspace }}/infra/main.json
           parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
           deploymentMode: Incremental
-        continue-on-error: true
+          failOnStdErr: false
 
       # Log out from Azure
       - name: Log out from Azure
