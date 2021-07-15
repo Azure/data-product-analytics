@@ -83,7 +83,7 @@ resource searchPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' =
   }
 }
 
-resource searchPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource searchPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdSearch)) {
   parent: searchPrivateEndpoint
   name: 'aRecord'
   properties: {

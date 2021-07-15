@@ -85,7 +85,7 @@ resource cognitiveServicePrivateEndpoint 'Microsoft.Network/privateEndpoints@202
   }
 }
 
-resource cognitiveServicePrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource cognitiveServicePrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdCognitiveService)) {
   parent: cognitiveServicePrivateEndpoint
   name: 'aRecord'
   properties: {

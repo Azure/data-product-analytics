@@ -13,10 +13,10 @@ param privateDnsZoneIdDataFactory string
 param privateDnsZoneIdDataFactoryPortal string
 
 // Variables
-var keyVault001Name = length(split(keyVault001Id, '/')) >= 8 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
-var machineLearning001SubscriptionId = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[2] : subscription().subscriptionId
-var machineLearning001ResourceGroupName = length(split(machineLearning001Id, '/')) >= 8 ? split(machineLearning001Id, '/')[4] : resourceGroup().name
-var machineLearning001Name = length(split(machineLearning001Id, '/')) >= 8 ? last(split(machineLearning001Id, '/')) : 'incorrectSegmentLength'
+var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
+var machineLearning001SubscriptionId = length(split(machineLearning001Id, '/')) >= 9 ? split(machineLearning001Id, '/')[2] : subscription().subscriptionId
+var machineLearning001ResourceGroupName = length(split(machineLearning001Id, '/')) >= 9 ? split(machineLearning001Id, '/')[4] : resourceGroup().name
+var machineLearning001Name = length(split(machineLearning001Id, '/')) >= 9 ? last(split(machineLearning001Id, '/')) : 'incorrectSegmentLength'
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 var datafactoryPrivateEndpointNameDatafactory = '${datafactory.name}-datafactory-private-endpoint'
 var datafactoryPrivateEndpointNamePortal = '${datafactory.name}-portal-private-endpoint'
@@ -62,7 +62,7 @@ resource datafactoryPrivateEndpointDatafactory 'Microsoft.Network/privateEndpoin
   }
 }
 
-resource datafactoryPrivateEndpointDatafactoryARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource datafactoryPrivateEndpointDatafactoryARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdDataFactory)) {
   parent: datafactoryPrivateEndpointDatafactory
   name: 'aRecord'
   properties: {
@@ -101,7 +101,7 @@ resource datafactoryPrivateEndpointPortal 'Microsoft.Network/privateEndpoints@20
   }
 }
 
-resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdDataFactoryPortal)) {
   parent: datafactoryPrivateEndpointPortal
   name: 'aRecord'
   properties: {

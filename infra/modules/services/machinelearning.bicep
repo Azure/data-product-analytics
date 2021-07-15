@@ -10,6 +10,7 @@ param applicationInsightsId string
 param containerRegistryId string
 param keyVaultId string
 param storageAccountId string
+param datalakeFileSystemIds array
 param aksId string
 param synapseId string
 param synapseBigDataPoolId string
@@ -122,9 +123,9 @@ resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServi
   }
 }
 
-resource machineLearningCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
   parent: machineLearning
-  name: 'cluster001'
+  name: 'cpucluster001'
   dependsOn: [
     machineLearningPrivateEndpoint
     machineLearningPrivateEndpointARecord
@@ -154,6 +155,42 @@ resource machineLearningCluster001 'Microsoft.MachineLearningServices/workspaces
       }
       vmPriority: 'Dedicated'
       vmSize: 'Standard_DS3_v2'
+    }
+  }
+}
+
+resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+  parent: machineLearning
+  name: 'gpucluster001'
+  dependsOn: [
+    machineLearningPrivateEndpoint
+    machineLearningPrivateEndpointARecord
+  ]
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    computeType: 'AmlCompute'
+    computeLocation: location
+    description: 'Machine Learning cluster 001'
+    disableLocalAuth: true
+    properties: {
+      enableNodePublicIp: false
+      isolatedNetwork: false
+      osType: 'Linux'
+      remoteLoginPortPublicAccess: 'Disabled'
+      scaleSettings: {
+        minNodeCount: 0
+        maxNodeCount: 4
+        nodeIdleTimeBeforeScaleDown: 'PT120S'
+      }
+      subnet: {
+        id: subnetId
+      }
+      vmPriority: 'Dedicated'
+      vmSize: 'Standard_NC6'
     }
   }
 }
@@ -204,6 +241,29 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
   }
 }
 
+resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
+  parent: machineLearning
+  name: '${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : split(datalakeFileSystemId, '/')[8]}${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : last(split(datalakeFileSystemId, '/'))}'
+  properties: {
+    tags: tags
+    contents: {
+      contentsType: 'AzureDataLakeGen2'
+      accountName: split(datalakeFileSystemId, '/')[8]
+      containerName: last(split(datalakeFileSystemId, '/'))
+      credentials: {
+        credentialsType: 'None'
+        secrets: {
+          secretsType: 'None'
+        }
+      }
+      endpoint: environment().suffixes.storage
+      protocol: 'https'
+    }
+    description: 'Data Lake Gen2 - ${split(datalakeFileSystemId, '/')[8]}'
+    isDefault: false
+  }
+}]
+
 resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' = {
   name: machineLearningPrivateEndpointName
   location: location
@@ -228,7 +288,7 @@ resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020
   }
 }
 
-resource machineLearningPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource machineLearningPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMachineLearningApi) && !empty(privateDnsZoneIdMachineLearningNotebooks)) {
   parent: machineLearningPrivateEndpoint
   name: 'aRecord'
   properties: {
