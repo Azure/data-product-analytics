@@ -1,7 +1,5 @@
 # Enterprise Scale Analytics and AI - Data Product: Analytics & Data Science
 
-> **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
-
 ## Description
 
 [**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Integration and Data Product templates. `Data Integration` and `Data Product` templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Product template deploys a set of services, which can be used for data analytics and data science. The template includes tools such as Azure Machine Learning, Cognitive Services and Azure Search, which allows the teams to choose their tools based on their requirements and preferences.
@@ -41,16 +39,14 @@ You have two options for deploying this reference architecture:
 * [Prerequisites](./docs/ESA-ProductAnalytics-Prerequisites.md)
 * Option 1: Deploy to Azure - Quickstart (Coming soon ..)
 
-| Data Product Analytics |
-|:-----------------------------|
 <!-- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-product-analytics%2Fportal_ui%2Finfra%2Fmain.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-product-analytics%2Fmain%2Fdocs%2Freference%2Fportal.dataProduct.json) -->
 ![Deploy to Azure](docs/images/deploytoazuregrey.png)
 
-* Option 2: Deploy reference implementation :
+* Option 2: Automated deployment
   * [Prepare the deployment](./docs/ESA-ProductAnalytics-PrepareDeployment.md)
-  * [Using Azure DevOps](./docs/ESA-ProductAnalytics-DeployUsingAzureDevops.md)
-  * [Using GitHub Actions](./docs/ESA-ProductAnalytics-DeployUsingGithubActions.md)
-* [Code Structure](./docs/ESA-ProductAnalytics-CodeStructure.md)
+  * [Deploy reference implementation using Azure DevOps](./docs/ESA-ProductAnalytics-DeployUsingAzureDevops.md)
+  * [Deploy reference implementation using GitHub Actions](./docs/ESA-ProductAnalytics-DeployUsingGithubActions.md)
+* [Code structure](./docs/ESA-ProductAnalytics-CodeStructure.md)
 * [Known issues](./docs/ESA-ProductAnalytics-KnownIssues.md)
 
 ### Enterprise Scale Analytics and AI - Documentation and Implementation
