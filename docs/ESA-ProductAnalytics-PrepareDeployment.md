@@ -5,11 +5,11 @@
 1. On GitHub, navigate to the main page of this repository.
 1. Above the file list, click **Use this template**
 
-  ![GitHub Template repository](docs/images/UseThisTemplateGH.png)
+  ![GitHub Template repository](images/UseThisTemplateGH.png)
 
 1. Use the **Owner** drop-down menu and select the account you want to own the repository.
 
-  ![Create Repository from Template](docs/images/CreateRepoGH.png)
+  ![Create Repository from Template](images/CreateRepoGH.png)
 
 1. Type a name for your repository and an optional description.
 1. Choose a repository visibility. For more information, see "[About repository visibility](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-repository-visibility)."
@@ -117,8 +117,7 @@ Deployment options:
 1. [GitHub Actions](#github-actions)
 1. [Azure DevOps](#azure-devops)
 
-<p align="right">  Next: <a href="./ESA-ProductAnalytics-DeployUsingGithubActions.md">Deploy Reference implementation using GitHub Actions</a> > </p>
-
-<p align="right"> <a href="./ESA-ProductAnalytics-DeployUsingAzureDevops.md">Deploy Reference implementation using Azure Devops</a> > </p>
+<p align="right">  Next: <a href="./ESA-ProductAnalytics-DeployUsingAzureDevops.md">Deploy Reference implementation using Azure DevOps</a> > </p>
+<p align="right"> <a href="./ESA-ProductAnalytics-DeployUsingGithubActions.md">Deploy Reference implementation using GitHub Actions</a> > </p>
 
 < Previous: [Prerequisites](./ESA-ProductAnalytics-Prerequisites.md)

@@ -14,5 +14,5 @@
 
 <p align="right"> Next: <a href="./ESA-ProductAnalytics-KnownIssues.md">Known Issues</a> > </p>
 
-< Previous: [Deploy Reference implementation using Azure Devops](./ESA-ProductAnalytics-DeployUsingAzureDevops.md)\
-[Deploy Reference implementation using Github Actions](./ESA-ProductAnalytics-DeployUsingGithubActions.md)
+< Previous: [Deploy Reference implementation using Azure DevOps](./ESA-ProductAnalytics-DeployUsingAzureDevops.md)\
+[Deploy Reference implementation using GitHub Actions](./ESA-ProductAnalytics-DeployUsingGithubActions.md)
