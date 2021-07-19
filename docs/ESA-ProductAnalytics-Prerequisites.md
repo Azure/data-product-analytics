@@ -11,7 +11,7 @@ The following prerequisites are required to make this repository work:
 - Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration (subnets with suffix `-privatelink-subnet`).
 - For deployment, please choose one of the below **Supported Regions** list.
 
-### **Supported Regions:**
+#### **Supported Regions:**
 
 - Asia Southeast
 - Europe North
