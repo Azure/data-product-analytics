@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics - Data Product Analytics
+# Enterprise-Scale Analytics - Data Product Analytics
 
 ## Objective
 
@@ -23,7 +23,7 @@ This respository describes a Data Product template for Data Analytics and Data S
 
 > **Note:** Before getting started with the deployment, please make sure you are familiar with the [complementary documentation in the Cloud Adoption Framework](https://aka.ms/adopt/datamanagement). Also, before deploying your first Data Product, please make sure that you have deployed a [Data Management Zone](https://github.com/Azure/data-management-zone) and at least one [Data Landing Zone](https://github.com/Azure/data-landing-zone). The minimal recommended setup consists of a single [Data Management Zone](https://github.com/Azure/data-management-zone) and a single Data Landing Zone.
 
-## Deploy Enterprise Scale Analytics
+## Deploy Enterprise-Scale Analytics
 
 The Enterprise-Scale Analytics architecture is modular by design and allows customers to start with a small footprint and grow over time. In order to not end up in a migration project, customers should decide upfront how they want to organize data domains across Data Landing Zones. All Enterprise-Scale Analytics architecture building blocks can be deployed through the Azure Portal as well as through GitHub Actions workflows and Azure DevOps Pipelines. The template repositories contain sample YAML pipelines to more quickly get started with the setup of the environments.
 
