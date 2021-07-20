@@ -1,4 +1,7 @@
-// The module contains a template to create a role assignment of the Synase MSI to a file system.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+// The module contains a template to create a role assignment of the Machine Learning MSI to a Storage file system.
 targetScope = 'resourceGroup'
 
 // Parameters
