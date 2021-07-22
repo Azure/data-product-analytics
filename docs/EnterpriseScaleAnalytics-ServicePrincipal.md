@@ -39,8 +39,6 @@ This will generate the following JSON output:
 For automation purposes, more role assignments are required for the service principal.
 Additional required role assignments include:
 
-Additional required role assignments include:
-
 | Role Name | Description | Scope |
 |:----------|:------------|:------|
 | [Private DNS Zone Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#private-dns-zone-contributor) | We expect you to deploy all Private DNS Zones for all data services into a single subscription and resource group. Therefor, the service principal needs to be Private DNS Zone Contributor on the global dns resource group which was created during the Data Management Zone deployment. This is required to deploy A-records for the respective private endpoints.| <div style="width: 36ch">(Resource Group Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
