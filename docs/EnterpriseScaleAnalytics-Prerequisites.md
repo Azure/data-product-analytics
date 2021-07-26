@@ -1,6 +1,11 @@
 # Data Product Analytics - Prerequisites
 
-This template repsitory contains all templates to deploy a Data Product for Analytics and Data Science inside a Data Landing Zone of the Enterprise-Scale Analytics architecture. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases.
+This template repsitory contains all templates to deploy a Data Product for Analytics and Data Science inside a Data Landing Zone of the Enterprise-Scale Analytics architecture. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases. This template qualifis for the following usage:
+
+| Scenario         | Applicability      |
+|:-----------------|:-------------------|
+| Data Product     | :heavy_check_mark: |
+| Data Integration | :x:                |
 
 ## What will be deployed?
 
