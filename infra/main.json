@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.451.19169",
-      "templateHash": "2413669404202056292"
+      "templateHash": "4898338078661221298"
     }
   },
   "parameters": {
@@ -145,72 +145,84 @@
     },
     "privateDnsZoneIdKeyVault": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for KeyVault."
       }
     },
     "privateDnsZoneIdSynapseDev": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Synapse Dev."
       }
     },
     "privateDnsZoneIdSynapseSql": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Synapse Sql."
       }
     },
     "privateDnsZoneIdDataFactory": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Data Factory."
       }
     },
     "privateDnsZoneIdDataFactoryPortal": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Data Factory Portal."
       }
     },
     "privateDnsZoneIdCognitiveService": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Cognitive Services."
       }
     },
     "privateDnsZoneIdContainerRegistry": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Container Registry."
       }
     },
     "privateDnsZoneIdSearch": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Azure Search."
       }
     },
     "privateDnsZoneIdBlob": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Blob Storage."
       }
     },
     "privateDnsZoneIdFile": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for File Storage."
       }
     },
     "privateDnsZoneIdMachineLearningApi": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Machine Learning API."
       }
     },
     "privateDnsZoneIdMachineLearningNotebooks": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Machine Learning Notebooks."
       }
