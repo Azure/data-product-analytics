@@ -61,29 +61,29 @@ param subnetId string
 
 // Private DNS Zone parameters
 @description('Specifies the resource ID of the private DNS zone for KeyVault.')
-param privateDnsZoneIdKeyVault string
+param privateDnsZoneIdKeyVault string = ''
 @description('Specifies the resource ID of the private DNS zone for Synapse Dev.')
-param privateDnsZoneIdSynapseDev string
+param privateDnsZoneIdSynapseDev string = ''
 @description('Specifies the resource ID of the private DNS zone for Synapse Sql.')
-param privateDnsZoneIdSynapseSql string
+param privateDnsZoneIdSynapseSql string = ''
 @description('Specifies the resource ID of the private DNS zone for Data Factory.')
-param privateDnsZoneIdDataFactory string
+param privateDnsZoneIdDataFactory string = ''
 @description('Specifies the resource ID of the private DNS zone for Data Factory Portal.')
-param privateDnsZoneIdDataFactoryPortal string
+param privateDnsZoneIdDataFactoryPortal string = ''
 @description('Specifies the resource ID of the private DNS zone for Cognitive Services.')
-param privateDnsZoneIdCognitiveService string
+param privateDnsZoneIdCognitiveService string = ''
 @description('Specifies the resource ID of the private DNS zone for Container Registry.')
-param privateDnsZoneIdContainerRegistry string
+param privateDnsZoneIdContainerRegistry string = ''
 @description('Specifies the resource ID of the private DNS zone for Azure Search.')
-param privateDnsZoneIdSearch string
+param privateDnsZoneIdSearch string = ''
 @description('Specifies the resource ID of the private DNS zone for Blob Storage.')
-param privateDnsZoneIdBlob string
+param privateDnsZoneIdBlob string = ''
 @description('Specifies the resource ID of the private DNS zone for File Storage.')
-param privateDnsZoneIdFile string
+param privateDnsZoneIdFile string = ''
 @description('Specifies the resource ID of the private DNS zone for Machine Learning API.')
-param privateDnsZoneIdMachineLearningApi string
+param privateDnsZoneIdMachineLearningApi string = ''
 @description('Specifies the resource ID of the private DNS zone for Machine Learning Notebooks.')
-param privateDnsZoneIdMachineLearningNotebooks string
+param privateDnsZoneIdMachineLearningNotebooks string = ''
 
 // Variables
 var name = toLower('${prefix}-${environment}')
