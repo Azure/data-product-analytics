@@ -81,6 +81,15 @@
                                     }
                                 },
                                 {
+                                    "name": "infoBoxResourceGroup",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "We have already deployed a few resourge groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
                                     "name": "resourceGroupId",
                                     "label": "Resource Group",
                                     "type": "Microsoft.Common.DropDown",
