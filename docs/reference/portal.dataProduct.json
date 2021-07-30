@@ -771,54 +771,83 @@
                     "bladeSubtitle": "Connectivity Settings",
                     "elements": [
                         {
-                            "name": "infoBoxVirtualNetwork",
-                            "type": "Microsoft.Common.InfoBox",
+							"name": "virtualNetwork",
+							"label": "Virtual Network",
+							"type": "Microsoft.Common.Section",
                             "visible": true,
-                            "options": {
-                                "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
-                                "style": "Info"
-                            }
-                        },
-                        {
-                            "name": "vnet",
-                            "label": {
-                                "virtualNetwork": "Virtual network",
-                                "subnets": "Subnet"
-                            },
-                            "type": "Microsoft.Network.VirtualNetworkCombo",
-                            "visible": true,
-                            "toolTip": {
-                                "virtualNetwork": "Virtual Network for Data Product",
-                                "subnets": "Subnet for Data Product"
-                            },
-                            "defaultValue": {
-                                "name": "",
-                                "addressPrefixSize": "/27"
-                            },
-                            "constraints": {
-                                "minAddressPrefixSize": "/27"
-                            },
-                            "options": {
-                                "hideExisting": false
-                            },
-                            "subnets": {
-                                "subnet1": {
-                                    "label": "Data Product Subnet",
-                                    "defaultValue": {
-                                        "name": "dataproductSubnet",
-                                        "addressPrefixSize": "/27"
-                                    },
+							"elements": [
+                                {
+									"name": "virtualNetworkText",
+									"type": "Microsoft.Common.TextBlock",
+									"visible": true,
+									"options": {
+										"text": "Select the Virtual Network and Subnet for your deployment.",
+										"link": {
+											"label": "",
+											"uri": ""
+										}
+									}
+								},
+                                {
+                                    "name": "infoBoxVirtualNetwork",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Network/virtualNetworks?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkId",
+                                    "label": "Virtual Network",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Virtual Network for your Data Product.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
                                     "constraints": {
-                                        "minAddressPrefixSize": "/27",
-                                        "minAddressCount": 13,
-                                        "requireContiguousAddresses": true
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.virtualNetworkApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "subnetApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').virtualNetwork.virtualNetworkId, '/subnets?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "subnetId",
+                                    "label": "Subnet",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subnet for your Data Product. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.subnetApi.value,(item) => and(equals(item.properties.privateEndpointNetworkPolicies, 'Disabled'), equals(item.properties.privateLinkServiceNetworkPolicies, 'Disabled'), lessOrEquals(int(last(split(item.properties.addressPrefix, '/'))), 27))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
                                     }
                                 }
-                            },
-                            "scope": {
-                                "subscriptionId": "[last(split(steps('basics').deploymentDetails.subscriptionId, '/'))]",
-                                "location": "[steps('basics').deploymentDetails.locationName]"
-                            }
+                            ]
                         },
                         {
 							"name": "privateDnsZones",
@@ -1153,7 +1182,7 @@
                 "databricksWorkspaceUrl": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl), '', steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl)]",
                 "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
-                "subnetId": "[if(empty(steps('connectivitySettings').vnet.subnets.subnet1.name), '', concat(steps('basics').deploymentDetails.subscriptionId, '/resourceGroups/', steps('connectivitySettings').vnet.resourceGroup, '/providers/Microsoft.Network/virtualNetworks/', steps('connectivitySettings').vnet.name, '/subnets/', steps('connectivitySettings').vnet.subnets.subnet1.name))]",
+                "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
                 "privateDnsZoneIdSynapseSql": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql)]",
