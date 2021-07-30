@@ -1157,7 +1157,7 @@
                 "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
                 "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
                 "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
-                "tags": "[if(empty(steps('tags').tagsByResource.EnterpriseScaleAnalytics), parse('{}'), steps('tags').tagsByResource.EnterpriseScaleAnalytics)]"
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'EnterpriseScaleAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.EnterpriseScaleAnalytics)))]"
             }
         }
     }
