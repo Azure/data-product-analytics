@@ -161,19 +161,6 @@
 									}
 								},
                                 {
-                                    "name": "dataProductPrefix",
-                                    "label": "Data Product Prefix",
-                                    "type": "Microsoft.Common.TextBox",
-                                    "visible": true,
-                                    "defaultValue": "",
-                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
-                                    "constraints": {
-                                        "required": true,
-                                        "regex": "^[a-z0-9]{1,10}$",
-                                        "validationMessage": "The prefix must be between 1-10 lowercase characters and numbers."
-                                    }
-                                },
-                                {
                                     "name": "environment",
                                     "label": "Environment",
                                     "type": "Microsoft.Common.DropDown",
@@ -204,6 +191,103 @@
                                             }
                                         ],
                                         "required": true
+                                    }
+                                },
+                                {
+                                    "name": "dataProductPrefix",
+                                    "label": "Data Product Prefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "regex": "^[a-z0-9]{1,10}$",
+                                                "message": "The prefix must be between 1-10 lowercase characters and numbers."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.keyVaultNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.storageAccountNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.containerRegistryNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.searchNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "keyVaultNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2019-09-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-vault001')]",
+                                            "type": "Microsoft.KeyVault/vaults"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "storageAccountNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/checkNameAvailability?api-version=2021-04-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'storage001')]",
+                                            "type": "Microsoft.Storage/storageAccounts"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'containerregistry001')]",
+                                            "type": "Microsoft.ContainerRegistry/registries"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "synapseNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Synapse/checkNameAvailability?api-version=2021-03-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-synapse001')]",
+                                            "type": "Microsoft.Synapse/workspaces"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "searchNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Search/checkNameAvailability?api-version=2021-04-01-preview')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-search001')]",
+                                            "type": "searchServices"
+                                        }
                                     }
                                 }
                             ]
