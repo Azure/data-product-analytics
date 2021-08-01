@@ -220,7 +220,7 @@
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
-                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.nameAvailable, false))]",
+                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.available, false))]",
                                                 "message": "Prefix currently unavailable. Please choose a different one."
                                             },
                                             {
