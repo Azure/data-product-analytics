@@ -622,11 +622,36 @@
                                     }
                                 },
                                 {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistrySub",
+                                    "label": "Container Registry Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableContainerRegistry, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your central Container Registry.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').machineLearningDeploymentSettings.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
                                     "name": "containerRegistryApi",
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
                                         "method": "GET",
-                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/registries?api-version=2019-05-01')]"
+                                        "path": "[concat(steps('generalSettings').machineLearningDeploymentSettings.containerRegistrySub, '/providers/Microsoft.ContainerRegistry/registries?api-version=2019-05-01')]"
                                     }
                                 },
                                 {
