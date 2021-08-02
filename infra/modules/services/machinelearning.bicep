@@ -126,7 +126,7 @@ resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServi
   }
 }
 
-resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (false) {
   parent: machineLearning
   name: 'cpucluster001'
   dependsOn: [
@@ -162,7 +162,7 @@ resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (false) {
   parent: machineLearning
   name: 'gpucluster001'
   dependsOn: [
@@ -198,7 +198,7 @@ resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (!empty(machineLearningComputeInstance001AdministratorObjectId)) {
+resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (false && !empty(machineLearningComputeInstance001AdministratorObjectId)) {
   parent: machineLearning
   name: 'computeinstance001'
   dependsOn: [
