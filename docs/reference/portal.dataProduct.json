@@ -20,23 +20,23 @@
                             }
                         },
                         {
-							"name": "deploymentDetails",
-							"label": "Deployment Details",
-							"type": "Microsoft.Common.Section",
+                            "name": "deploymentDetails",
+                            "label": "Deployment Details",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "deploymentDetailsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "deploymentDetailsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxPrerequisites",
                                     "type": "Microsoft.Common.InfoBox",
@@ -78,6 +78,15 @@
                                     "request": {
                                         "method": "GET",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/resourcegroups?api-version=2020-01-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxResourceGroup",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "We have already deployed a few resourge groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
+                                        "style": "Info"
                                     }
                                 },
                                 {
@@ -134,34 +143,21 @@
                             ]
                         },
                         {
-							"name": "dataProductName",
-							"label": "Data Product Name",
-							"type": "Microsoft.Common.Section",
+                            "name": "dataProductName",
+                            "label": "Data Product Name",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "dataPruductNamesText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify a prefix and environment name which will be used as a prefix for all resource names.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
-                                {
-                                    "name": "dataProductPrefix",
-                                    "label": "Data Product Prefix",
-                                    "type": "Microsoft.Common.TextBox",
+                                    "name": "dataPruductNamesText",
+                                    "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
-                                    "defaultValue": "",
-                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
-                                    "constraints": {
-                                        "required": true,
-                                        "regex": "^[a-z0-9]{1,10}$",
-                                        "validationMessage": "The prefix must be between 1-10 lowercase characters and numbers."
+                                    "options": {
+                                        "text": "Specify a prefix and select an environment (Development, Test, Production) which will both be used as a prefix for all resource names. Independent of the environment, the same resources get deployed.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
                                     }
                                 },
                                 {
@@ -196,39 +192,136 @@
                                         ],
                                         "required": true
                                     }
+                                },
+                                {
+                                    "name": "dataProductPrefix",
+                                    "label": "Data Product Prefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "regex": "^[a-z0-9]{1,10}$",
+                                                "message": "The prefix must be between 1-10 lowercase characters and numbers."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.keyVaultNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.storageAccountNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.containerRegistryNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.available, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.searchNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "keyVaultNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2019-09-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-vault001')]",
+                                            "type": "Microsoft.KeyVault/vaults"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "storageAccountNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/checkNameAvailability?api-version=2021-04-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'storage001')]",
+                                            "type": "Microsoft.Storage/storageAccounts"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistryNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, steps('basics').dataProductName.environment, 'containerregistry001')]",
+                                            "type": "Microsoft.ContainerRegistry/registries"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "synapseNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Synapse/checkNameAvailability?api-version=2021-03-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-synapse001')]",
+                                            "type": "Microsoft.Synapse/workspaces"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "searchNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Search/checkNameAvailability?api-version=2021-04-01-preview')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-search001')]",
+                                            "type": "searchServices"
+                                        }
+                                    }
                                 }
                             ]
                         }
                     ]
                 },
-				{
-					"name": "generalSettings",
-					"label": "General Settings",
-					"subLabel": {
-						"preValidation": "Provide settings for your data product deployment.",
+                {
+                    "name": "generalSettings",
+                    "label": "General Settings",
+                    "subLabel": {
+                        "preValidation": "Provide settings for your data product deployment.",
                         "postValidation": "Done"
-					},
-					"bladeTitle": "General Settings",
+                    },
+                    "bladeTitle": "General Settings",
                     "bladeSubtitle": "General Settings",
-					"elements": [
+                    "elements": [
                         {
-							"name": "machineLearningDeploymentSettings",
-							"label": "Machine Learning Deployment Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "machineLearningDeploymentSettings",
+                            "label": "Machine Learning Deployment Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "machineLearningDeploymentSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify the external services you want to connect to Machine Learning.",
-										"link": {
-											"label": "Learn more",
-											"uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target"
-										}
-									}
-								},
+                                    "name": "machineLearningDeploymentSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify the external services you want to connect to Machine Learning.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target"
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxComputeCluster",
                                     "type": "Microsoft.Common.InfoBox",
@@ -529,11 +622,36 @@
                                     }
                                 },
                                 {
+                                    "name": "subscriptionApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "subscriptions?api-version=2020-01-01"
+                                    }
+                                },
+                                {
+                                    "name": "containerRegistrySub",
+                                    "label": "Container Registry Subscription",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableContainerRegistry, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subscription of your central Container Registry.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(steps('generalSettings').machineLearningDeploymentSettings.subscriptionApi.value, (item) => parse(concat('{\"label\":\"', item.displayName, '\",\"value\":\"', item.id, '\",\"description\":\"', 'ID: ', item.subscriptionId, '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
                                     "name": "containerRegistryApi",
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
                                         "method": "GET",
-                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.ContainerRegistry/registries?api-version=2019-05-01')]"
+                                        "path": "[concat(steps('generalSettings').machineLearningDeploymentSettings.containerRegistrySub, '/providers/Microsoft.ContainerRegistry/registries?api-version=2019-05-01')]"
                                     }
                                 },
                                 {
@@ -556,11 +674,11 @@
                             ]
                         },
                         {
-							"name": "dataProcessingServiceDeploymentSettings",
-							"label": "Data Processing Service Deployment Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "dataProcessingServiceDeploymentSettings",
+                            "label": "Data Processing Service Deployment Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
                                     "name": "infoBoxProcessingService",
                                     "type": "Microsoft.Common.InfoBox",
@@ -673,23 +791,23 @@
                             ]
                         },
                         {
-							"name": "dataGovernanceSettings",
-							"label": "Data Governance Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "dataGovernanceSettings",
+                            "label": "Data Governance Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "dataGovernanceSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the Purview account to which you want to connect the Synapse workspace or Data Factory.",
-										"link": {
-											"label": "Learn more",
-											"uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
-										}
-									}
-								},
+                                    "name": "dataGovernanceSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Purview account to which you want to connect the Synapse workspace or Data Factory.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "purviewId",
                                     "label": "Connect to Purview Account",
@@ -709,23 +827,23 @@
                             ]
                         },
                         {
-							"name": "generalSettings",
-							"label": "General Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "generalSettings",
+                            "label": "General Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "generalSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify general settings for this deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "generalSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify general settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxRoleAssignment",
                                     "type": "Microsoft.Common.InfoBox",
@@ -749,8 +867,8 @@
                                 }
                             ]
                         }
-					]
-				},
+                    ]
+                },
                 {
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
@@ -762,73 +880,102 @@
                     "bladeSubtitle": "Connectivity Settings",
                     "elements": [
                         {
-                            "name": "infoBoxVirtualNetwork",
-                            "type": "Microsoft.Common.InfoBox",
+                            "name": "virtualNetwork",
+                            "label": "Virtual Network",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-                            "options": {
-                                "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
-                                "style": "Info"
-                            }
-                        },
-                        {
-                            "name": "vnet",
-                            "label": {
-                                "virtualNetwork": "Virtual network",
-                                "subnets": "Subnet"
-                            },
-                            "type": "Microsoft.Network.VirtualNetworkCombo",
-                            "visible": true,
-                            "toolTip": {
-                                "virtualNetwork": "Virtual Network for Data Product",
-                                "subnets": "Subnet for Data Product"
-                            },
-                            "defaultValue": {
-                                "name": "",
-                                "addressPrefixSize": "/27"
-                            },
-                            "constraints": {
-                                "minAddressPrefixSize": "/27"
-                            },
-                            "options": {
-                                "hideExisting": false
-                            },
-                            "subnets": {
-                                "subnet1": {
-                                    "label": "Data Product Subnet",
-                                    "defaultValue": {
-                                        "name": "dataproductSubnet",
-                                        "addressPrefixSize": "/27"
-                                    },
+                            "elements": [
+                                {
+                                    "name": "virtualNetworkText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Virtual Network and Subnet for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxVirtualNetwork",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Network/virtualNetworks?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "virtualNetworkId",
+                                    "label": "Virtual Network",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Virtual Network for your Data Product.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
                                     "constraints": {
-                                        "minAddressPrefixSize": "/27",
-                                        "minAddressCount": 13,
-                                        "requireContiguousAddresses": true
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.virtualNetworkApi.value,(item) => equals(item.location, steps('basics').deploymentDetails.locationName)),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "name": "subnetApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat(steps('connectivitySettings').virtualNetwork.virtualNetworkId, '/subnets?api-version=2020-11-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "subnetId",
+                                    "label": "Subnet",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Select the Subnet for your Data Product. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": "[map(filter(steps('connectivitySettings').virtualNetwork.subnetApi.value,(item) => and(equals(item.properties.privateEndpointNetworkPolicies, 'Disabled'), equals(item.properties.privateLinkServiceNetworkPolicies, 'Disabled'), lessOrEquals(int(last(split(item.properties.addressPrefix, '/'))), 27))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "required": true
                                     }
                                 }
-                            },
-                            "scope": {
-                                "subscriptionId": "[last(split(steps('basics').deploymentDetails.subscriptionId, '/'))]",
-                                "location": "[steps('basics').deploymentDetails.locationName]"
-                            }
+                            ]
                         },
                         {
-							"name": "privateDnsZones",
-							"label": "Private DNS Zones",
-							"type": "Microsoft.Common.Section",
+                            "name": "privateDnsZones",
+                            "label": "Private DNS Zones",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "privateDnsZonesText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the Private DNS Zone settings for your deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "privateDnsZonesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Private DNS Zone settings for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxPrivateDnsZone",
                                     "type": "Microsoft.Common.InfoBox",
@@ -1096,8 +1243,8 @@
                                         "required": true
                                     }
                                 }
-							]
-						}
+                            ]
+                        }
                     ]
                 },
                 {
@@ -1144,7 +1291,7 @@
                 "databricksWorkspaceUrl": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl), '', steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl)]",
                 "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
-                "subnetId": "[if(empty(steps('connectivitySettings').vnet.subnets.subnet1.name), '', concat(steps('basics').deploymentDetails.subscriptionId, '/resourceGroups/', steps('connectivitySettings').vnet.resourceGroup, '/providers/Microsoft.Network/virtualNetworks/', steps('connectivitySettings').vnet.name, '/subnets/', steps('connectivitySettings').vnet.subnets.subnet1.name))]",
+                "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
                 "privateDnsZoneIdSynapseSql": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseSql)]",
@@ -1157,7 +1304,7 @@
                 "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
                 "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
                 "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
-                "tags": "[if(empty(steps('tags').tagsByResource.EnterpriseScaleAnalytics), parse('{}'), steps('tags').tagsByResource.EnterpriseScaleAnalytics)]"
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'EnterpriseScaleAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.EnterpriseScaleAnalytics)))]"
             }
         }
     }
