@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.451.19169",
-      "templateHash": "9422979463248408756"
+      "templateHash": "7456949070054511088"
     }
   },
   "parameters": {
@@ -249,7 +249,7 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
-    "administratorUsername": "SuperMainUser",
+    "administratorUsername": "SqlServerMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
     "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
     "externalContainerRegistrySubscriptionId": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[2], subscription().subscriptionId)]",
