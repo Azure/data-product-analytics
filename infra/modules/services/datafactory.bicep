@@ -9,11 +9,11 @@ param location string
 param tags object
 param subnetId string
 param datafactoryName string
-param purviewId string
 param keyVault001Id string
 param machineLearning001Id string
-param privateDnsZoneIdDataFactory string
-param privateDnsZoneIdDataFactoryPortal string
+param privateDnsZoneIdDataFactory string = ''
+param privateDnsZoneIdDataFactoryPortal string = ''
+param purviewId string = ''
 
 // Variables
 var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
