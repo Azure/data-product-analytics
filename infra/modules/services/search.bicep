@@ -35,7 +35,7 @@ param searchPartitionCount int = 1
 @minValue(1)
 @maxValue(12)
 param searchReplicaCount int = 1
-param privateDnsZoneIdSearch string
+param privateDnsZoneIdSearch string = ''
 
 // Variables
 var searchPrivateEndpointName = '${search.name}-private-endpoint'

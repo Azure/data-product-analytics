@@ -28,7 +28,7 @@ param cognitiveServiceSkuName string = 'S0'
   'TranslatorText'
 ])
 param cognitiveServiceKind string
-param privateDnsZoneIdCognitiveService string
+param privateDnsZoneIdCognitiveService string = ''
 
 // Variables
 var cognitiveServicePrivateEndpointName = '${cognitiveService.name}-private-endpoint'

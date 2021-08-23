@@ -95,6 +95,7 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
+var administratorUsername = 'SqlServerMainUser'
 var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 var externalContainerRegistrySubscriptionId = length(split(externalContainerRegistryId, '/')) >= 9 ? split(externalContainerRegistryId, '/')[2] : subscription().subscriptionId
@@ -103,16 +104,25 @@ var datalakeFileSystemScopes = [for datalakeFileSystemId in datalakeFileSystemId
   subscriptionId: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[2] : subscription().subscriptionId
   resourceGroupName: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[4] : resourceGroup().name
 }]
+var keyvault001Name = '${name}-vault001'
+var synapse001Name = '${name}-synapse001'
+var datafactory001Name = '${name}-datafactory001'
+var cognitiveservice001Name = '${name}-cognitiveservice001'
+var search001Name = '${name}-search001'
+var applicationInsights001Name = '${name}-insights001'
+var containerRegistry001Name = '${name}-containerregistry001'
+var storage001Name = '${name}-storage001'
+var machineLearning001Name = '${name}-machinelearning001'
 
 // Resources
-module keyvault001 'modules/services/keyvault.bicep' = {
-  name: 'keyvault001'
+module keyVault001 'modules/services/keyvault.bicep' = {
+  name: 'keyVault001'
   scope: resourceGroup()
   params: {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    keyvaultName: '${name}-vault001'
+    keyvaultName: keyvault001Name
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
   }
 }
@@ -122,9 +132,10 @@ module synapse001 'modules/services/synapse.bicep' = if (processingService == 's
   scope: resourceGroup()
   params: {
     location: location
-    synapseName: '${name}-synapse001'
     tags: tagsJoined
     subnetId: subnetId
+    synapseName: synapse001Name
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
@@ -152,8 +163,8 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    datafactoryName: '${name}-datafactory001'
-    keyVault001Id: keyvault001.outputs.keyvaultId
+    datafactoryName: datafactory001Name
+    keyVault001Id: keyVault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
@@ -168,7 +179,7 @@ module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    cognitiveServiceName: '${name}-cognitiveservice001'
+    cognitiveServiceName: cognitiveservice001Name
     cognitiveServiceKind: 'FormRecognizer'
     cognitiveServiceSkuName: 'S0'
     privateDnsZoneIdCognitiveService: privateDnsZoneIdCognitiveService
@@ -182,7 +193,7 @@ module search001 'modules/services/search.bicep' = {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    searchName: '${name}-search001'
+    searchName: search001Name
     searchHostingMode: 'default'
     searchPartitionCount: 1
     searchReplicaCount: 1
@@ -197,7 +208,7 @@ module applicationInsights001 'modules/services/applicationinsights.bicep' = {
   params: {
     location: location
     tags: tagsJoined
-    applicationInsightsName: '${name}-insights001'
+    applicationInsightsName: applicationInsights001Name
     logAnalyticsWorkspaceId: ''
   }
 }
@@ -209,7 +220,7 @@ module containerRegistry001 'modules/services/containerregistry.bicep' = {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    containerRegistryName: '${name}-containerregistry001'
+    containerRegistryName: containerRegistry001Name
     privateDnsZoneIdContainerRegistry: privateDnsZoneIdContainerRegistry
   }
 }
@@ -221,7 +232,7 @@ module storage001 'modules/services/storage.bicep' = {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    storageName: '${name}-storage001'
+    storageName: storage001Name
     storageContainerNames: [
       'default'
     ]
@@ -238,10 +249,10 @@ module machineLearning001 'modules/services/machinelearning.bicep' = {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    machineLearningName: '${name}-machinelearning001'
+    machineLearningName: machineLearning001Name
     applicationInsightsId: applicationInsights001.outputs.applicationInsightsId
     containerRegistryId: containerRegistry001.outputs.containerRegistryId
-    keyVaultId: keyvault001.outputs.keyvaultId
+    keyVaultId: keyVault001.outputs.keyvaultId
     storageAccountId: storage001.outputs.storageId
     datalakeFileSystemIds: datalakeFileSystemIds
     aksId: aksId

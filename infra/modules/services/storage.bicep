@@ -20,9 +20,11 @@ param storageName string
   'Premium_ZRS'
 ])
 param storageSkuName string = 'Standard_LRS'
-param storageContainerNames array
-param privateDnsZoneIdBlob string
-param privateDnsZoneIdFile string
+param storageContainerNames array = [
+  'default'
+]
+param privateDnsZoneIdBlob string = ''
+param privateDnsZoneIdFile string = ''
 
 // Variables
 var storageNameCleaned = replace(storageName, '-', '')
