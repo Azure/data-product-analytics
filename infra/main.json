@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "15764389992800873101"
+      "templateHash": "5536132299531310270"
     }
   },
   "parameters": {
@@ -2144,7 +2144,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "13444592266853328455"
+              "templateHash": "2372524078452710445"
             }
           },
           "parameters": {
@@ -2336,7 +2336,6 @@
               ]
             },
             {
-              "condition": "[false()]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'cpucluster001')]",
@@ -2374,7 +2373,6 @@
               ]
             },
             {
-              "condition": "[false()]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'gpucluster001')]",
@@ -2412,7 +2410,7 @@
               ]
             },
             {
-              "condition": "[and(false(), not(empty(parameters('machineLearningComputeInstance001AdministratorObjectId'))))]",
+              "condition": "[not(empty(parameters('machineLearningComputeInstance001AdministratorObjectId')))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
               "apiVersion": "2021-04-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'computeinstance001')]",
