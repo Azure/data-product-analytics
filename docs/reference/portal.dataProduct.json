@@ -543,6 +543,15 @@
                                     }
                                 },
                                 {
+                                    "name": "infoBoxMachineLearningStorageAccount",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableAdls, 'yes')]",
+                                    "options": {
+                                        "text": "We are recommending to create a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. '{prefix}{environment}raw', '{prefix}{environment}encur', '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002').",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
                                     "name": "machineLearningStorageAccountApi",
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
@@ -744,6 +753,15 @@
                                     "request": {
                                         "method": "GET",
                                         "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Storage/storageAccounts?api-version=2021-04-01')]"
+                                    }
+                                },
+                                {
+                                    "name": "infoBoxSynapseDefaultStorageAccount",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "options": {
+                                        "text": "We are recommending to create a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. '{prefix}{environment}raw', '{prefix}{environment}encur', '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002').",
+                                        "style": "Info"
                                     }
                                 },
                                 {
