@@ -13,20 +13,20 @@ param applicationInsightsId string
 param containerRegistryId string
 param keyVaultId string
 param storageAccountId string
-param datalakeFileSystemIds array
-param aksId string
-param synapseId string
-param synapseBigDataPoolId string
-param databricksWorkspaceId string
-param databricksWorkspaceUrl string
+param datalakeFileSystemIds array = []
+param aksId string = ''
+param synapseId string = ''
+param synapseBigDataPoolId string = ''
+param databricksWorkspaceId string = ''
+param databricksWorkspaceUrl string = ''
 @secure()
-param databricksAccessToken string
-param machineLearningComputeInstance001AdministratorObjectId string
+param databricksAccessToken string = ''
+param machineLearningComputeInstance001AdministratorObjectId string = ''
 @secure()
-param machineLearningComputeInstance001AdministratorPublicSshKey string
-param privateDnsZoneIdMachineLearningApi string
-param privateDnsZoneIdMachineLearningNotebooks string
-param enableRoleAssignments bool
+param machineLearningComputeInstance001AdministratorPublicSshKey string = ''
+param privateDnsZoneIdMachineLearningApi string = ''
+param privateDnsZoneIdMachineLearningNotebooks string = ''
+param enableRoleAssignments bool = false
 
 // Variables
 var machineLearningPrivateEndpointName = '${machineLearning.name}-private-endpoint'

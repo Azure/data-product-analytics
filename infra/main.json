@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.451.19169",
-      "templateHash": "15588120672268898046"
+      "version": "0.4.613.9944",
+      "templateHash": "15764389992800873101"
     }
   },
   "parameters": {
@@ -249,16 +249,26 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
+    "administratorUsername": "SqlServerMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
     "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
     "externalContainerRegistrySubscriptionId": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[2], subscription().subscriptionId)]",
-    "externalContainerRegistryResourceGroupName": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[4], resourceGroup().name)]"
+    "externalContainerRegistryResourceGroupName": "[if(greaterOrEquals(length(split(parameters('externalContainerRegistryId'), '/')), 9), split(parameters('externalContainerRegistryId'), '/')[4], resourceGroup().name)]",
+    "keyvault001Name": "[format('{0}-vault001', variables('name'))]",
+    "synapse001Name": "[format('{0}-synapse001', variables('name'))]",
+    "datafactory001Name": "[format('{0}-datafactory001', variables('name'))]",
+    "cognitiveservice001Name": "[format('{0}-cognitiveservice001', variables('name'))]",
+    "search001Name": "[format('{0}-search001', variables('name'))]",
+    "applicationInsights001Name": "[format('{0}-insights001', variables('name'))]",
+    "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
+    "storage001Name": "[format('{0}-storage001', variables('name'))]",
+    "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "keyvault001",
+      "name": "keyVault001",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -275,7 +285,7 @@
             "value": "[parameters('subnetId')]"
           },
           "keyvaultName": {
-            "value": "[format('{0}-vault001', variables('name'))]"
+            "value": "[variables('keyvault001Name')]"
           },
           "privateDnsZoneIdKeyVault": {
             "value": "[parameters('privateDnsZoneIdKeyVault')]"
@@ -287,8 +297,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "17396931380066691428"
+              "version": "0.4.613.9944",
+              "templateHash": "15339723277993214204"
             }
           },
           "parameters": {
@@ -305,7 +315,8 @@
               "type": "string"
             },
             "privateDnsZoneIdKeyVault": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -413,14 +424,17 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "synapseName": {
-            "value": "[format('{0}-synapse001', variables('name'))]"
-          },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "synapseName": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -453,8 +467,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "16514211914787266243"
+              "version": "0.4.613.9944",
+              "templateHash": "10176558571731155634"
             }
           },
           "parameters": {
@@ -470,29 +484,39 @@
             "synapseName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "synapseSqlAdminGroupName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseSqlAdminGroupObjectID": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseDefaultStorageAccountFileSystemId": {
               "type": "string"
             },
             "synapseComputeSubnetId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdSynapseSql": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdSynapseDev": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "purviewId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -529,7 +553,7 @@
                 "purviewConfiguration": {
                   "purviewResourceId": "[parameters('purviewId')]"
                 },
-                "sqlAdministratorLogin": "SqlServerMainUser",
+                "sqlAdministratorLogin": "[parameters('administratorUsername')]",
                 "sqlAdministratorLoginPassword": "[parameters('administratorPassword')]",
                 "virtualNetworkProfile": {
                   "computeSubnetId": "[parameters('synapseComputeSubnetId')]"
@@ -794,8 +818,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "5856561103668696973"
+              "version": "0.4.613.9944",
+              "templateHash": "16578949331457096017"
             }
           },
           "parameters": {
@@ -853,10 +877,10 @@
             "value": "[parameters('subnetId')]"
           },
           "datafactoryName": {
-            "value": "[format('{0}-datafactory001', variables('name'))]"
+            "value": "[variables('datafactory001Name')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyvault001'), '2019-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2019-10-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -877,8 +901,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "8326766383023140200"
+              "version": "0.4.613.9944",
+              "templateHash": "5496146924083898019"
             }
           },
           "parameters": {
@@ -894,9 +918,6 @@
             "datafactoryName": {
               "type": "string"
             },
-            "purviewId": {
-              "type": "string"
-            },
             "keyVault001Id": {
               "type": "string"
             },
@@ -904,10 +925,16 @@
               "type": "string"
             },
             "privateDnsZoneIdDataFactory": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdDataFactoryPortal": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewId": {
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1110,7 +1137,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'keyVault001')]",
         "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
     },
@@ -1134,7 +1161,7 @@
             "value": "[parameters('subnetId')]"
           },
           "cognitiveServiceName": {
-            "value": "[format('{0}-cognitiveservice001', variables('name'))]"
+            "value": "[variables('cognitiveservice001Name')]"
           },
           "cognitiveServiceKind": {
             "value": "FormRecognizer"
@@ -1152,8 +1179,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "9870454350615219161"
+              "version": "0.4.613.9944",
+              "templateHash": "12100587373976318295"
             }
           },
           "parameters": {
@@ -1194,7 +1221,8 @@
               ]
             },
             "privateDnsZoneIdCognitiveService": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1303,7 +1331,7 @@
             "value": "[parameters('subnetId')]"
           },
           "searchName": {
-            "value": "[format('{0}-search001', variables('name'))]"
+            "value": "[variables('search001Name')]"
           },
           "searchHostingMode": {
             "value": "default"
@@ -1327,8 +1355,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "16704235143618594093"
+              "version": "0.4.613.9944",
+              "templateHash": "552653706325284426"
             }
           },
           "parameters": {
@@ -1383,7 +1411,8 @@
               "minValue": 1
             },
             "privateDnsZoneIdSearch": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1481,7 +1510,7 @@
             "value": "[variables('tagsJoined')]"
           },
           "applicationInsightsName": {
-            "value": "[format('{0}-insights001', variables('name'))]"
+            "value": "[variables('applicationInsights001Name')]"
           },
           "logAnalyticsWorkspaceId": {
             "value": ""
@@ -1493,8 +1522,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "18242198277593587222"
+              "version": "0.4.613.9944",
+              "templateHash": "7730118055684773448"
             }
           },
           "parameters": {
@@ -1563,7 +1592,7 @@
             "value": "[parameters('subnetId')]"
           },
           "containerRegistryName": {
-            "value": "[format('{0}-containerregistry001', variables('name'))]"
+            "value": "[variables('containerRegistry001Name')]"
           },
           "privateDnsZoneIdContainerRegistry": {
             "value": "[parameters('privateDnsZoneIdContainerRegistry')]"
@@ -1575,8 +1604,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "3648826402037217547"
+              "version": "0.4.613.9944",
+              "templateHash": "8923139883800780780"
             }
           },
           "parameters": {
@@ -1593,7 +1622,8 @@
               "type": "string"
             },
             "privateDnsZoneIdContainerRegistry": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1717,7 +1747,7 @@
             "value": "[parameters('subnetId')]"
           },
           "storageName": {
-            "value": "[format('{0}-storage001', variables('name'))]"
+            "value": "[variables('storage001Name')]"
           },
           "storageContainerNames": {
             "value": [
@@ -1740,8 +1770,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "10934549476356891599"
+              "version": "0.4.613.9944",
+              "templateHash": "18192219424043759413"
             }
           },
           "parameters": {
@@ -1772,13 +1802,18 @@
               ]
             },
             "storageContainerNames": {
-              "type": "array"
+              "type": "array",
+              "defaultValue": [
+                "default"
+              ]
             },
             "privateDnsZoneIdBlob": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdFile": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -2051,7 +2086,7 @@
             "value": "[parameters('subnetId')]"
           },
           "machineLearningName": {
-            "value": "[format('{0}-machinelearning001', variables('name'))]"
+            "value": "[variables('machineLearning001Name')]"
           },
           "applicationInsightsId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationInsights001'), '2019-10-01').outputs.applicationInsightsId.value]"
@@ -2060,7 +2095,7 @@
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2019-10-01').outputs.containerRegistryId.value]"
           },
           "keyVaultId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyvault001'), '2019-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2019-10-01').outputs.keyvaultId.value]"
           },
           "storageAccountId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2019-10-01').outputs.storageId.value]"
@@ -2108,8 +2143,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "9507998383574264200"
+              "version": "0.4.613.9944",
+              "templateHash": "13444592266853328455"
             }
           },
           "parameters": {
@@ -2138,40 +2173,52 @@
               "type": "string"
             },
             "datalakeFileSystemIds": {
-              "type": "array"
+              "type": "array",
+              "defaultValue": []
             },
             "aksId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseBigDataPoolId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "databricksWorkspaceId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "databricksWorkspaceUrl": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "databricksAccessToken": {
-              "type": "secureString"
+              "type": "secureString",
+              "defaultValue": ""
             },
             "machineLearningComputeInstance001AdministratorObjectId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "machineLearningComputeInstance001AdministratorPublicSshKey": {
-              "type": "secureString"
+              "type": "secureString",
+              "defaultValue": ""
             },
             "privateDnsZoneIdMachineLearningApi": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdMachineLearningNotebooks": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "enableRoleAssignments": {
-              "type": "bool"
+              "type": "bool",
+              "defaultValue": false
             }
           },
           "functions": [],
@@ -2508,7 +2555,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'applicationInsights001')]",
         "[resourceId('Microsoft.Resources/deployments', 'containerRegistry001')]",
-        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'keyVault001')]",
         "[resourceId('Microsoft.Resources/deployments', 'storage001')]",
         "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
       ]
@@ -2539,8 +2586,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "13249139199596288494"
+              "version": "0.4.613.9944",
+              "templateHash": "12415666575721943873"
             }
           },
           "parameters": {
@@ -2606,8 +2653,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "4250629125870462643"
+              "version": "0.4.613.9944",
+              "templateHash": "15963480487499283972"
             }
           },
           "parameters": {
