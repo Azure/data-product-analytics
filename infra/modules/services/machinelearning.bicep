@@ -32,7 +32,7 @@ param enableRoleAssignments bool = false
 var machineLearningPrivateEndpointName = '${machineLearning.name}-private-endpoint'
 
 // Resources
-resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
+resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
   name: machineLearningName
   location: location
   tags: tags
@@ -58,10 +58,11 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-04-0
     containerRegistry: containerRegistryId
     keyVault: keyVaultId
     storageAccount: storageAccountId
+    publicNetworkAccess: 'Disabled'
   }
 }
 
-resource machineLearningKubernetes001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (!empty(aksId)) {
+resource machineLearningKubernetes001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (!empty(aksId)) {
   parent: machineLearning
   name: 'kubernetes001'
   location: location
@@ -75,7 +76,7 @@ resource machineLearningKubernetes001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningDatabricks001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (enableRoleAssignments && !empty(databricksWorkspaceId) && !empty(databricksWorkspaceUrl) && !empty(databricksAccessToken)) {
+resource machineLearningDatabricks001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (enableRoleAssignments && !empty(databricksWorkspaceId) && !empty(databricksWorkspaceUrl) && !empty(databricksAccessToken)) {
   parent: machineLearning
   name: 'databricks001'
   location: location
@@ -106,7 +107,7 @@ resource machineLearningSynapse001 'Microsoft.MachineLearningServices/workspaces
   }
 }
 
-resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (enableRoleAssignments && !empty(synapseId) && !empty(synapseBigDataPoolId)) {
+resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (enableRoleAssignments && !empty(synapseId) && !empty(synapseBigDataPoolId)) {
   parent: machineLearning
   name: 'bigdatapool001'
   location: location
@@ -126,7 +127,7 @@ resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServi
   }
 }
 
-resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
   parent: machineLearning
   name: 'cpucluster001'
   dependsOn: [
@@ -162,7 +163,7 @@ resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = {
+resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
   parent: machineLearning
   name: 'gpucluster001'
   dependsOn: [
@@ -198,7 +199,7 @@ resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspa
   }
 }
 
-resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-04-01' = if (!empty(machineLearningComputeInstance001AdministratorObjectId)) {
+resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (!empty(machineLearningComputeInstance001AdministratorObjectId)) {
   parent: machineLearning
   name: 'computeinstance001'
   dependsOn: [
