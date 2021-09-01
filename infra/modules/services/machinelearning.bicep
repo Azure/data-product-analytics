@@ -293,7 +293,7 @@ resource machineLearningPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020
 
 resource machineLearningPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMachineLearningApi) && !empty(privateDnsZoneIdMachineLearningNotebooks)) {
   parent: machineLearningPrivateEndpoint
-  name: 'aRecord'
+  name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {
