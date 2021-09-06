@@ -69,9 +69,11 @@ jobs:
             az logout
 
   deployment:
+    name: "Deployment of IaC templates"
     needs: [validation]
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    continue-on-error: false
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
