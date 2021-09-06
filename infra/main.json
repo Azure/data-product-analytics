@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "7888017075736619877"
+      "templateHash": "1700505257903612354"
     }
   },
   "parameters": {
@@ -902,7 +902,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "9695930882477716907"
+              "templateHash": "17791774633133493240"
             }
           },
           "parameters": {
@@ -1125,6 +1125,48 @@
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints', parameters('datafactoryName'), 'default', replace(variables('keyVault001Name'), '-', ''))]",
                 "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', parameters('datafactoryName'), variables('datafactoryDefaultManagedVnetIntegrationRuntimeName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', replace(variables('machineLearning001Name'), '-', ''))]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "amlworkspace",
+                "privateLinkResourceId": "[parameters('machineLearning001Id')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/linkedservices",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('datafactoryName'), replace(variables('machineLearning001Name'), '-', ''))]",
+              "properties": {
+                "type": "AzureMLService",
+                "annotations": [],
+                "connectVia": {
+                  "type": "IntegrationRuntimeReference",
+                  "referenceName": "[variables('datafactoryDefaultManagedVnetIntegrationRuntimeName')]",
+                  "parameters": {}
+                },
+                "description": "Machine Learning for executing Pipelines.",
+                "parameters": {},
+                "typeProperties": {
+                  "tenant": "[subscription().tenantId]",
+                  "subscriptionId": "[variables('machineLearning001SubscriptionId')]",
+                  "resourceGroupName": "[variables('machineLearning001ResourceGroupName')]",
+                  "mlWorkspaceName": "[variables('machineLearning001Name')]",
+                  "authentication": "MSI"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/integrationRuntimes', parameters('datafactoryName'), variables('datafactoryDefaultManagedVnetIntegrationRuntimeName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints', parameters('datafactoryName'), 'default', replace(variables('machineLearning001Name'), '-', ''))]"
               ]
             }
           ],
@@ -2144,7 +2186,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "16463397985929739690"
+              "templateHash": "6516904727605558714"
             }
           },
           "parameters": {
@@ -2228,7 +2270,7 @@
           "resources": [
             {
               "type": "Microsoft.MachineLearningServices/workspaces",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[parameters('machineLearningName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2253,13 +2295,14 @@
                 "applicationInsights": "[parameters('applicationInsightsId')]",
                 "containerRegistry": "[parameters('containerRegistryId')]",
                 "keyVault": "[parameters('keyVaultId')]",
-                "storageAccount": "[parameters('storageAccountId')]"
+                "storageAccount": "[parameters('storageAccountId')]",
+                "publicNetworkAccess": "Disabled"
               }
             },
             {
               "condition": "[not(empty(parameters('aksId')))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'kubernetes001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2277,7 +2320,7 @@
             {
               "condition": "[and(and(and(parameters('enableRoleAssignments'), not(empty(parameters('databricksWorkspaceId')))), not(empty(parameters('databricksWorkspaceUrl')))), not(empty(parameters('databricksAccessToken'))))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'databricks001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2316,7 +2359,7 @@
             {
               "condition": "[and(and(parameters('enableRoleAssignments'), not(empty(parameters('synapseId')))), not(empty(parameters('synapseBigDataPoolId'))))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'bigdatapool001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2337,7 +2380,7 @@
             },
             {
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'cpucluster001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2374,7 +2417,7 @@
             },
             {
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'gpucluster001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -2412,7 +2455,7 @@
             {
               "condition": "[not(empty(parameters('machineLearningComputeInstance001AdministratorObjectId')))]",
               "type": "Microsoft.MachineLearningServices/workspaces/computes",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2021-07-01",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), 'computeinstance001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
