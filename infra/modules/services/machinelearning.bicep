@@ -127,123 +127,123 @@ resource machineLearningSynapse001BigDataPool001 'Microsoft.MachineLearningServi
   }
 }
 
-// resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
-//   parent: machineLearning
-//   name: 'cpucluster001'
-//   dependsOn: [
-//     machineLearningPrivateEndpoint
-//     machineLearningPrivateEndpointARecord
-//   ]
-//   location: location
-//   tags: tags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     computeType: 'AmlCompute'
-//     computeLocation: location
-//     description: 'Machine Learning cluster 001'
-//     disableLocalAuth: true
-//     properties: {
-//       enableNodePublicIp: false
-//       isolatedNetwork: false
-//       osType: 'Linux'
-//       remoteLoginPortPublicAccess: 'Disabled'
-//       scaleSettings: {
-//         minNodeCount: 0
-//         maxNodeCount: 4
-//         nodeIdleTimeBeforeScaleDown: 'PT120S'
-//       }
-//       subnet: {
-//         id: subnetId
-//       }
-//       vmPriority: 'Dedicated'
-//       vmSize: 'Standard_DS3_v2'
-//     }
-//   }
-// }
+resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
+  parent: machineLearning
+  name: 'cpucluster001'
+  dependsOn: [
+    machineLearningPrivateEndpoint
+    machineLearningPrivateEndpointARecord
+  ]
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    computeType: 'AmlCompute'
+    computeLocation: location
+    description: 'Machine Learning cluster 001'
+    disableLocalAuth: true
+    properties: {
+      enableNodePublicIp: false
+      isolatedNetwork: false
+      osType: 'Linux'
+      remoteLoginPortPublicAccess: 'Disabled'
+      scaleSettings: {
+        minNodeCount: 0
+        maxNodeCount: 4
+        nodeIdleTimeBeforeScaleDown: 'PT120S'
+      }
+      subnet: {
+        id: subnetId
+      }
+      vmPriority: 'Dedicated'
+      vmSize: 'Standard_DS3_v2'
+    }
+  }
+}
 
-// resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
-//   parent: machineLearning
-//   name: 'gpucluster001'
-//   dependsOn: [
-//     machineLearningPrivateEndpoint
-//     machineLearningPrivateEndpointARecord
-//   ]
-//   location: location
-//   tags: tags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     computeType: 'AmlCompute'
-//     computeLocation: location
-//     description: 'Machine Learning cluster 001'
-//     disableLocalAuth: true
-//     properties: {
-//       enableNodePublicIp: false
-//       isolatedNetwork: false
-//       osType: 'Linux'
-//       remoteLoginPortPublicAccess: 'Disabled'
-//       scaleSettings: {
-//         minNodeCount: 0
-//         maxNodeCount: 4
-//         nodeIdleTimeBeforeScaleDown: 'PT120S'
-//       }
-//       subnet: {
-//         id: subnetId
-//       }
-//       vmPriority: 'Dedicated'
-//       vmSize: 'Standard_NC6'
-//     }
-//   }
-// }
+resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = {
+  parent: machineLearning
+  name: 'gpucluster001'
+  dependsOn: [
+    machineLearningPrivateEndpoint
+    machineLearningPrivateEndpointARecord
+  ]
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    computeType: 'AmlCompute'
+    computeLocation: location
+    description: 'Machine Learning cluster 001'
+    disableLocalAuth: true
+    properties: {
+      enableNodePublicIp: false
+      isolatedNetwork: false
+      osType: 'Linux'
+      remoteLoginPortPublicAccess: 'Disabled'
+      scaleSettings: {
+        minNodeCount: 0
+        maxNodeCount: 4
+        nodeIdleTimeBeforeScaleDown: 'PT120S'
+      }
+      subnet: {
+        id: subnetId
+      }
+      vmPriority: 'Dedicated'
+      vmSize: 'Standard_NC6'
+    }
+  }
+}
 
-// resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (!empty(machineLearningComputeInstance001AdministratorObjectId)) {
-//   parent: machineLearning
-//   name: 'computeinstance001'
-//   dependsOn: [
-//     machineLearningPrivateEndpoint
-//     machineLearningPrivateEndpointARecord
-//   ]
-//   location: location
-//   tags: tags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     computeType: 'ComputeInstance'
-//     computeLocation: location
-//     description: 'Machine Learning compute instance 001'
-//     disableLocalAuth: true
-//     properties: {
-//       applicationSharingPolicy: 'Personal'
-//       computeInstanceAuthorizationType: 'personal'
-//       enableNodePublicIp: false
-//       isolatedNetwork: false
-//       personalComputeInstanceSettings: {
-//         assignedUser: {
-//           objectId: machineLearningComputeInstance001AdministratorObjectId
-//           tenantId: subscription().tenantId
-//         }
-//       }
-//       setupScripts: {
-//         scripts: {
-//           creationScript: {}
-//           startupScript: {}
-//         }
-//       }
-//       sshSettings: {
-//         adminPublicKey: machineLearningComputeInstance001AdministratorPublicSshKey
-//         sshPublicAccess: empty(machineLearningComputeInstance001AdministratorPublicSshKey) ? 'Disabled' : 'Enabled'
-//       }
-//       subnet: {
-//         id: subnetId
-//       }
-//       vmSize: 'Standard_DS3_v2'
-//     }
-//   }
-// }
+resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/workspaces/computes@2021-07-01' = if (!empty(machineLearningComputeInstance001AdministratorObjectId)) {
+  parent: machineLearning
+  name: 'computeinstance001'
+  dependsOn: [
+    machineLearningPrivateEndpoint
+    machineLearningPrivateEndpointARecord
+  ]
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    computeType: 'ComputeInstance'
+    computeLocation: location
+    description: 'Machine Learning compute instance 001'
+    disableLocalAuth: true
+    properties: {
+      applicationSharingPolicy: 'Personal'
+      computeInstanceAuthorizationType: 'personal'
+      enableNodePublicIp: false
+      isolatedNetwork: false
+      personalComputeInstanceSettings: {
+        assignedUser: {
+          objectId: machineLearningComputeInstance001AdministratorObjectId
+          tenantId: subscription().tenantId
+        }
+      }
+      setupScripts: {
+        scripts: {
+          creationScript: {}
+          startupScript: {}
+        }
+      }
+      sshSettings: {
+        adminPublicKey: machineLearningComputeInstance001AdministratorPublicSshKey
+        sshPublicAccess: empty(machineLearningComputeInstance001AdministratorPublicSshKey) ? 'Disabled' : 'Enabled'
+      }
+      subnet: {
+        id: subnetId
+      }
+      vmSize: 'Standard_DS3_v2'
+    }
+  }
+}
 
 resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
   parent: machineLearning

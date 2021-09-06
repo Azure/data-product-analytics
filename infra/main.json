@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "2321558556752454545"
+      "templateHash": "1700505257903612354"
     }
   },
   "parameters": {
@@ -2186,7 +2186,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "5845138970415571890"
+              "templateHash": "6516904727605558714"
             }
           },
           "parameters": {
@@ -2376,6 +2376,128 @@
               "dependsOn": [
                 "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]",
                 "[resourceId('Microsoft.MachineLearningServices/workspaces/linkedServices', parameters('machineLearningName'), 'synapse001')]"
+              ]
+            },
+            {
+              "type": "Microsoft.MachineLearningServices/workspaces/computes",
+              "apiVersion": "2021-07-01",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'cpucluster001')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "computeType": "AmlCompute",
+                "computeLocation": "[parameters('location')]",
+                "description": "Machine Learning cluster 001",
+                "disableLocalAuth": true,
+                "properties": {
+                  "enableNodePublicIp": false,
+                  "isolatedNetwork": false,
+                  "osType": "Linux",
+                  "remoteLoginPortPublicAccess": "Disabled",
+                  "scaleSettings": {
+                    "minNodeCount": 0,
+                    "maxNodeCount": 4,
+                    "nodeIdleTimeBeforeScaleDown": "PT120S"
+                  },
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "vmPriority": "Dedicated",
+                  "vmSize": "Standard_DS3_v2"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', variables('machineLearningPrivateEndpointName'), 'default')]"
+              ]
+            },
+            {
+              "type": "Microsoft.MachineLearningServices/workspaces/computes",
+              "apiVersion": "2021-07-01",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'gpucluster001')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "computeType": "AmlCompute",
+                "computeLocation": "[parameters('location')]",
+                "description": "Machine Learning cluster 001",
+                "disableLocalAuth": true,
+                "properties": {
+                  "enableNodePublicIp": false,
+                  "isolatedNetwork": false,
+                  "osType": "Linux",
+                  "remoteLoginPortPublicAccess": "Disabled",
+                  "scaleSettings": {
+                    "minNodeCount": 0,
+                    "maxNodeCount": 4,
+                    "nodeIdleTimeBeforeScaleDown": "PT120S"
+                  },
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "vmPriority": "Dedicated",
+                  "vmSize": "Standard_NC6"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', variables('machineLearningPrivateEndpointName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('machineLearningComputeInstance001AdministratorObjectId')))]",
+              "type": "Microsoft.MachineLearningServices/workspaces/computes",
+              "apiVersion": "2021-07-01",
+              "name": "[format('{0}/{1}', parameters('machineLearningName'), 'computeinstance001')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "computeType": "ComputeInstance",
+                "computeLocation": "[parameters('location')]",
+                "description": "Machine Learning compute instance 001",
+                "disableLocalAuth": true,
+                "properties": {
+                  "applicationSharingPolicy": "Personal",
+                  "computeInstanceAuthorizationType": "personal",
+                  "enableNodePublicIp": false,
+                  "isolatedNetwork": false,
+                  "personalComputeInstanceSettings": {
+                    "assignedUser": {
+                      "objectId": "[parameters('machineLearningComputeInstance001AdministratorObjectId')]",
+                      "tenantId": "[subscription().tenantId]"
+                    }
+                  },
+                  "setupScripts": {
+                    "scripts": {
+                      "creationScript": {},
+                      "startupScript": {}
+                    }
+                  },
+                  "sshSettings": {
+                    "adminPublicKey": "[parameters('machineLearningComputeInstance001AdministratorPublicSshKey')]",
+                    "sshPublicAccess": "[if(empty(parameters('machineLearningComputeInstance001AdministratorPublicSshKey')), 'Disabled', 'Enabled')]"
+                  },
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "vmSize": "Standard_DS3_v2"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningServices/workspaces', parameters('machineLearningName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('machineLearningPrivateEndpointName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', variables('machineLearningPrivateEndpointName'), 'default')]"
               ]
             },
             {
