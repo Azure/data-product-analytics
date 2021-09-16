@@ -11,6 +11,7 @@ param subnetId string
 param cognitiveServiceName string
 param cognitiveServiceSkuName string = 'S0'
 @allowed([
+  'None'
   'AnomalyDetector'
   'ComputerVision'
   'CognitiveServices'

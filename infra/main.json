@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "7118739398889617477"
+      "templateHash": "4455117515810704882"
     }
   },
   "parameters": {
@@ -136,6 +136,30 @@
       "metadata": {
         "description": "Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account)."
       }
+    },
+    "cognitiveServiceKind": {
+      "type": "string",
+      "defaultValue": "None",
+      "metadata": {
+        "description": "Specifies the cognitive service kind that will be deployed."
+      },
+      "allowedValues": [
+        "None",
+        "AnomalyDetector",
+        "ComputerVision",
+        "ContentModerator",
+        "CustomVision.Training",
+        "CustomVision.Prediction",
+        "Face",
+        "FormRecognizer",
+        "ImmersiveReader",
+        "LUIS",
+        "Personalizer",
+        "SpeechServices",
+        "TextAnalytics",
+        "QnAMaker",
+        "TranslatorText"
+      ]
     },
     "subnetId": {
       "type": "string",
@@ -1184,6 +1208,7 @@
       ]
     },
     {
+      "condition": "[not(equals(parameters('cognitiveServiceKind'), 'None'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "cognitiveservice001",
@@ -1206,7 +1231,7 @@
             "value": "[variables('cognitiveservice001Name')]"
           },
           "cognitiveServiceKind": {
-            "value": "FormRecognizer"
+            "value": "[parameters('cognitiveServiceKind')]"
           },
           "cognitiveServiceSkuName": {
             "value": "S0"
@@ -1222,7 +1247,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "1987002146294078897"
+              "templateHash": "418571688287107858"
             }
           },
           "parameters": {
@@ -1245,6 +1270,7 @@
             "cognitiveServiceKind": {
               "type": "string",
               "allowedValues": [
+                "None",
                 "AnomalyDetector",
                 "ComputerVision",
                 "CognitiveServices",

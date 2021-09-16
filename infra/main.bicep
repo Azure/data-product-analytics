@@ -54,6 +54,25 @@ param databricksWorkspaceUrl string = ''
 param databricksAccessToken string = ''
 @description('Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account).')
 param enableRoleAssignments bool = false
+@allowed([
+  'None'
+  'AnomalyDetector'
+  'ComputerVision'
+  'ContentModerator'
+  'CustomVision.Training'
+  'CustomVision.Prediction'
+  'Face'
+  'FormRecognizer'
+  'ImmersiveReader'
+  'LUIS'
+  'Personalizer'
+  'SpeechServices'
+  'TextAnalytics'
+  'QnAMaker'
+  'TranslatorText'
+])
+@description('Specifies the cognitive service kind that will be deployed.')
+param cognitiveServiceKind string = 'None'
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -172,7 +191,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   }
 }
 
-module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
+module cognitiveservice001 'modules/services/cognitiveservices.bicep' = if(cognitiveServiceKind != 'None') {
   name: 'cognitiveservice001'
   scope: resourceGroup()
   params: {
@@ -180,7 +199,7 @@ module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
     tags: tagsJoined
     subnetId: subnetId
     cognitiveServiceName: cognitiveservice001Name
-    cognitiveServiceKind: 'FormRecognizer'
+    cognitiveServiceKind: cognitiveServiceKind
     cognitiveServiceSkuName: 'S0'
     privateDnsZoneIdCognitiveService: privateDnsZoneIdCognitiveService
   }

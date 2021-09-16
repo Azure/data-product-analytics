@@ -53,6 +53,9 @@
         "enableRoleAssignments": {
             "value": false
         },
+        "cognitiveServiceKind": {
+            "value": "None"
+        },
         "subnetId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-dev-network/providers/Microsoft.Network/virtualNetworks/dlz01-dev-vnet/subnets/DataProduct001Subnet"
         },

@@ -863,6 +863,94 @@
                                     }
                                 },
                                 {
+                                    "name": "cognitiveServiceKind",
+                                    "label": "Cognitive Services Kind",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "None",
+                                    "toolTip": "Select the kind of Cognitive Service that should be deployed.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "None",
+                                                "description": "Select if you do NOT want to deploy a Cognitive Service.",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Anomaly Detector",
+                                                "description": "Select if you want to deploy Anomaly Detector.",
+                                                "value": "AnomalyDetector"
+                                            },
+                                            {
+                                                "label": "Computer Vision",
+                                                "description": "Select if you want to deploy Computer Vision.",
+                                                "value": "ComputerVision"
+                                            },
+                                            {
+                                                "label": "Content Moderator",
+                                                "description": "Select if you want to deploy Content Moderator.",
+                                                "value": "ContentModerator"
+                                            },
+                                            {
+                                                "label": "Custom Vision",
+                                                "description": "Select if you want to deploy Custom Vision.",
+                                                "value": "CustomVision.Training"
+                                            },
+                                            {
+                                                "label": "Face",
+                                                "description": "Select if you want to deploy Face.",
+                                                "value": "Face"
+                                            },
+                                            {
+                                                "label": "Form Recognizer",
+                                                "description": "Select if you want to deploy Form Recognizer.",
+                                                "value": "FormRecognizer"
+                                            },
+                                            {
+                                                "label": "Immersive Reader",
+                                                "description": "Select if you want to deploy Immersive Reader.",
+                                                "value": "ImmersiveReader"
+                                            },
+                                            {
+                                                "label": "LUIS",
+                                                "description": "Select if you want to deploy Language Understanding Intelligent Service.",
+                                                "value": "LUIS"
+                                            },
+                                            {
+                                                "label": "Personalizer",
+                                                "description": "Select if you want to deploy Personalizer.",
+                                                "value": "Personalizer"
+                                            },
+                                            {
+                                                "label": "Speech Services",
+                                                "description": "Select if you want to deploy Speech Services.",
+                                                "value": "SpeechServices"
+                                            },
+                                            {
+                                                "label": "Text Analytics",
+                                                "description": "Select if you want to deploy Text Analytics.",
+                                                "value": "TextAnalytics"
+                                            },
+                                            {
+                                                "label": "QnA Maker",
+                                                "description": "Select if you want to deploy QnA Maker.",
+                                                "value": "QnAMaker"
+                                            },
+                                            {
+                                                "label": "Translator Text",
+                                                "description": "Select if you want to deploy Translator Text.",
+                                                "value": "TranslatorText"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
                                     "name": "infoBoxRoleAssignment",
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
@@ -1309,6 +1397,7 @@
                 "databricksWorkspaceUrl": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl), '', steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl)]",
                 "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "cognitiveServiceKind": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKind), '', steps('generalSettings').generalSettings.cognitiveServiceKind)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
