@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "4455117515810704882"
+      "templateHash": "8258172417069678188"
     }
   },
   "parameters": {
@@ -1247,7 +1247,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "418571688287107858"
+              "templateHash": "7867837400623953116"
             }
           },
           "parameters": {
@@ -1299,6 +1299,7 @@
           },
           "resources": [
             {
+              "condition": "[not(equals(parameters('cognitiveServiceKind'), 'None'))]",
               "type": "Microsoft.CognitiveServices/accounts",
               "apiVersion": "2021-04-30",
               "name": "[parameters('cognitiveServiceName')]",

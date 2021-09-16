@@ -35,7 +35,7 @@ param privateDnsZoneIdCognitiveService string = ''
 var cognitiveServicePrivateEndpointName = '${cognitiveService.name}-private-endpoint'
 
 // Resources
-resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
+resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = if(cognitiveServiceKind != 'None') {
   name: cognitiveServiceName
   location: location
   tags: tags
