@@ -11,7 +11,6 @@ param subnetId string
 param cognitiveServiceName string
 param cognitiveServiceSkuName string = 'S0'
 @allowed([
-  'None'
   'AnomalyDetector'
   'ComputerVision'
   'CognitiveServices'
@@ -35,7 +34,7 @@ param privateDnsZoneIdCognitiveService string = ''
 var cognitiveServicePrivateEndpointName = '${cognitiveService.name}-private-endpoint'
 
 // Resources
-resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = if(cognitiveServiceKind != 'None') {
+resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
   name: cognitiveServiceName
   location: location
   tags: tags
