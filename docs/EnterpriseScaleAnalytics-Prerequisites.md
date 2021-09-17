@@ -29,6 +29,8 @@ The deployment and code artifacts include the following services:
 - [Storage](https://azure.microsoft.com/services/storage/)
 - [BigData Pool](https://docs.microsoft.com/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
 
+## Security Mechanisms of the Data Product Analytics
+
 The Data Product Analytics template and deployment will provide users with a secure Data Science environment that follows a multi-layered security approach by using a Private Endpoint driven network design, an identity driven access model as well as service-specific security properties and settings.
 
 On the networking layer, all services come with Private Endpoints enabled as well as public network access disabled. This ensures that network traffic never leaves the corporate network and that services cannot be accessed from the public internet. In addition, encryption in transit is enforced by setting the minimum TLS version to 1.2 for all services where such a parameter is exposed and by enforcing HTTPS traffic on the default storage account of the Azure Machine Learning workspace. For Data FActory and Synapse, managed virtual networks are created by default to also ensure secure network traffic within these services. For Synapse, we also enable the data exfiltration risk protection to block managed private endpoints connecting to services hosted in other tenants. Thereby, we secure the users from any data-exfiltration risk within Synapse.
