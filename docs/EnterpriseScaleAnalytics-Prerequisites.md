@@ -26,9 +26,16 @@ The deployment and code artifacts include the following services:
 - [Machine Learning](https://azure.microsoft.com/services/machine-learning/)
 - [Container Registry](https://azure.microsoft.com/services/container-registry/)
 - [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is)
-- [SQL Server](https://docs.microsoft.com/sql/sql-server/?view=sql-server-ver15)
 - [Storage](https://azure.microsoft.com/services/storage/)
 - [BigData Pool](https://docs.microsoft.com/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
+
+## Security Mechanisms of the Data Product Analytics
+
+The Data Product Analytics template and deployment will provide users with a secure Data Science environment that follows a multi-layered security approach by using a Private Endpoint driven network design, an identity driven access model as well as service-specific security properties and settings.
+
+On the networking layer, all services come with Private Endpoints enabled as well as public network access disabled. This ensures that network traffic never leaves the corporate network and that services cannot be accessed from the public internet. In addition, encryption in transit is enforced by setting the minimum TLS version to 1.2 for all services where such a parameter is exposed and by enforcing HTTPS traffic on the default storage account of the Azure Machine Learning workspace. For Data Factory and Synapse, managed virtual networks are created by default to also ensure secure network traffic within these services. For Synapse, we also enable the data exfiltration risk protection to block managed private endpoints connecting to services hosted in other tenants. Thereby, we secure the users from any data-exfiltration risk within Synapse.
+
+All services that get deployed as part of this Data Product are configured in a highly secure way. For instance, the Azure Machine Learning workspaces is flagged as a high business impact workspace in order to reduce the metadata and diagnostic data collected by the service. Also, the public access is fully disabled for the workspace and the user needs to be connected to the same virtual network in order to connect to the workspace via the Azure Machine Learning studio interface successfully. The default storage account of the workspace also comes pre-configured with disabled public blob access and cross-tenant replication and a retention policy for storage account containers protects the users from accidental data deletion and allows them to recover data, if necessary. The default Key Vault also has soft-delete and purge protection enabled to protect users from loss of secrets and certificates and the default container registry has a number of policies enabled to make sure the environment is secure against harmful images (quarantine policy).
 
 ## Code Structure
 
@@ -78,7 +85,7 @@ Before we start with the deployment, please make sure that you have the followin
 - A resource group within an Azure subscription
 - An Azure subscription. If you don't have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/free/).
 - [User Access Administrator](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) access to the subscription to be able to create a service principal and role assignments for it.
-- Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration (subnets with name `DataProduct00{x}Subnet` or `DataIntegration00{x}Subnet`.).
+- Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled as well as the `Microsoft.Storage` [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview#:~:text=%20Service%20endpoints%20provide%20the%20following%20benefits%3A%20,public%20IP%20addresses%20in%20your%20virtual...%20More%20) enabled in the region of the data product deployment. The Data Landing Zone deployment already creates a few subnets with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled (subnets with name `DataProduct00{x}Subnet` or `DataIntegration00{x}Subnet`.). However, these subnets do not have the `Microsoft.Storage` service endpoint enabled by default and therefore this must be [configured manually in the Azure Portal or by using Azure CLI or PowerShell](https://docs.microsoft.com/en-us/azure/virtual-network/tutorial-restrict-network-access-to-resources#enable-a-service-endpoint). Today, the service endpoint is required for compute clusters and compute instances in Azure Machine Learning.
 - For the deployment, please choose one of the **Supported Regions**.
 
 ## Deployment

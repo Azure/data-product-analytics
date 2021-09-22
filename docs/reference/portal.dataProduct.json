@@ -1015,7 +1015,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet.",
+                                        "text": "Please select the Virtual Network of your Data Landing Zone and select a free Subnet within the Virtual Network to make sure that you have proper outbound connectivity as well as DNS name resolution in place. The subnet must have 'privateEndpointNetworkPolicies' and 'privateLinkServiceNetworkPolicies' set to disabled. This is already pre-configured for you in the DataProduct and DataIntegration subnets in the Data Landing Zone Vnet. In addition, Azure Machine Learning requires a subnet with the 'Microsoft.Storage' service endpoint enabled in the region of the Data Product deployment. This is not enabled by default and therefore must be setup manually.",
                                         "style": "Info"
                                     }
                                 },
