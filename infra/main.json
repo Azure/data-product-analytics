@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "7118739398889617477"
+      "templateHash": "12179575723073357481"
     }
   },
   "parameters": {
@@ -468,7 +468,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4001849972006585130"
+              "templateHash": "1677187290007973520"
             }
           },
           "parameters": {
@@ -591,13 +591,15 @@
                 },
                 "autoScale": {
                   "enabled": true,
-                  "maxNodeCount": 10,
-                  "minNodeCount": 3
+                  "minNodeCount": 3,
+                  "maxNodeCount": 10
                 },
                 "customLibraries": [],
                 "defaultSparkLogFolder": "logs/",
                 "dynamicExecutorAllocation": {
-                  "enabled": true
+                  "enabled": true,
+                  "minExecutors": 1,
+                  "maxExecutors": 9
                 },
                 "nodeSize": "Small",
                 "nodeSizeFamily": "MemoryOptimized",
@@ -1565,7 +1567,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "7730118055684773448"
+              "templateHash": "11163868011668257849"
             }
           },
           "parameters": {
@@ -1586,7 +1588,7 @@
           "resources": [
             {
               "type": "Microsoft.Insights/components",
-              "apiVersion": "2020-02-02-preview",
+              "apiVersion": "2020-02-02",
               "name": "[parameters('applicationInsightsName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
