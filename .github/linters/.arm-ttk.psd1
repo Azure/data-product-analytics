@@ -4,11 +4,11 @@
 @{
     # Test = @( )
     Skip = @(
-        'Template Should Not Contain Blanks',
+        'Template Should Not Contain Blanks'
         'DeploymentTemplate Must Not Contain Hardcoded Uri'
-        'DependsOn Best Practices',
-        'Outputs Must Not Contain Secrets',
-        'IDs Should Be Derived From ResourceIDs',
+        'DependsOn Best Practices'
+        'Outputs Must Not Contain Secrets'
+        'IDs Should Be Derived From ResourceIDs'
         'Parameters Must Be Referenced'
     )
 }
