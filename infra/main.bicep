@@ -54,6 +54,25 @@ param databricksWorkspaceUrl string = ''
 param databricksAccessToken string = ''
 @description('Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account).')
 param enableRoleAssignments bool = false
+@allowed([
+  'AnomalyDetector'
+  'ComputerVision'
+  'ContentModerator'
+  'CustomVision.Training'
+  'CustomVision.Prediction'
+  'Face'
+  'FormRecognizer'
+  'ImmersiveReader'
+  'LUIS'
+  'Personalizer'
+  'SpeechServices'
+  'TextAnalytics'
+  'TextTranslation'
+])
+@description('Specifies the cognitive service kind that will be deployed.')
+param cognitiveServiceKinds array = []
+@description('Specifies whether Azure Search should be deployed as part of the template.')
+param enableSearch bool = false
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -107,7 +126,7 @@ var datalakeFileSystemScopes = [for datalakeFileSystemId in datalakeFileSystemId
 var keyvault001Name = '${name}-vault001'
 var synapse001Name = '${name}-synapse001'
 var datafactory001Name = '${name}-datafactory001'
-var cognitiveservice001Name = '${name}-cognitiveservice001'
+var cognitiveservicesName = '${name}-cognitiveservice'
 var search001Name = '${name}-search001'
 var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
@@ -172,21 +191,21 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   }
 }
 
-module cognitiveservice001 'modules/services/cognitiveservices.bicep' = {
-  name: 'cognitiveservice001'
+module cognitiveservices 'modules/services/cognitiveservices.bicep' = [for (cognitiveServiceKind, index) in cognitiveServiceKinds: {
+  name: 'cognitiveservice${padLeft(index + 1, 3, '0')}'
   scope: resourceGroup()
   params: {
     location: location
     tags: tagsJoined
     subnetId: subnetId
-    cognitiveServiceName: cognitiveservice001Name
-    cognitiveServiceKind: 'FormRecognizer'
+    cognitiveServiceName: '${cognitiveservicesName}${padLeft(index + 1, 3, '0')}'
+    cognitiveServiceKind: cognitiveServiceKind
     cognitiveServiceSkuName: 'S0'
     privateDnsZoneIdCognitiveService: privateDnsZoneIdCognitiveService
   }
-}
+}]
 
-module search001 'modules/services/search.bicep' = {
+module search001 'modules/services/search.bicep' = if(enableSearch) {
   name: 'search001'
   scope: resourceGroup()
   params: {

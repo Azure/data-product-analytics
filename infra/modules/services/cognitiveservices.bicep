@@ -24,8 +24,7 @@ param cognitiveServiceSkuName string = 'S0'
   'Personalizer'
   'SpeechServices'
   'TextAnalytics'
-  'QnAMaker'
-  'TranslatorText'
+  'TextTranslation'
 ])
 param cognitiveServiceKind string
 param privateDnsZoneIdCognitiveService string = ''
@@ -42,7 +41,7 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     type: 'SystemAssigned'
   }
   sku: {
-    name: cognitiveServiceSkuName
+    name: cognitiveServiceKind == 'ComputerVision' || cognitiveServiceKind == 'TextTranslation' ? 'S1' : cognitiveServiceKind == 'TextAnalytics' ? 'S' : cognitiveServiceSkuName
   }
   kind: cognitiveServiceKind
   properties: {
@@ -50,9 +49,6 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     apiProperties: {}
     customSubDomainName: cognitiveServiceName
     disableLocalAuth: true
-    encryption: {
-      keySource: 'Microsoft.CognitiveServices'
-    }
     networkAcls: {
       defaultAction: 'Deny'
       ipRules: []

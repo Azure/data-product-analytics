@@ -8,7 +8,7 @@
     #)
     #IncludeDefaultRules=${true}
     ExcludeRules = @(
-       'PSUseShouldProcessForStateChangingFunctions',
+       'PSUseShouldProcessForStateChangingFunctions'
        'PSReviewUnusedParameter'
        'PSAvoidGlobalVars'
        'PSAvoidUsingPlainTextForPassword'

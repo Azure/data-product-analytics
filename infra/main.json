@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "12179575723073357481"
+      "templateHash": "15295458181843473147"
     }
   },
   "parameters": {
@@ -137,6 +137,35 @@
         "description": "Specifies whether role assignments should be enabled for Synapse (Blob Storage Contributor to default storage account)."
       }
     },
+    "cognitiveServiceKinds": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Specifies the cognitive service kind that will be deployed."
+      },
+      "allowedValues": [
+        "AnomalyDetector",
+        "ComputerVision",
+        "ContentModerator",
+        "CustomVision.Training",
+        "CustomVision.Prediction",
+        "Face",
+        "FormRecognizer",
+        "ImmersiveReader",
+        "LUIS",
+        "Personalizer",
+        "SpeechServices",
+        "TextAnalytics",
+        "TextTranslation"
+      ]
+    },
+    "enableSearch": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Specifies whether Azure Search should be deployed as part of the template."
+      }
+    },
     "subnetId": {
       "type": "string",
       "metadata": {
@@ -257,7 +286,7 @@
     "keyvault001Name": "[format('{0}-vault001', variables('name'))]",
     "synapse001Name": "[format('{0}-synapse001', variables('name'))]",
     "datafactory001Name": "[format('{0}-datafactory001', variables('name'))]",
-    "cognitiveservice001Name": "[format('{0}-cognitiveservice001', variables('name'))]",
+    "cognitiveservicesName": "[format('{0}-cognitiveservice', variables('name'))]",
     "search001Name": "[format('{0}-search001', variables('name'))]",
     "applicationInsights001Name": "[format('{0}-insights001', variables('name'))]",
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
@@ -1186,9 +1215,13 @@
       ]
     },
     {
+      "copy": {
+        "name": "cognitiveservices",
+        "count": "[length(parameters('cognitiveServiceKinds'))]"
+      },
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "cognitiveservice001",
+      "name": "[format('cognitiveservice{0}', padLeft(add(copyIndex(), 1), 3, '0'))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1205,10 +1238,10 @@
             "value": "[parameters('subnetId')]"
           },
           "cognitiveServiceName": {
-            "value": "[variables('cognitiveservice001Name')]"
+            "value": "[format('{0}{1}', variables('cognitiveservicesName'), padLeft(add(copyIndex(), 1), 3, '0'))]"
           },
           "cognitiveServiceKind": {
-            "value": "FormRecognizer"
+            "value": "[parameters('cognitiveServiceKinds')[copyIndex()]]"
           },
           "cognitiveServiceSkuName": {
             "value": "S0"
@@ -1224,7 +1257,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "1987002146294078897"
+              "templateHash": "3093428550225992785"
             }
           },
           "parameters": {
@@ -1260,8 +1293,7 @@
                 "Personalizer",
                 "SpeechServices",
                 "TextAnalytics",
-                "QnAMaker",
-                "TranslatorText"
+                "TextTranslation"
               ]
             },
             "privateDnsZoneIdCognitiveService": {
@@ -1284,7 +1316,7 @@
                 "type": "SystemAssigned"
               },
               "sku": {
-                "name": "[parameters('cognitiveServiceSkuName')]"
+                "name": "[if(or(equals(parameters('cognitiveServiceKind'), 'ComputerVision'), equals(parameters('cognitiveServiceKind'), 'TextTranslation')), 'S1', if(equals(parameters('cognitiveServiceKind'), 'TextAnalytics'), 'S', parameters('cognitiveServiceSkuName')))]"
               },
               "kind": "[parameters('cognitiveServiceKind')]",
               "properties": {
@@ -1292,9 +1324,6 @@
                 "apiProperties": {},
                 "customSubDomainName": "[parameters('cognitiveServiceName')]",
                 "disableLocalAuth": true,
-                "encryption": {
-                  "keySource": "Microsoft.CognitiveServices"
-                },
                 "networkAcls": {
                   "defaultAction": "Deny",
                   "ipRules": [],
@@ -1356,6 +1385,7 @@
       }
     },
     {
+      "condition": "[parameters('enableSearch')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "search001",
