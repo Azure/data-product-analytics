@@ -88,6 +88,8 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | databricksWorkspaceUrl | Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. | `adb-{databricks-workspace-id}.azuredatabricks.net` |
 | databricksAccessToken | Specifies the access token of the Databricks workspace that will be connected to the Machine Learning Workspace. Use a secret for this parameter and overwrite as part of the deployment pipelines. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Purview/accounts/{purview-name}` |
 | enableRoleAssignments | Specifies whether role assignments should be enabled. | `true` or `false` |
+| cognitiveServiceKinds | Specifies the cognitive service kind that will be deployed. | [`FormRecognizer`, `LUIS`] |
+| enableSearch | Specifies whether Azure Search should be deployed as part of the template. | `true` or `false` |
 | subnetId | Specifies the resource ID of the subnet to which all services will connect. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/virtualNetworks/{vnet-name}/subnets/{subnet-name}` |
 | privateDnsZoneIdKeyVault | Specifies the resource ID of the private DNS zone for KeyVault. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net` |
 | privateDnsZoneIdSynapseDev | Specifies the resource ID of the private DNS zone for Synapse Dev. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net` |
