@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "809461554380075757"
+      "templateHash": "15714938356539976719"
     }
   },
   "parameters": {
@@ -1256,7 +1256,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "1987002146294078897"
+              "templateHash": "9178720080180332876"
             }
           },
           "parameters": {
@@ -1324,9 +1324,6 @@
                 "apiProperties": {},
                 "customSubDomainName": "[parameters('cognitiveServiceName')]",
                 "disableLocalAuth": true,
-                "encryption": {
-                  "keySource": "Microsoft.CognitiveServices"
-                },
                 "networkAcls": {
                   "defaultAction": "Deny",
                   "ipRules": [],

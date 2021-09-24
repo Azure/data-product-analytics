@@ -50,9 +50,6 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     apiProperties: {}
     customSubDomainName: cognitiveServiceName
     disableLocalAuth: true
-    encryption: {
-      keySource: 'Microsoft.CognitiveServices'
-    }
     networkAcls: {
       defaultAction: 'Deny'
       ipRules: []
