@@ -932,11 +932,6 @@
                                                 "value": "TextAnalytics"
                                             },
                                             {
-                                                "label": "QnA Maker",
-                                                "description": "Select if you want to deploy QnA Maker.",
-                                                "value": "QnAMaker"
-                                            },
-                                            {
                                                 "label": "Translator Text",
                                                 "description": "Select if you want to deploy Translator Text.",
                                                 "value": "TranslatorText"

@@ -24,7 +24,6 @@ param cognitiveServiceSkuName string = 'S0'
   'Personalizer'
   'SpeechServices'
   'TextAnalytics'
-  'QnAMaker'
   'TranslatorText'
 ])
 param cognitiveServiceKind string

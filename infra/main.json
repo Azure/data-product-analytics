@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "15714938356539976719"
+      "templateHash": "3396878266160804377"
     }
   },
   "parameters": {
@@ -156,7 +156,6 @@
         "Personalizer",
         "SpeechServices",
         "TextAnalytics",
-        "QnAMaker",
         "TranslatorText"
       ]
     },
@@ -1256,7 +1255,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "9178720080180332876"
+              "templateHash": "17936362145104556669"
             }
           },
           "parameters": {
@@ -1292,7 +1291,6 @@
                 "Personalizer",
                 "SpeechServices",
                 "TextAnalytics",
-                "QnAMaker",
                 "TranslatorText"
               ]
             },
