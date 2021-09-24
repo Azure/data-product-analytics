@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "14166027831562377715"
+      "templateHash": "17088196166842914464"
     }
   },
   "parameters": {
@@ -156,7 +156,7 @@
         "Personalizer",
         "SpeechServices",
         "TextAnalytics",
-        "TranslatorText"
+        "TextTranslation"
       ]
     },
     "enableSearch": {
@@ -1255,7 +1255,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "1072312818828579259"
+              "templateHash": "3093428550225992785"
             }
           },
           "parameters": {
@@ -1291,7 +1291,7 @@
                 "Personalizer",
                 "SpeechServices",
                 "TextAnalytics",
-                "TranslatorText"
+                "TextTranslation"
               ]
             },
             "privateDnsZoneIdCognitiveService": {
@@ -1314,7 +1314,7 @@
                 "type": "SystemAssigned"
               },
               "sku": {
-                "name": "[if(equals(parameters('cognitiveServiceKind'), 'ComputerVision'), 'S1', if(equals(parameters('cognitiveServiceKind'), 'TextAnalytics'), 'S', parameters('cognitiveServiceSkuName')))]"
+                "name": "[if(or(equals(parameters('cognitiveServiceKind'), 'ComputerVision'), equals(parameters('cognitiveServiceKind'), 'TextTranslation')), 'S1', if(equals(parameters('cognitiveServiceKind'), 'TextAnalytics'), 'S', parameters('cognitiveServiceSkuName')))]"
               },
               "kind": "[parameters('cognitiveServiceKind')]",
               "properties": {

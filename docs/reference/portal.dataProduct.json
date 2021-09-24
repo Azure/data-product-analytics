@@ -932,9 +932,9 @@
                                                 "value": "TextAnalytics"
                                             },
                                             {
-                                                "label": "Translator Text",
-                                                "description": "Select if you want to deploy Translator Text.",
-                                                "value": "TranslatorText"
+                                                "label": "Text Translator",
+                                                "description": "Select if you want to deploy Text Translator.",
+                                                "value": "TextTranslation"
                                             }
                                         ],
                                         "required": false

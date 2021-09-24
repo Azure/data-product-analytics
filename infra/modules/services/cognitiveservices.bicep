@@ -24,7 +24,7 @@ param cognitiveServiceSkuName string = 'S0'
   'Personalizer'
   'SpeechServices'
   'TextAnalytics'
-  'TranslatorText'
+  'TextTranslation'
 ])
 param cognitiveServiceKind string
 param privateDnsZoneIdCognitiveService string = ''
@@ -41,7 +41,7 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     type: 'SystemAssigned'
   }
   sku: {
-    name: cognitiveServiceKind == 'ComputerVision' ? 'S1' : cognitiveServiceKind == 'TextAnalytics' ? 'S' : cognitiveServiceSkuName
+    name: cognitiveServiceKind == 'ComputerVision' || cognitiveServiceKind == 'TextTranslation' ? 'S1' : cognitiveServiceKind == 'TextAnalytics' ? 'S' : cognitiveServiceSkuName
   }
   kind: cognitiveServiceKind
   properties: {

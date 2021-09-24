@@ -67,7 +67,7 @@ param enableRoleAssignments bool = false
   'Personalizer'
   'SpeechServices'
   'TextAnalytics'
-  'TranslatorText'
+  'TextTranslation'
 ])
 @description('Specifies the cognitive service kind that will be deployed.')
 param cognitiveServiceKinds array = []
