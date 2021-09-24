@@ -41,7 +41,7 @@ resource cognitiveService 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
     type: 'SystemAssigned'
   }
   sku: {
-    name: cognitiveServiceSkuName
+    name: cognitiveServiceKind == 'ComputerVision' ? 'S1' : cognitiveServiceKind == 'TextAnalytics' ? 'S' : cognitiveServiceSkuName
   }
   kind: cognitiveServiceKind
   properties: {

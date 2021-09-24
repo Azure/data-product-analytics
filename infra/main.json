@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "3396878266160804377"
+      "templateHash": "14166027831562377715"
     }
   },
   "parameters": {
@@ -1255,7 +1255,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "17936362145104556669"
+              "templateHash": "1072312818828579259"
             }
           },
           "parameters": {
@@ -1314,7 +1314,7 @@
                 "type": "SystemAssigned"
               },
               "sku": {
-                "name": "[parameters('cognitiveServiceSkuName')]"
+                "name": "[if(equals(parameters('cognitiveServiceKind'), 'ComputerVision'), 'S1', if(equals(parameters('cognitiveServiceKind'), 'TextAnalytics'), 'S', parameters('cognitiveServiceSkuName')))]"
               },
               "kind": "[parameters('cognitiveServiceKind')]",
               "properties": {
