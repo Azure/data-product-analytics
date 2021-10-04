@@ -43,7 +43,7 @@ jobs:
         id: generate_password_001
         run: |
           echo "Generating Password"
-          pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+          pwsh "${GITHUB_WORKSPACE}/code/GeneratePassword.ps1" -GitHub
 
       # Deploy Data Product - validation
       - name: Deploy Data Product - validation
@@ -110,7 +110,7 @@ jobs:
         id: generate_password_001
         run: |
           echo "Generating Password"
-          pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+          pwsh "${GITHUB_WORKSPACE}/code/GeneratePassword.ps1" -GitHub
 
       # Deploy Data Domain
       - name: Deploy Data Domain
