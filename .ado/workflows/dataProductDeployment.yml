@@ -80,6 +80,33 @@ stages:
               overrideParameters: >
                 -administratorPassword "$(password)"
 
+          # Deploy Data Product - what-if
+          - task: AzureCLI@2
+            name: data_product_whatif
+            displayName: Deploy Data Product - what-if
+            enabled: true
+            continueOnError: false
+            inputs:
+              azureSubscription: ${{ variables.AZURE_RESOURCE_MANAGER_CONNECTION_NAME }}
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                az account set `
+                  --subscription ${{ variables.AZURE_SUBSCRIPTION_ID }}
+                
+                az deployment group what-if `
+                  --resource-group ${{ variables.AZURE_RESOURCE_GROUP_NAME }} `
+                  --mode "Incremental" `
+                  --template-file "$(System.DefaultWorkingDirectory)/infra/main.json" `
+                  --parameters "$(System.DefaultWorkingDirectory)/infra/params.dev.json" administratorPassword="$(password)" `
+                  --result-format "FullResourcePayloads"
+                
+              powerShellErrorActionPreference: "stop"
+              addSpnToEnvironment: false
+              useGlobalConfig: false
+              failOnStandardError: false
+              powerShellIgnoreLASTEXITCODE: false
+
   - stage: Deployment
     displayName: "Deployment of IaC templates"
     dependsOn: Validation
