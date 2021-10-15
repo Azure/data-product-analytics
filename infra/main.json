@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "15295458181843473147"
+      "templateHash": "6120482633062573281"
     }
   },
   "parameters": {
@@ -107,6 +107,20 @@
       "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is."
+      }
+    },
+    "purviewManagedStorageId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the managed storage of the central purview instance."
+      }
+    },
+    "purviewManagedEventHubId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the managed event hub of the central purview instance."
       }
     },
     "databricksWorkspaceId": {
@@ -922,6 +936,12 @@
           "purviewId": {
             "value": "[parameters('purviewId')]"
           },
+          "purviewManagedStorageId": {
+            "value": "[parameters('purviewManagedStorageId')]"
+          },
+          "purviewManagedEventHubId": {
+            "value": "[parameters('purviewManagedEventHubId')]"
+          },
           "machineLearning001Id": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2019-10-01').outputs.machineLearningId.value]"
           }
@@ -933,7 +953,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "17791774633133493240"
+              "templateHash": "3491681043244415572"
             }
           },
           "parameters": {
@@ -964,6 +984,14 @@
               "defaultValue": ""
             },
             "purviewId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewManagedStorageId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewManagedEventHubId": {
               "type": "string",
               "defaultValue": ""
             }
@@ -1114,6 +1142,66 @@
                     "location": "AutoResolve"
                   }
                 }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "account",
+                "privateLinkResourceId": "[parameters('purviewId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedStorageId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_blob')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "blob",
+                "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedStorageId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_queue')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "queue",
+                "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedEventHubId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_namespace')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "namespace",
+                "privateLinkResourceId": "[parameters('purviewManagedEventHubId')]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
