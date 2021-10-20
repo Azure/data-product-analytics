@@ -45,6 +45,10 @@ param administratorPassword string = ''
 param synapseDefaultStorageAccountFileSystemId string = ''
 @description('Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is.')
 param purviewId string = ''
+@description('Specifies the resource ID of the managed storage of the central purview instance.')
+param purviewManagedStorageId string = ''
+@description('Specifies the resource ID of the managed event hub of the central purview instance.')
+param purviewManagedEventHubId string = ''
 @description('Specifies the resource ID of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
 param databricksWorkspaceId string = ''
 @description('Specifies the workspace URL of the Databricks workspace that will be connected to the Machine Learning Workspace. If you do not want to connect Databricks to Machine Learning, leave this value empty as is.')
@@ -187,6 +191,8 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
+    purviewManagedStorageId: purviewManagedStorageId
+    purviewManagedEventHubId: purviewManagedEventHubId
     machineLearning001Id: machineLearning001.outputs.machineLearningId
   }
 }
