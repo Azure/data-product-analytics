@@ -17,17 +17,17 @@ By navigating through the deployment steps, you will deploy the folowing setup i
 
 The deployment and code artifacts include the following services:
 
-- [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
-- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
-- [Cognitive Services](https://azure.microsoft.com/services/cognitive-services/)
-- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
-- [Azure Search](https://azure.microsoft.com/services/search/)
-- [Application Insights](https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview)
 - [Machine Learning](https://azure.microsoft.com/services/machine-learning/)
-- [Container Registry](https://azure.microsoft.com/services/container-registry/)
-- [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is)
+- [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
+- [Application Insights](https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview)
 - [Storage](https://azure.microsoft.com/services/storage/)
-- [BigData Pool](https://docs.microsoft.com/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
+- [Container Registry](https://azure.microsoft.com/services/container-registry/)
+- [Cognitive Services](https://azure.microsoft.com/services/cognitive-services/) (optional)
+- [Data Factory](https://docs.microsoft.com/azure/data-factory/) (select between Data Factory and Synapse)
+- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/) (select between Data Factory and Synapse)
+- [Azure Search](https://azure.microsoft.com/services/search/) (optional)
+- [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is) (optional)
+- [BigData Pool](https://docs.microsoft.com/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15) (optional)
 
 ## Security Mechanisms of the Data Product Analytics
 
@@ -76,15 +76,14 @@ For now, we are recommending to select one of the regions mentioned below. The l
 
 ## Prerequisites
 
-> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone) beforehand. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Product.
+> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone) beforehand. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Product. If you have not deployed a Data Management Zone and/or Data Landing Zone, please make sure that you have all Private DNS Zones deployed for the [services mentioned here](#what-will-be-deployed). If all outbound traffic is routed through a Firewall, please make sure that you define [these network rules](https://github.com/Azure/data-management-zone/blob/f28583eee93afb893f6f31a0a8fbf8691c3c8324/infra/modules/services/firewallPolicyRules.bicep#L18-L54) and [these application rules](https://github.com/Azure/data-management-zone/blob/f28583eee93afb893f6f31a0a8fbf8691c3c8324/infra/modules/services/firewallPolicyRules.bicep#L247-L290) in the central network virtual appliance.
 
 Before we start with the deployment, please make sure that you have the following available:
 
-- A **Data Management Landing Zone** deployed. For more information, check the [Data Management Landing Zone](https://github.com/Azure/data-management-zone) repo.
-- A **Data Landing Zone** deployed. For more information, check the [Data Landing Zone](https://github.com/Azure/data-landing-zone) repo.
-- A resource group within an Azure subscription
 - An Azure subscription. If you don't have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/free/).
-- [User Access Administrator](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) access to the subscription to be able to create a service principal and role assignments for it.
+- Access to a resource group within an Azure subscription.
+- A **Data Management Landing Zone** and a **Data Landing Zone** deployed. For more information, check the [Data Management Landing Zone repo](https://github.com/Azure/data-management-zone) and [Data Landing Zone repo](https://github.com/Azure/data-landing-zone). Alternatively, please make sure that you have deployed all required Private DNS Zones for the [services mentioned here](#what-will-be-deployed) and if all outbound traffic is routed through a Firewall, please make sure that you define [these network rules](https://github.com/Azure/data-management-zone/blob/f28583eee93afb893f6f31a0a8fbf8691c3c8324/infra/modules/services/firewallPolicyRules.bicep#L18-L54) and [these application rules](https://github.com/Azure/data-management-zone/blob/f28583eee93afb893f6f31a0a8fbf8691c3c8324/infra/modules/services/firewallPolicyRules.bicep#L247-L290) in the central network virtual appliance.
+- [User Access Administrator](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) access to the resource group and virtual network to be able to create a service principal and role assignments for it.
 - Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled as well as the `Microsoft.Storage` [service endpoint](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview#:~:text=%20Service%20endpoints%20provide%20the%20following%20benefits%3A%20,public%20IP%20addresses%20in%20your%20virtual...%20More%20) enabled in the region of the data product deployment. The Data Landing Zone deployment already creates a few subnets with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled (subnets with name `DataProduct00{x}Subnet` or `DataIntegration00{x}Subnet`.). However, these subnets do not have the `Microsoft.Storage` service endpoint enabled by default and therefore this must be [configured manually in the Azure Portal or by using Azure CLI or PowerShell](https://docs.microsoft.com/en-us/azure/virtual-network/tutorial-restrict-network-access-to-resources#enable-a-service-endpoint). Today, the service endpoint is required for compute clusters and compute instances in Azure Machine Learning.
 - For the deployment, please choose one of the **Supported Regions**.
 
