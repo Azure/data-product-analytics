@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "13308768395177029403"
+      "templateHash": "1161842846563445421"
     }
   },
   "parameters": {
@@ -2306,7 +2306,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "14791598438171794760"
+              "templateHash": "5718411998999947390"
             }
           },
           "parameters": {
@@ -2385,7 +2385,24 @@
           },
           "functions": [],
           "variables": {
-            "machineLearningPrivateEndpointName": "[format('{0}-private-endpoint', parameters('machineLearningName'))]"
+            "machineLearningPrivateEndpointName": "[format('{0}-private-endpoint', parameters('machineLearningName'))]",
+            "noPublicIpRegions": [
+              "australiaeast",
+              "eastasia",
+              "japaneast",
+              "japanwest",
+              "francecentral",
+              "northeurope",
+              "westeurope",
+              "centralus",
+              "eastus",
+              "eastus2",
+              "northcentralus",
+              "southcentralus",
+              "westcentralus",
+              "westus",
+              "westus2"
+            ]
           },
           "resources": [
             {
@@ -2513,7 +2530,7 @@
                 "description": "Machine Learning cluster 001",
                 "disableLocalAuth": true,
                 "properties": {
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "osType": "Linux",
                   "remoteLoginPortPublicAccess": "Disabled",
@@ -2550,7 +2567,7 @@
                 "description": "Machine Learning cluster 001",
                 "disableLocalAuth": true,
                 "properties": {
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "osType": "Linux",
                   "remoteLoginPortPublicAccess": "Disabled",
@@ -2590,7 +2607,7 @@
                 "properties": {
                   "applicationSharingPolicy": "Personal",
                   "computeInstanceAuthorizationType": "personal",
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "personalComputeInstanceSettings": {
                     "assignedUser": {
