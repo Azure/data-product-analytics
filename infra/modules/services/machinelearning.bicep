@@ -47,7 +47,7 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-0
     }
     friendlyName: machineLearningName
     hbiWorkspace: true
-    imageBuildCompute: 'cluster001'
+    imageBuildCompute: 'cpucluster001'
     primaryUserAssignedIdentity: ''
     serviceManagedResourcesSettings: {
       cosmosDb: {
