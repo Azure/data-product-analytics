@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "1161842846563445421"
+      "templateHash": "15513480489864468149"
     }
   },
   "parameters": {
@@ -2306,7 +2306,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "5718411998999947390"
+              "templateHash": "8526913306381151982"
             }
           },
           "parameters": {
@@ -2644,7 +2644,7 @@
                 "count": "[length(parameters('datalakeFileSystemIds'))]"
               },
               "type": "Microsoft.MachineLearningServices/workspaces/datastores",
-              "apiVersion": "2021-10-01",
+              "apiVersion": "2021-03-01-preview",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), format('{0}{1}', if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8]), if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')))))]",
               "properties": {
                 "tags": "[parameters('tags')]",
