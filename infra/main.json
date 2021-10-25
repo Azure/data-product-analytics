@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "16937890963334191807"
+      "templateHash": "5105924520370151573"
     }
   },
   "parameters": {
@@ -2306,7 +2306,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "16875803617108340223"
+              "templateHash": "1748291190649650709"
             }
           },
           "parameters": {
@@ -2385,7 +2385,24 @@
           },
           "functions": [],
           "variables": {
-            "machineLearningPrivateEndpointName": "[format('{0}-private-endpoint', parameters('machineLearningName'))]"
+            "machineLearningPrivateEndpointName": "[format('{0}-private-endpoint', parameters('machineLearningName'))]",
+            "noPublicIpRegions": [
+              "australiaeast",
+              "eastasia",
+              "japaneast",
+              "japanwest",
+              "francecentral",
+              "northeurope",
+              "westeurope",
+              "centralus",
+              "eastus",
+              "eastus2",
+              "northcentralus",
+              "southcentralus",
+              "westcentralus",
+              "westus",
+              "westus2"
+            ]
           },
           "resources": [
             {
@@ -2513,7 +2530,7 @@
                 "description": "Machine Learning cluster 001",
                 "disableLocalAuth": true,
                 "properties": {
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "osType": "Linux",
                   "remoteLoginPortPublicAccess": "Disabled",
@@ -2550,7 +2567,7 @@
                 "description": "Machine Learning cluster 001",
                 "disableLocalAuth": true,
                 "properties": {
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "osType": "Linux",
                   "remoteLoginPortPublicAccess": "Disabled",
@@ -2590,7 +2607,7 @@
                 "properties": {
                   "applicationSharingPolicy": "Personal",
                   "computeInstanceAuthorizationType": "personal",
-                  "enableNodePublicIp": false,
+                  "enableNodePublicIp": "[if(contains(variables('noPublicIpRegions'), parameters('location')), false(), true())]",
                   "isolatedNetwork": false,
                   "personalComputeInstanceSettings": {
                     "assignedUser": {
@@ -2627,7 +2644,7 @@
                 "count": "[length(parameters('datalakeFileSystemIds'))]"
               },
               "type": "Microsoft.MachineLearningServices/workspaces/datastores",
-              "apiVersion": "2021-10-01",
+              "apiVersion": "2021-03-01-preview",
               "name": "[format('{0}/{1}', parameters('machineLearningName'), format('{0}{1}', if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), split(parameters('datalakeFileSystemIds')[copyIndex()], '/')[8]), if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), format('undefined{0}', copyIndex()), last(split(parameters('datalakeFileSystemIds')[copyIndex()], '/')))))]",
               "properties": {
                 "tags": "[parameters('tags')]",

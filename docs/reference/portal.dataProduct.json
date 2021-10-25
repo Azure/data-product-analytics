@@ -318,7 +318,7 @@
                                         "text": "Specify the external services you want to connect to Machine Learning.",
                                         "link": {
                                             "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-target"
+                                            "uri": "https://docs.microsoft.com/azure/machine-learning/concept-compute-target"
                                         }
                                     }
                                 },
@@ -329,7 +329,7 @@
                                     "options": {
                                         "text": "Two Azure Machine Learning Compute Clusters will automatically be deployed as part of this deployment. The first has CPU and the second has GPU support. Both will be enabled with Private Link.",
                                         "style": "Info",
-                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-create-attach-compute-cluster"
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-create-attach-compute-cluster"
                                     }
                                 },
                                 {
@@ -359,7 +359,7 @@
                                     "options": {
                                         "text": "Please provide an AAD User Object ID of the user for which you want to deploy an Azure Machine Learning Compute Instance (CI). The public SSH key is optional and allows the user to to connect to the CI using an SSH connection.",
                                         "style": "Info",
-                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/concept-compute-instance"
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/concept-compute-instance"
                                     }
                                 },
                                 {
@@ -414,7 +414,7 @@
                                     "options": {
                                         "text": "As per Enterprise Scale Analytics recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
                                         "style": "Info",
-                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-attach-compute-targets#databricks"
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-attach-compute-targets#databricks"
                                     }
                                 },
                                 {
@@ -494,7 +494,7 @@
                                     "options": {
                                         "text": "Select an existing Kubernetes Cluster to connect Machine Learning with the cluster for model deployments. Please be aware that an AKS Cluster can only be connected with a single Machine Learning workspace.",
                                         "style": "Info",
-                                        "uri": "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-create-attach-kubernetes?tabs=python"
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-create-attach-kubernetes?tabs=python"
                                     }
                                 },
                                 {
@@ -822,7 +822,7 @@
                                         "text": "Select the Purview account to which you want to connect the Synapse workspace or Data Factory.",
                                         "link": {
                                             "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
+                                            "uri": "https://docs.microsoft.com/azure/purview/overview"
                                         }
                                     }
                                 },
@@ -1023,6 +1023,16 @@
                                     }
                                 },
                                 {
+                                    "name": "infoBoxVirtualNetworkNsg",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[not(contains(split('australiaeast,eastasia,japaneast,japanwest,francecentral,northeurope,westeurope,centralus,eastus,eastus2,northcentralus,southcentralus,westcentralus,westus,westus2', ','), steps('basics').deploymentDetails.locationName))]",
+                                    "options": {
+                                        "text": "Please make sure to assign the '{prefix}-{environment}-aml-nsg' Network Security Group (NSG) to the subnet selected below, as the 'no public ip' feature for Azure Machine Learning Compute Clusters and Compute Instances is not available in the selected region. The NSG was deployed as part of your Data Landing Zone deployment and exists in the '{prefix}-{environment}-network' resource group. Please follow the link to learn more.",
+                                        "style": "Warning",
+                                        "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-secure-training-vnet?tabs=azure-studio%2Cipaddress#no-public-ip-amlcompute"
+                                    }
+                                },
+                                {
                                     "name": "virtualNetworkApi",
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
@@ -1099,7 +1109,7 @@
                                     "options": {
                                         "text": "We are deploying all services with private endpoints and disabled public network access to reduce the data exfiltration risk. For each private endpoint, DNS A-records need to be created in a Private DNS Zones. Therefore, these either need to deployed through Azure Policies or you have to provide the Private DNS Zones that should be used for this deployment. We are assuming that all Private DNS Zones are created in the same subscription. Deploying DNS A-Records through Private Endpoints is the recommended solution.",
                                         "style": "Info",
-                                        "uri": "https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale"
+                                        "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale"
                                     }
                                 },
                                 {

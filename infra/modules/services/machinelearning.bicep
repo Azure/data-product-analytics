@@ -30,6 +30,23 @@ param enableRoleAssignments bool = false
 
 // Variables
 var machineLearningPrivateEndpointName = '${machineLearning.name}-private-endpoint'
+var noPublicIpRegions = [
+  'australiaeast'
+  'eastasia'
+  'japaneast'
+  'japanwest'
+  'francecentral'
+  'northeurope'
+  'westeurope'
+  'centralus'
+  'eastus'
+  'eastus2'
+  'northcentralus'
+  'southcentralus'
+  'westcentralus'
+  'westus'
+  'westus2'
+]
 
 // Resources
 resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
@@ -145,7 +162,7 @@ resource machineLearningCpuCluster001 'Microsoft.MachineLearningServices/workspa
     description: 'Machine Learning cluster 001'
     disableLocalAuth: true
     properties: {
-      enableNodePublicIp: false
+      enableNodePublicIp: contains(noPublicIpRegions, location) ? false : true
       isolatedNetwork: false
       osType: 'Linux'
       remoteLoginPortPublicAccess: 'Disabled'
@@ -181,7 +198,7 @@ resource machineLearningGpuCluster001 'Microsoft.MachineLearningServices/workspa
     description: 'Machine Learning cluster 001'
     disableLocalAuth: true
     properties: {
-      enableNodePublicIp: false
+      enableNodePublicIp: contains(noPublicIpRegions, location) ? false : true
       isolatedNetwork: false
       osType: 'Linux'
       remoteLoginPortPublicAccess: 'Disabled'
@@ -219,7 +236,7 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
     properties: {
       applicationSharingPolicy: 'Personal'
       computeInstanceAuthorizationType: 'personal'
-      enableNodePublicIp: false
+      enableNodePublicIp: contains(noPublicIpRegions, location) ? false : true
       isolatedNetwork: false
       personalComputeInstanceSettings: {
         assignedUser: {
@@ -245,7 +262,7 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
   }
 }
 
-resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-10-01' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
+resource machineLearningDatastores 'Microsoft.MachineLearningServices/workspaces/datastores@2021-03-01-preview' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(length(split(datalakeFileSystemId, '/')) == 13) {
   parent: machineLearning
   name: '${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : split(datalakeFileSystemId, '/')[8]}${length(datalakeFileSystemIds) <= 0 ? 'undefined${i}' : last(split(datalakeFileSystemId, '/'))}'
   properties: {
