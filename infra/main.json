@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "15513480489864468149"
+      "templateHash": "5105924520370151573"
     }
   },
   "parameters": {
@@ -2306,7 +2306,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "8526913306381151982"
+              "templateHash": "1748291190649650709"
             }
           },
           "parameters": {
@@ -2422,7 +2422,7 @@
                 },
                 "friendlyName": "[parameters('machineLearningName')]",
                 "hbiWorkspace": true,
-                "imageBuildCompute": "cluster001",
+                "imageBuildCompute": "cpucluster001",
                 "primaryUserAssignedIdentity": "",
                 "serviceManagedResourcesSettings": {
                   "cosmosDb": {
