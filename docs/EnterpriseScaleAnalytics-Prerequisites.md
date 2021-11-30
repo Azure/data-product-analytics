@@ -1,6 +1,6 @@
 # Data Product Analytics - Prerequisites
 
-This template repsitory contains all templates to deploy a Data Product for Analytics and Data Science inside a Data Landing Zone of the Enterprise-Scale Analytics architecture. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases. Hence, this template qualifis for the following usage:
+This template repository contains all templates to deploy a Data Product for Analytics and Data Science inside a Data Landing Zone of the Data Management & Analytics Scenario. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases. Hence, this template qualifies for the following usage:
 
 | Scenario         | Applicability      |
 |:-----------------|:-------------------|
@@ -9,7 +9,7 @@ This template repsitory contains all templates to deploy a Data Product for Anal
 
 ## What will be deployed?
 
-By navigating through the deployment steps, you will deploy the folowing setup in a subscription:
+By navigating through the deployment steps, you will deploy the following setup in a subscription:
 
 > **Note:** Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types).
 

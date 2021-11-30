@@ -34,7 +34,7 @@ This will generate the following JSON output:
 
 > **Note:** Take note of the output. It will be required for the next steps.
 
-## Adding additional role assigments
+## Adding additional role assignments
 
 For automation purposes, more role assignments are required for the service principal.
 Additional required role assignments include:

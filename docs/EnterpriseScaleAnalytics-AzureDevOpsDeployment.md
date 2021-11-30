@@ -42,7 +42,7 @@ In order to deploy the Infrastructure as Code (IaC) templates to the desired Azu
 - `.ado/workflows/dataProductDeployment.yml` and
 - `infra/params.dev.json`.
 
-Update these files in a seperate branch and then merge via Pull Request to trigger the initial deployment.
+Update these files in a separate branch and then merge via Pull Request to trigger the initial deployment.
 
 ### Configure `dataProductDeployment.yml`
 
@@ -152,7 +152,7 @@ After following the instructions and updating the parameters and variables in yo
 
 **Congratulations!** You have successfully executed all steps to deploy the template into your environment through Azure DevOps.
 
-Now, you can navigate to the pipeline that you have created as part of step 5 and monitor it as each service is deployed. If you run into any issues, please check the [Known Issues](/docs/EnterpriseScaleAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-analytics/issues) if you come accross a potential bug in the repository.
+Now, you can navigate to the pipeline that you have created as part of step 5 and monitor it as each service is deployed. If you run into any issues, please check the [Known Issues](/docs/EnterpriseScaleAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-analytics/issues) if you come across a potential bug in the repository.
 
 >[Previous](/docs/EnterpriseScaleAnalytics-ServicePrincipal.md)
 >[Next](/docs/EnterpriseScaleAnalytics-KnownIssues.md)
