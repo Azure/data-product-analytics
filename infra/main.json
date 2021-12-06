@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "5105924520370151573"
+      "templateHash": "1184862367173489986"
     }
   },
   "parameters": {
@@ -100,6 +100,13 @@
       "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is."
+      }
+    },
+    "enableSqlPool": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Specifies whether an Azure SQL Pool should be deployed inside your Synapse workspace as part of the template. If you selected dataFactory as processingService, leave this value as is."
       }
     },
     "purviewId": {
@@ -497,6 +504,9 @@
           "purviewId": {
             "value": "[parameters('purviewId')]"
           },
+          "enableSqlPool": {
+            "value": "[parameters('enableSqlPool')]"
+          },
           "synapseComputeSubnetId": {
             "value": ""
           },
@@ -511,7 +521,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "1110043565915018942"
+              "templateHash": "16199153532241297171"
             }
           },
           "parameters": {
@@ -560,6 +570,10 @@
             "purviewId": {
               "type": "string",
               "defaultValue": ""
+            },
+            "enableSqlPool": {
+              "type": "bool",
+              "defaultValue": false
             }
           },
           "functions": [],
@@ -604,6 +618,7 @@
               }
             },
             {
+              "condition": "[parameters('enableSqlPool')]",
               "type": "Microsoft.Synapse/workspaces/sqlPools",
               "apiVersion": "2021-03-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'sqlPool001')]",
