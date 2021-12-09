@@ -38,6 +38,9 @@
         "synapseDefaultStorageAccountFileSystemId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prd-storage/providers/Microsoft.Storage/storageAccounts/dlz01prdwork/blobServices/default/containers/dp001"
         },
+        "enableSqlPool": {
+            "value": true
+        },
         "purviewId": {
             "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-governance/providers/Microsoft.Purview/accounts/dmz-prd-purview001"
         },

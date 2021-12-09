@@ -805,6 +805,18 @@
                                         "allowedValues": "[map(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
                                         "required": true
                                     }
+                                },
+                                {
+                                    "name": "enableSqlPool",
+                                    "label": "Enable SQL Pool",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "defaultValue": false,
+                                    "toolTip": "Enable the deployment of an Azure SQL Pool (DW100).",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable the deployment of an Azure SQL Pool (DW100)."
+                                    }
                                 }
                             ]
                         },
@@ -1412,6 +1424,7 @@
                 "machineLearningComputeInstance001AdministratorPublicSshKey": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey), '', steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey)]",
                 "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword.password), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword.password)]",
                 "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
+                "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
                 "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
