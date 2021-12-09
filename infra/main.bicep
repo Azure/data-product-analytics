@@ -43,6 +43,8 @@ param machineLearningComputeInstance001AdministratorPublicSshKey string = ''
 param administratorPassword string = ''
 @description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
 param synapseDefaultStorageAccountFileSystemId string = ''
+@description('Specifies whether an Azure SQL Pool should be deployed inside your Synapse workspace as part of the template. If you selected dataFactory as processingService, leave this value as is.')
+param enableSqlPool bool = false
 @description('Specifies the resource ID of the central purview instance to connect Purviw with Data Factory or Synapse. If you do not want to setup a connection to Purview, leave this value empty as is.')
 param purviewId string = ''
 @description('Specifies the resource ID of the managed storage of the central purview instance.')
@@ -165,6 +167,7 @@ module synapse001 'modules/services/synapse.bicep' = if (processingService == 's
     privateDnsZoneIdSynapseDev: privateDnsZoneIdSynapseDev
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
     purviewId: purviewId
+    enableSqlPool: enableSqlPool
     synapseComputeSubnetId: ''
     synapseDefaultStorageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
   }

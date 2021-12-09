@@ -19,6 +19,7 @@ param synapseComputeSubnetId string = ''
 param privateDnsZoneIdSynapseSql string = ''
 param privateDnsZoneIdSynapseDev string = ''
 param purviewId string = ''
+param enableSqlPool bool = false
 
 // Variables
 var synapseDefaultStorageAccountFileSystemName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? last(split(synapseDefaultStorageAccountFileSystemId, '/')) : 'incorrectSegmentLength'
@@ -59,7 +60,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   }
 }
 
-resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = {
+resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = if(enableSqlPool) {
   parent: synapse
   name: 'sqlPool001'
   location: location
