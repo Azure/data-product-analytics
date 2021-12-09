@@ -66,11 +66,6 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-0
     hbiWorkspace: true
     imageBuildCompute: 'cpucluster001'
     primaryUserAssignedIdentity: ''
-    serviceManagedResourcesSettings: {
-      cosmosDb: {
-        collectionsThroughput: 400
-      }
-    }
     applicationInsights: applicationInsightsId
     containerRegistry: containerRegistryId
     keyVault: keyVaultId

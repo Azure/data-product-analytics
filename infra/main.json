@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "1184862367173489986"
+      "templateHash": "10894505813278635264"
     }
   },
   "parameters": {
@@ -2321,7 +2321,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1008.15138",
-              "templateHash": "1748291190649650709"
+              "templateHash": "10881520305840804339"
             }
           },
           "parameters": {
@@ -2439,11 +2439,6 @@
                 "hbiWorkspace": true,
                 "imageBuildCompute": "cpucluster001",
                 "primaryUserAssignedIdentity": "",
-                "serviceManagedResourcesSettings": {
-                  "cosmosDb": {
-                    "collectionsThroughput": 400
-                  }
-                },
                 "applicationInsights": "[parameters('applicationInsightsId')]",
                 "containerRegistry": "[parameters('containerRegistryId')]",
                 "keyVault": "[parameters('keyVaultId')]",
