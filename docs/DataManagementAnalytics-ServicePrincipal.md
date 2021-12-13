@@ -34,7 +34,7 @@ This will generate the following JSON output:
 
 > **Note:** Take note of the output. It will be required for the next steps.
 
-## Adding additional role assigments
+## Adding additional role assignments
 
 For automation purposes, more role assignments are required for the service principal.
 Additional required role assignments include:
@@ -95,6 +95,6 @@ New-AzRoleAssignment `
   -ResourceGroupName "{resourceGroupName}
 ```
 
->[Previous](/docs/EnterpriseScaleAnalytics-CreateRepository.md)
->[Next (Option (a) GitHub Actions)](/docs/EnterpriseScaleAnalytics-GitHubActionsDeployment.md)
->[Next (Option (b) Azure DevOps)](/docs/EnterpriseScaleAnalytics-AzureDevOpsDeployment.md)
+>[Previous](/docs/DataManagementAnalytics-CreateRepository.md)
+>[Next (Option (a) GitHub Actions)](/docs/DataManagementAnalytics-GitHubActionsDeployment.md)
+>[Next (Option (b) Azure DevOps)](/docs/DataManagementAnalytics-AzureDevOpsDeployment.md)

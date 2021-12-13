@@ -26,7 +26,7 @@ First, you need to create an Azure Resource Manager service connection. To do so
 1. On the next page select **Service principal (manual)**.
 1. Select the appropriate environment to which you would like to deploy the templates. Only the default option **Azure Cloud** is currently supported.
 1. For the **Scope Level**, select **Subscription** and enter your `subscription Id` and `name`.
-1. Enter the details of the service principal that we have generated in step 3. (**Service Principal Id** = **clientId**, **Service Principal Key** = **clientSecret**, **Tenant ID** = **tenantId**) and click on **Verify** to make sure that the connection works.
+1. Enter the details of the service principal that we have generated in step 3. (**Service Principal ID** = **clientId**, **Service Principal Key** = **clientSecret**, **Tenant ID** = **tenantId**) and click on **Verify** to make sure that the connection works.
 1. Enter a user-friendly **Connection name** to use when referring to this service connection. Take note of the name because this will be required in the parameter update process.
 1. Optionally, enter a **Description**.
 1. Click on **Verify and save**.
@@ -42,7 +42,7 @@ In order to deploy the Infrastructure as Code (IaC) templates to the desired Azu
 - `.ado/workflows/dataProductDeployment.yml` and
 - `infra/params.dev.json`.
 
-Update these files in a seperate branch and then merge via Pull Request to trigger the initial deployment.
+Update these files in a separate branch and then merge via Pull Request to trigger the initial deployment.
 
 ### Configure `dataProductDeployment.yml`
 
@@ -61,7 +61,7 @@ The following table explains each of the parameters:
 | Parameter                                   | Description | Sample value |
 |:--------------------------------------------|:------------|:-------------|
 | **AZURE_SUBSCRIPTION_ID**                   | Specifies the subscription ID of the Data Management Zone where all the resources will be deployed | <div style="width: 36ch">`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`</div> |
-| **AZURE_LOCATION**                          | Specifies the region where you want the resources to be deployed. Please check [Supported Regions](/docs/EnterpriseScaleAnalytics-Prerequisites.md#supported-regions)  | `northeurope` |
+| **AZURE_LOCATION**                          | Specifies the region where you want the resources to be deployed. Please check [Supported Regions](/docs/DataManagementAnalytics-Prerequisites.md#supported-regions)  | `northeurope` |
 | **AZURE_RESOURCE_GROUP_NAME** | Specifies the name of an existing resource group in your data landing zone, where the resources will be deployed. | `my-rg-name` |
 | **AZURE_RESOURCE_MANAGER _CONNECTION_NAME** | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found further above or [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
 
@@ -144,7 +144,7 @@ As a last step, you need to create an Azure DevOps pipeline in your project base
 
 1. Click on **Continue** and then on **Run**.
 
-## Merge these changes back to the `main` branch of your repo
+## Merge these changes back to the `main` branch of your repository
 
 After following the instructions and updating the parameters and variables in your repository in a separate branch and opening the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository. By doing this, you trigger the deployment workflow.
 
@@ -152,7 +152,7 @@ After following the instructions and updating the parameters and variables in yo
 
 **Congratulations!** You have successfully executed all steps to deploy the template into your environment through Azure DevOps.
 
-Now, you can navigate to the pipeline that you have created as part of step 5 and monitor it as each service is deployed. If you run into any issues, please check the [Known Issues](/docs/EnterpriseScaleAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-analytics/issues) if you come accross a potential bug in the repository.
+Now, you can navigate to the pipeline that you have created as part of step 5 and monitor it as each service is deployed. If you run into any issues, please check the [Known Issues](/docs/DataManagementAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-analytics/issues) if you come across a potential bug in the repository.
 
->[Previous](/docs/EnterpriseScaleAnalytics-ServicePrincipal.md)
->[Next](/docs/EnterpriseScaleAnalytics-KnownIssues.md)
+>[Previous](/docs/DataManagementAnalytics-ServicePrincipal.md)
+>[Next](/docs/DataManagementAnalytics-KnownIssues.md)

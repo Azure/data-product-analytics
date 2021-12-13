@@ -1,6 +1,6 @@
 # Data Product Analytics - Create repository from the template
 
-First, you must generate your own respository based off this template respository. To do so, please follow the steps below:
+First, you must generate your own repository based off this template repository. To do so, please follow the steps below:
 
 1. On GitHub, navigate to the [main page of this repository](https://github.com/Azure/data-management-zone).
 1. Above the file list, click **Use this template**
@@ -16,5 +16,5 @@ First, you must generate your own respository based off this template respositor
 1. Optionally, to include the directory structure and files from all branches in the template and not just the default branch, select **Include all branches**.
 1. Click **Create repository from template**.
 
->[Previous](/docs/EnterpriseScaleAnalytics-Prerequisites.md)
->[Next](/docs/EnterpriseScaleAnalytics-ServicePrincipal.md)
+>[Previous](/docs/DataManagementAnalytics-Prerequisites.md)
+>[Next](/docs/DataManagementAnalytics-ServicePrincipal.md)

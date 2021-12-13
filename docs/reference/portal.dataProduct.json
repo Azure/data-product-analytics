@@ -3,18 +3,18 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Enterprise-Scale Analytics - Data Product Analytics",
+            "title": "Data Management & Analytics Scenario - Data Product Analytics",
             "steps": [
                 {
                     "name": "basics",
                     "label": "Data Product",
                     "elements": [
                         {
-                            "name": "infoBoxEnterpriseScaleAnalytics",
+                            "name": "infoBoxDataManagementAnalytics",
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "Enterprise-Scale Analytics is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
+                                "text": "Data Management & Analytics Scenario is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
                                 "style": "Info",
                                 "uri": "https://aka.ms/adopt/datamanagement"
                             }
@@ -85,7 +85,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "We have already deployed a few resourge groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
+                                        "text": "We have already deployed a few resource groups in your Data Landing Zone, which can be used for Data Product and Data Integration Template deployments. They have the following names: '{prefix}-dp001', '{prefix}-dp002', '{prefix}-di001' and '{prefix}-di002'.",
                                         "style": "Info"
                                     }
                                 },
@@ -111,7 +111,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Since not all service features are available in all regions, Enterprise Scale Analytics is available in a subset of regions.",
+                                        "text": "Since not all service features are available in all regions, this deployment is available in a subset of regions.",
                                         "style": "Info"
                                     }
                                 },
@@ -412,7 +412,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableDatabricks, 'yes')]",
                                     "options": {
-                                        "text": "As per Enterprise Scale Analytics recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
+                                        "text": "As per Data Management & Analytics Scenario recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
                                         "style": "Info",
                                         "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-attach-compute-targets#databricks"
                                     }
@@ -1401,7 +1401,7 @@
                             "type": "Microsoft.Common.TagsByResource",
                             "visible": true,
                             "resources": [
-                                "EnterpriseScaleAnalytics"
+                                "DataManagementAnalytics"
                             ]
                         }
                     ]
@@ -1447,7 +1447,7 @@
                 "privateDnsZoneIdFile": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdFile)]",
                 "privateDnsZoneIdMachineLearningApi": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningApi)]",
                 "privateDnsZoneIdMachineLearningNotebooks": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMachineLearningNotebooks)]",
-                "tags": "[if(not(contains(steps('tags').tagsByResource, 'EnterpriseScaleAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.EnterpriseScaleAnalytics)))]"
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'DataManagementAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.DataManagementAnalytics)))]"
             }
         }
     }
