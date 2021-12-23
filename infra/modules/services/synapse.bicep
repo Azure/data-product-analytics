@@ -95,7 +95,9 @@ resource synapseBigDataPool001 'Microsoft.Synapse/workspaces/bigDataPools@2021-0
     defaultSparkLogFolder: 'logs/'
     dynamicExecutorAllocation: {
       enabled: true
+      #disable-next-line BCP037
       minExecutors: 1
+      #disable-next-line BCP037
       maxExecutors: 9
     }
     // isComputeIsolationEnabled: true  // Uncomment to enable compute isolation (only available in selective regions)

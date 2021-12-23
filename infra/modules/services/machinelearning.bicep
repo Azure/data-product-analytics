@@ -59,6 +59,7 @@ resource machineLearning 'Microsoft.MachineLearningServices/workspaces@2021-07-0
   properties: {
     allowPublicAccessWhenBehindVnet: false
     description: machineLearningName
+    #disable-next-line BCP035
     encryption: {
       status: 'Disabled'
     }
@@ -231,7 +232,9 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
     properties: {
       applicationSharingPolicy: 'Personal'
       computeInstanceAuthorizationType: 'personal'
+      #disable-next-line BCP037
       enableNodePublicIp: contains(noPublicIpRegions, location) ? false : true
+      #disable-next-line BCP037
       isolatedNetwork: false
       personalComputeInstanceSettings: {
         assignedUser: {

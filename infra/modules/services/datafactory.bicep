@@ -37,6 +37,7 @@ resource datafactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     globalParameters: {}
     publicNetworkAccess: 'Disabled'
+    #disable-next-line BCP037
     purviewConfiguration: {
       purviewResourceId: purviewId
     }
@@ -247,6 +248,7 @@ resource machineLearning001LinkedService 'Microsoft.DataFactory/factories/linked
       subscriptionId: machineLearning001SubscriptionId
       resourceGroupName: machineLearning001ResourceGroupName
       mlWorkspaceName: machineLearning001Name
+      #disable-next-line BCP037
       authentication: 'MSI'
     }
   }
