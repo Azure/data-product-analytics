@@ -8,6 +8,7 @@ targetScope = 'resourceGroup'
 param location string
 param tags object
 param applicationInsightsName string
+#disable-next-line no-unused-params
 param logAnalyticsWorkspaceId string
 
 // Variables

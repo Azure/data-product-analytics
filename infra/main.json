@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1008.15138",
-      "templateHash": "5302212779353827209"
+      "version": "0.4.1124.51302",
+      "templateHash": "3860597727392112976"
     }
   },
   "parameters": {
@@ -278,7 +278,6 @@
       }
     }
   },
-  "functions": [],
   "variables": {
     "copy": [
       {
@@ -317,7 +316,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "keyVault001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -347,8 +346,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "6717429930577625102"
+              "version": "0.4.1124.51302",
+              "templateHash": "12660131753967436973"
             }
           },
           "parameters": {
@@ -369,7 +368,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "keyVaultPrivateEndpointName": "[format('{0}-private-endpoint', parameters('keyvaultName'))]"
           },
@@ -463,7 +461,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "synapse001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -520,8 +518,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "16199153532241297171"
+              "version": "0.4.1124.51302",
+              "templateHash": "1475585971495335452"
             }
           },
           "parameters": {
@@ -576,7 +574,6 @@
               "defaultValue": false
             }
           },
-          "functions": [],
           "variables": {
             "synapseDefaultStorageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), last(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "synapseDefaultStorageAccountName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
@@ -855,7 +852,7 @@
     {
       "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "synapse001RoleAssignmentStorage",
       "subscriptionId": "[variables('synapseDefaultStorageAccountSubscriptionId')]",
       "resourceGroup": "[variables('synapseDefaultStorageAccountResourceGroupName')]",
@@ -869,7 +866,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-06-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -878,8 +875,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7805977499282852672"
+              "version": "0.4.1124.51302",
+              "templateHash": "17584063900477479467"
             }
           },
           "parameters": {
@@ -890,7 +887,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
@@ -919,7 +915,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "datafactory001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -940,7 +936,7 @@
             "value": "[variables('datafactory001Name')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-06-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -958,7 +954,7 @@
             "value": "[parameters('purviewManagedEventHubId')]"
           },
           "machineLearning001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-06-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -967,8 +963,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "16897687190067153778"
+              "version": "0.4.1124.51302",
+              "templateHash": "8903592133998705977"
             }
           },
           "parameters": {
@@ -1011,7 +1007,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 9), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
             "machineLearning001SubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearning001Id'), '/')), 9), split(parameters('machineLearning001Id'), '/')[2], subscription().subscriptionId)]",
@@ -1323,7 +1318,7 @@
         "count": "[length(parameters('cognitiveServiceKinds'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('cognitiveservice{0}', padLeft(add(copyIndex(), 1), 3, '0'))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1359,8 +1354,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "6608916539530766418"
+              "version": "0.4.1124.51302",
+              "templateHash": "14497077229040500861"
             }
           },
           "parameters": {
@@ -1404,7 +1399,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "cognitiveServicePrivateEndpointName": "[format('{0}-private-endpoint', parameters('cognitiveServiceName'))]"
           },
@@ -1490,7 +1484,7 @@
     {
       "condition": "[parameters('enableSearch')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "search001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1532,8 +1526,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "510467910617243500"
+              "version": "0.4.1124.51302",
+              "templateHash": "7020391773370407540"
             }
           },
           "parameters": {
@@ -1592,7 +1586,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "searchPrivateEndpointName": "[format('{0}-private-endpoint', parameters('searchName'))]"
           },
@@ -1672,7 +1665,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "applicationInsights001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1699,8 +1692,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "8842148918191097050"
+              "version": "0.4.1124.51302",
+              "templateHash": "15263814874918461179"
             }
           },
           "parameters": {
@@ -1717,7 +1710,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "resources": [
             {
               "type": "Microsoft.Insights/components",
@@ -1751,7 +1743,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "containerRegistry001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1781,8 +1773,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7362807479290457187"
+              "version": "0.4.1124.51302",
+              "templateHash": "9462754811042758050"
             }
           },
           "parameters": {
@@ -1803,7 +1795,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "containerRegistryNameCleaned": "[replace(parameters('containerRegistryName'), '-', '')]",
             "containerRegistryPrivateEndpointName": "[format('{0}-private-endpoint', variables('containerRegistryNameCleaned'))]"
@@ -1906,7 +1897,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "storage001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1947,8 +1938,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "5666051803284083768"
+              "version": "0.4.1124.51302",
+              "templateHash": "16200407904616843158"
             }
           },
           "parameters": {
@@ -1993,7 +1984,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "storageNameCleaned": "[replace(parameters('storageName'), '-', '')]",
             "storagePrivateEndpointNameBlob": "[format('{0}-blob-private-endpoint', variables('storageNameCleaned'))]",
@@ -2245,7 +2235,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "machineLearning001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2266,16 +2256,16 @@
             "value": "[variables('machineLearning001Name')]"
           },
           "applicationInsightsId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationInsights001'), '2020-06-01').outputs.applicationInsightsId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationInsights001'), '2020-10-01').outputs.applicationInsightsId.value]"
           },
           "containerRegistryId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2020-06-01').outputs.containerRegistryId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2020-10-01').outputs.containerRegistryId.value]"
           },
           "keyVaultId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-06-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
           },
           "storageAccountId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2020-06-01').outputs.storageId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2020-10-01').outputs.storageId.value]"
           },
           "datalakeFileSystemIds": {
             "value": "[parameters('datalakeFileSystemIds')]"
@@ -2293,10 +2283,10 @@
             "value": "[parameters('databricksWorkspaceUrl')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-06-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "synapseBigDataPoolId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-06-01').outputs.synapseBigDataPool001Id.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseBigDataPool001Id.value, '')]"
           },
           "machineLearningComputeInstance001AdministratorObjectId": {
             "value": "[parameters('machineLearningComputeInstance001AdministratorObjectId')]"
@@ -2320,8 +2310,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "10881520305840804339"
+              "version": "0.4.1124.51302",
+              "templateHash": "14064910724988098449"
             }
           },
           "parameters": {
@@ -2398,7 +2388,6 @@
               "defaultValue": false
             }
           },
-          "functions": [],
           "variables": {
             "machineLearningPrivateEndpointName": "[format('{0}-private-endpoint', parameters('machineLearningName'))]",
             "noPublicIpRegions": [
@@ -2751,7 +2740,7 @@
     {
       "condition": "[and(not(empty(parameters('externalContainerRegistryId'))), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "machineLearning001RoleAssignmentContainerRegistry",
       "subscriptionId": "[variables('externalContainerRegistrySubscriptionId')]",
       "resourceGroup": "[variables('externalContainerRegistryResourceGroupName')]",
@@ -2765,7 +2754,7 @@
             "value": "[parameters('externalContainerRegistryId')]"
           },
           "machineLearningId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-06-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -2774,8 +2763,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "15142192034699681768"
+              "version": "0.4.1124.51302",
+              "templateHash": "14462268884464265429"
             }
           },
           "parameters": {
@@ -2786,7 +2775,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "containerRegistryName": "[if(greaterOrEquals(length(split(parameters('containerRegistryId'), '/')), 9), last(split(parameters('containerRegistryId'), '/')), 'incorrectSegmentLength')]",
             "machineLearningSubscriptionId": "[if(greaterOrEquals(length(split(parameters('machineLearningId'), '/')), 9), split(parameters('machineLearningId'), '/')[2], subscription().subscriptionId)]",
@@ -2818,7 +2806,7 @@
         "count": "[length(parameters('datalakeFileSystemIds'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('machineLearning001RoleAssignmentStorage-{0}', copyIndex())]",
       "subscriptionId": "[if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), subscription().subscriptionId, variables('datalakeFileSystemScopes')[copyIndex()].subscriptionId)]",
       "resourceGroup": "[if(lessOrEquals(length(parameters('datalakeFileSystemIds')), 0), resourceGroup().name, variables('datalakeFileSystemScopes')[copyIndex()].resourceGroupName)]",
@@ -2829,7 +2817,7 @@
         "mode": "Incremental",
         "parameters": {
           "machineLearningId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-06-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
           },
           "storageAccountFileSystemId": {
             "value": "[parameters('datalakeFileSystemIds')[copyIndex()]]"
@@ -2841,8 +2829,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "2056670283952885054"
+              "version": "0.4.1124.51302",
+              "templateHash": "15329536860223583620"
             }
           },
           "parameters": {
@@ -2853,7 +2841,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
