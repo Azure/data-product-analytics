@@ -42,7 +42,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "Please make sure that you have a Data Management Zone and Data Landing Zone deployed before deploying a Data Product or Data Integration template.",
+                                        "text": "Please make sure that you have a Data Management Landing Zone and Data Landing Zone deployed before deploying a Data Product or Data Integration template.",
                                         "style": "Warning",
                                         "uri": "https://github.com/Azure/data-management-zone"
                                     }
@@ -1158,7 +1158,7 @@
                                     "type": "Microsoft.Common.DropDown",
                                     "visible": "[equals(steps('connectivitySettings').privateDnsZones.automatedPrivateDnsZoneGroups, 'no')]",
                                     "defaultValue": "",
-                                    "toolTip": "Select the Subscription of your Private DNS Zones. If you have deployed the Data Management Zone with a Firewall and Private DNS Zones then select the subscription that you have used for your Data Management Zone.",
+                                    "toolTip": "Select the Subscription of your Private DNS Zones. If you have deployed the Data Management Landing Zone with a Firewall and Private DNS Zones then select the subscription that you have used for your Data Management Landing Zone.",
                                     "multiselect": false,
                                     "selectAll": false,
                                     "filter": true,
