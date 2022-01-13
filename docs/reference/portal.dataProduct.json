@@ -731,21 +731,17 @@
                                         "password": "Password",
                                         "confirmPassword": "Confirm password"
                                     },
-                                    "type": "Microsoft.Compute.CredentialsCombo",
+                                    "type": "Microsoft.Common.PasswordBox",
                                     "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
-                                    "defaultValue": "",
-                                    "toolTip": {
-                                        "password": "Specify an administrator password for the Synapse workspace."
-                                    },
+                                    "toolTip": "Specify an administrator password for the Synapse workspace.",
                                     "constraints": {
                                         "required": true,
-                                        "customPasswordRegex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
-                                        "customValidationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
+                                        "regex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
+                                        "validationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
                                     },
                                     "options": {
                                         "hideConfirmation": false
-                                    },
-                                    "osPlatform": "Windows"
+                                    }
                                 },
                                 {
                                     "name": "synapseDefaultStorageAccountApi",
@@ -1422,7 +1418,7 @@
                 "externalContainerRegistryId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.containerRegistryId), '', steps('generalSettings').machineLearningDeploymentSettings.containerRegistryId)]",
                 "machineLearningComputeInstance001AdministratorObjectId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorObjectId), '', steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorObjectId)]",
                 "machineLearningComputeInstance001AdministratorPublicSshKey": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey), '', steps('generalSettings').machineLearningDeploymentSettings.machineLearningComputeInstance001AdministratorPublicSshKey)]",
-                "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword.password), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword.password)]",
+                "administratorPassword": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.administratorPassword)]",
                 "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
                 "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
