@@ -32,7 +32,7 @@ var storagePrivateEndpointNameBlob = '${storage.name}-blob-private-endpoint'
 var storagePrivateEndpointNameFile = '${storage.name}-file-private-endpoint'
 
 // Resources
-resource storage 'Microsoft.Storage/storageAccounts@2021-04-01' = {
+resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: storageNameCleaned
   location: location
   tags: tags
@@ -48,6 +48,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     allowBlobPublicAccess: false
     allowCrossTenantReplication: false
     allowSharedKeyAccess: true
+    defaultToOAuthAuthentication: true
     encryption: {
       keySource: 'Microsoft.Storage'
       requireInfrastructureEncryption: false
@@ -70,6 +71,9 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-04-01' = {
         }
       }
     }
+    immutableStorageWithVersioning: {
+      enabled: false
+    }
     isHnsEnabled: false
     isNfsV3Enabled: false
     keyPolicy: {
@@ -88,11 +92,12 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-04-01' = {
       publishInternetEndpoints: false
       publishMicrosoftEndpoints: false
     }
+    publicNetworkAccess: 'Disabled'
     supportsHttpsTrafficOnly: true
   }
 }
 
-resource storageManagementPolicies 'Microsoft.Storage/storageAccounts/managementPolicies@2021-02-01' = {
+resource storageManagementPolicies 'Microsoft.Storage/storageAccounts/managementPolicies@2021-06-01' = {
   parent: storage
   name: 'default'
   properties: {
@@ -155,7 +160,7 @@ resource storageManagementPolicies 'Microsoft.Storage/storageAccounts/management
   }
 }
 
-resource storageBlobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-02-01' = {
+resource storageBlobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
   parent: storage
   name: 'default'
   properties: {
@@ -172,10 +177,10 @@ resource storageBlobServices 'Microsoft.Storage/storageAccounts/blobServices@202
     //   retentionInDays: 7
     // }
     // defaultServiceVersion: ''
-    // deleteRetentionPolicy: {
-    //   enabled: true
-    //   days: 7
-    // }
+    deleteRetentionPolicy: {
+      enabled: true
+      days: 7
+    }
     // isVersioningEnabled: true
     // lastAccessTimeTrackingPolicy: {
     //   name: 'AccessTimeTracking'
@@ -192,7 +197,7 @@ resource storageBlobServices 'Microsoft.Storage/storageAccounts/blobServices@202
   }
 }
 
-resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' = [for storageContainerName in storageContainerNames: {
+resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-06-01' = [for storageContainerName in storageContainerNames: {
   parent: storageBlobServices
   name: storageContainerName
   properties: {
