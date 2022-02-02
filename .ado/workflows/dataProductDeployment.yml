@@ -74,9 +74,10 @@ stages:
               resourceGroupName: ${{ variables.AZURE_RESOURCE_GROUP_NAME }}
               location: ${{ variables.AZURE_LOCATION }}
               templateLocation: "Linked artifact"
-              csmFile: "$(System.DefaultWorkingDirectory)/infra/main.json"
+              csmFile: "$(System.DefaultWorkingDirectory)/infra/main.bicep"
               csmParametersFile: "$(System.DefaultWorkingDirectory)/infra/params.dev.json"
               deploymentMode: "Validation"
+              deploymentName: "DataProduct-$(Build.SourceVersion)"
               overrideParameters: >
                 -administratorPassword "$(password)"
 
@@ -97,8 +98,9 @@ stages:
                 az deployment group what-if `
                   --resource-group ${{ variables.AZURE_RESOURCE_GROUP_NAME }} `
                   --exclude-change-types Ignore NoChange Unsupported `
+                  --name "DataProduct-$(Build.SourceVersion)" `
                   --mode "Incremental" `
-                  --template-file "$(System.DefaultWorkingDirectory)/infra/main.json" `
+                  --template-file "$(System.DefaultWorkingDirectory)/infra/main.bicep" `
                   --parameters "$(System.DefaultWorkingDirectory)/infra/params.dev.json" administratorPassword="$(password)" `
                   --result-format "FullResourcePayloads"
                 
@@ -159,8 +161,9 @@ stages:
               resourceGroupName: ${{ variables.AZURE_RESOURCE_GROUP_NAME }}
               location: ${{ variables.AZURE_LOCATION }}
               templateLocation: "Linked artifact"
-              csmFile: "$(System.DefaultWorkingDirectory)/infra/main.json"
+              csmFile: "$(System.DefaultWorkingDirectory)/infra/main.bicep"
               csmParametersFile: "$(System.DefaultWorkingDirectory)/infra/params.dev.json"
               deploymentMode: "Incremental"
+              deploymentName: "DataProduct-$(Build.SourceVersion)"
               overrideParameters: >
                 -administratorPassword "$(password)"
