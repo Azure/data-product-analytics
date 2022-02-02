@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "3860597727392112976"
+      "templateHash": "14598885533275990095"
     }
   },
   "parameters": {
@@ -347,7 +347,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1124.51302",
-              "templateHash": "12660131753967436973"
+              "templateHash": "13895317050613293148"
             }
           },
           "parameters": {
@@ -374,7 +374,7 @@
           "resources": [
             {
               "type": "Microsoft.KeyVault/vaults",
-              "apiVersion": "2021-04-01-preview",
+              "apiVersion": "2021-06-01-preview",
               "name": "[parameters('keyvaultName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -387,6 +387,7 @@
                 "enablePurgeProtection": true,
                 "enableRbacAuthorization": true,
                 "enableSoftDelete": true,
+                "publicNetworkAccess": "Disabled",
                 "networkAcls": {
                   "bypass": "AzureServices",
                   "defaultAction": "Deny",
