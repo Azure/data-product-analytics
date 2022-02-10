@@ -110,6 +110,13 @@ param privateDnsZoneIdMachineLearningApi string = ''
 @description('Specifies the resource ID of the private DNS zone for Machine Learning Notebooks.')
 param privateDnsZoneIdMachineLearningNotebooks string = ''
 
+// Monitoring
+@description('Specifies whether monitoring components(LogAnalytics, Azure Dashboard, Alerts etc.) should be deployed as part of the template.')
+param enableMonitoring bool
+@description('Email Id for the Data Product SRE Team.')
+param dataProductTeamEmail string = ''
+
+
 // Variables
 var name = toLower('${prefix}-${environment}')
 var tagsDefault = {
@@ -138,6 +145,11 @@ var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
+var loganalyticsName = '${name}-loganalytics'
+var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
+var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var datafactoryScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.DataFactory/factories/${datafactory001Name}'
+var dashbaordName= '${name}-dashbaord'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -314,5 +326,59 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
     storageAccountFileSystemId: datalakeFileSystemId
   }
 }]
+
+// Monitoring
+module loganalytics './modules/services/loganalytics.bicep' = if (enableMonitoring) {
+  name: 'logAnalytics'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tagsJoined
+    loganalyticsName: loganalyticsName    
+  }
+}
+
+module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (enableMonitoring) {
+  name: 'diagnosticSettings'  
+  scope: resourceGroup()
+  params: {
+    datafactoryName: datafactory001Name    
+    loganalyticsName: loganalyticsName
+    }
+}
+
+module alertsActionGroups './modules/services/alertsactiongroups.bicep' = if (enableMonitoring) {
+  name: 'alertsActionGroups'  
+  scope: resourceGroup()
+  params: {
+    dataFactoryEmailActionGroup: dataFactoryEmailActionGroup    
+    tags: tagsJoined
+    dataProductTeamEmail: dataProductTeamEmail    
+    }
+}
+
+module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
+  name: 'alerts'  
+  scope: resourceGroup()
+  params: {
+    adfPipelineFailedAlertName: adfPipelineFailedAlertName
+    alertsActionGroupID: alertsActionGroups.outputs.actiongroup_id
+    datafactoryScope :datafactoryScope    
+    location: location
+    tags: tagsJoined
+    }
+}
+
+module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
+  name: 'dashboard'  
+  scope: resourceGroup()
+  params: {
+    dashbaordName: dashbaordName
+    datafactoryName: datafactory001Name    
+    datafactoryScope :datafactoryScope
+    location: location    
+    tags: tagsJoined    
+    }
+}
 
 // Outputs

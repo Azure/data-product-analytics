@@ -68,6 +68,12 @@
                 "CustomVision.Prediction"
             ]
         },
+        "enableMonitoring": {
+            "value": true
+        },
+        "dataProductTeamEmail": {
+            "value": "email@domain.com"
+        },
         "enableSearch": {
             "value": true
         },
