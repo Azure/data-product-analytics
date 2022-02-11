@@ -79,6 +79,8 @@ param enableRoleAssignments bool = false
 param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
+@description('Specifies whether observability capabilities should be enabled.')
+param enableObservability bool = true
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -138,6 +140,7 @@ var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
+var logAnalytics001Name = '${name}-la001'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -314,5 +317,15 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
     storageAccountFileSystemId: datalakeFileSystemId
   }
 }]
+
+module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableObservability) {
+  name: 'logAnalytics001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tagsJoined
+    logAnanalyticsName: logAnalytics001Name
+  }
+}
 
 // Outputs

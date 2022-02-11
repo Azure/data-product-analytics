@@ -71,6 +71,9 @@
         "enableSearch": {
             "value": true
         },
+        "enableObservability": {
+            "value": true
+        },
         "subnetId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-tst-network/providers/Microsoft.Network/virtualNetworks/dlz01-tst-vnet/subnets/DataProduct001Subnet"
         },

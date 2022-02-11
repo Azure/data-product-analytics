@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "14598885533275990095"
+      "templateHash": "9371959768102354665"
     }
   },
   "parameters": {
@@ -187,6 +187,13 @@
         "description": "Specifies whether Azure Search should be deployed as part of the template."
       }
     },
+    "enableObservability": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether observability capabilities should be enabled."
+      }
+    },
     "subnetId": {
       "type": "string",
       "metadata": {
@@ -311,7 +318,8 @@
     "applicationInsights001Name": "[format('{0}-insights001', variables('name'))]",
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "storage001Name": "[format('{0}-storage001', variables('name'))]",
-    "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]"
+    "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]",
+    "logAnalytics001Name": "[format('{0}-la001', variables('name'))]"
   },
   "resources": [
     {
@@ -2866,6 +2874,97 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
+    },
+    {
+      "condition": "[parameters('enableObservability')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "logAnalytics001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "logAnanalyticsName": {
+            "value": "[variables('logAnalytics001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1124.51302",
+              "templateHash": "16680963177012320014"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "logAnanalyticsName": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "dataFactoryAnalyticsName": "[format('{0}-adf-analytics', parameters('logAnanalyticsName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('logAnanalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "features": {},
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled",
+                "retentionInDays": 120,
+                "sku": {
+                  "name": "PerGB2018"
+                }
+              }
+            },
+            {
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('dataFactoryAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "AzureDataFactoryAnalytics",
+                "product": "OMSGallery/AzureDataFactoryAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+            }
+          }
+        }
+      }
     }
   ]
 }
