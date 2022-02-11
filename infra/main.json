@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "9371959768102354665"
+      "templateHash": "18366018022789231546"
     }
   },
   "parameters": {
@@ -2903,7 +2903,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1124.51302",
-              "templateHash": "16680963177012320014"
+              "templateHash": "2458996027140286358"
             }
           },
           "parameters": {
@@ -2944,7 +2944,7 @@
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "plan": {
-                "name": "AzureDataFactoryAnalytics",
+                "name": "[format('AzureDataFactoryAnalytics{0}', parameters('logAnanalyticsName'))]",
                 "product": "OMSGallery/AzureDataFactoryAnalytics",
                 "promotionCode": "",
                 "publisher": "Microsoft"

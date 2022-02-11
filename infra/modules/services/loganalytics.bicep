@@ -33,7 +33,7 @@ resource dataFactoryAnalytics 'Microsoft.OperationsManagement/solutions@2015-11-
   location: location
   tags: tags
   plan: {
-    name: 'AzureDataFactoryAnalytics'
+    name: 'AzureDataFactoryAnalytics${logAnalytics.name}'
     product: 'OMSGallery/AzureDataFactoryAnalytics'
     promotionCode: ''
     publisher: 'Microsoft'
