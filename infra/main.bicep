@@ -79,6 +79,10 @@ param enableRoleAssignments bool = false
 param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
+@description('Specifies whether observability capabilities should be enabled.')
+param enableObservability bool = true
+@description('Specifies the email address of the Data Product SRE team.')
+param dataProductTeamEmail string = ''
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -110,13 +114,6 @@ param privateDnsZoneIdMachineLearningApi string = ''
 @description('Specifies the resource ID of the private DNS zone for Machine Learning Notebooks.')
 param privateDnsZoneIdMachineLearningNotebooks string = ''
 
-// Monitoring
-@description('Specifies whether monitoring components(LogAnalytics, Azure Dashboard, Alerts etc.) should be deployed as part of the template.')
-param enableMonitoring bool
-@description('Email Id for the Data Product SRE Team.')
-param dataProductTeamEmail string = ''
-
-
 // Variables
 var name = toLower('${prefix}-${environment}')
 var tagsDefault = {
@@ -145,11 +142,11 @@ var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
-var loganalyticsName = '${name}-loganalytics'
-var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
-var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var logAnalytics001Name = '${name}-la001'
+var dataFactoryEmailActionGroupName = '${datafactory001Name}-${name}-emailactiongroup'
+var datafactoryPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
 var datafactoryScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.DataFactory/factories/${datafactory001Name}'
-var dashbaordName= '${name}-dashbaord'
+var dashbaord001Name= '${name}-dashbaord'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -327,58 +324,14 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
   }
 }]
 
-// Monitoring
-module loganalytics './modules/services/loganalytics.bicep' = if (enableMonitoring) {
-  name: 'logAnalytics'
+module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableObservability) {
+  name: 'logAnalytics001'
   scope: resourceGroup()
   params: {
     location: location
     tags: tagsJoined
-    loganalyticsName: loganalyticsName    
+    logAnanalyticsName: logAnalytics001Name
   }
-}
-
-module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (enableMonitoring) {
-  name: 'diagnosticSettings'  
-  scope: resourceGroup()
-  params: {
-    datafactoryName: datafactory001Name    
-    loganalyticsName: loganalyticsName
-    }
-}
-
-module alertsActionGroups './modules/services/alertsactiongroups.bicep' = if (enableMonitoring) {
-  name: 'alertsActionGroups'  
-  scope: resourceGroup()
-  params: {
-    dataFactoryEmailActionGroup: dataFactoryEmailActionGroup    
-    tags: tagsJoined
-    dataProductTeamEmail: dataProductTeamEmail    
-    }
-}
-
-module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
-  name: 'alerts'  
-  scope: resourceGroup()
-  params: {
-    adfPipelineFailedAlertName: adfPipelineFailedAlertName
-    alertsActionGroupID: alertsActionGroups.outputs.actiongroup_id
-    datafactoryScope :datafactoryScope    
-    location: location
-    tags: tagsJoined
-    }
-}
-
-module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
-  name: 'dashboard'  
-  scope: resourceGroup()
-  params: {
-    dashbaordName: dashbaordName
-    datafactoryName: datafactory001Name    
-    datafactoryScope :datafactoryScope
-    location: location    
-    tags: tagsJoined    
-    }
 }
 
 // Outputs

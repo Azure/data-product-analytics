@@ -862,7 +862,7 @@
                         },
                         {
                             "name": "generalSettings",
-                            "label": "General Settings",
+                            "label": "Analytics Services Settings",
                             "type": "Microsoft.Common.Section",
                             "visible": true,
                             "elements": [
@@ -871,7 +871,7 @@
                                     "type": "Microsoft.Common.TextBlock",
                                     "visible": true,
                                     "options": {
-                                        "text": "Specify general settings for this deployment.",
+                                        "text": "Specify general settings for other optional analytics services.",
                                         "link": {
                                             "label": "",
                                             "uri": ""
@@ -959,13 +959,21 @@
                                 {
                                     "name": "enableSearch",
                                     "label": "Enable Azure Search",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
-                                    "defaultValue": false,
                                     "toolTip": "Enable the deployment of Azure Search.",
+                                    "defaultValue": "Yes",
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable the deployment of Azure Search."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -980,13 +988,61 @@
                                 {
                                     "name": "enableRoleAssignments",
                                     "label": "Enable role assignments",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
-                                    "defaultValue": false,
                                     "toolTip": "Enable role assignments.",
+                                    "defaultValue": "Yes (recommended)",
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable role assignments of Machine Learning MSI and Synapse MSI. Please read infobox above for more details."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "observabilitySettings",
+                            "label": "Observability Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "observabilitySettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify observability settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "enableObservability",
+                                    "label": "Deploy Observability Extension",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, a Log Analytics workspace as well as a set of Azure dashboards will be deployed.",
+                                    "defaultValue": "Yes (recommended)",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -1427,9 +1483,10 @@
                 "databricksWorkspaceId": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksId), '', steps('generalSettings').machineLearningDeploymentSettings.databricksId)]",
                 "databricksWorkspaceUrl": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl), '', steps('generalSettings').machineLearningDeploymentSettings.databricksWorkspaceUrl.properties.workspaceUrl)]",
                 "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
-                "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
-                "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
+                "enableSearch": "[equals(steps('generalSettings').generalSettings.enableSearch, 'yes')]",
+                "enableObservability": "[equals(steps('generalSettings').observabilitySettings.enableObservability, 'yes')]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",

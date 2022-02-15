@@ -68,14 +68,14 @@
                 "CustomVision.Prediction"
             ]
         },
-        "enableMonitoring": {
+        "enableSearch": {
+            "value": true
+        },
+        "enableObservability": {
             "value": true
         },
         "dataProductTeamEmail": {
             "value": "email@domain.com"
-        },
-        "enableSearch": {
-            "value": true
         },
         "subnetId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-dev-network/providers/Microsoft.Network/virtualNetworks/dlz01-dev-vnet/subnets/DataProduct001Subnet"

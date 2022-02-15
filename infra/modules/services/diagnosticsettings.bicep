@@ -1,24 +1,29 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+// This template is used to setup diagnostic settings.
+targetScope = 'resourceGroup'
+
 // Parameters
 param loganalyticsName string
 param datafactoryName string
 
+// Variables
+
 // Resources
-resource datafactoryworkspace 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+resource datafactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
   name: datafactoryName
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
   name: loganalyticsName
 }
 
-resource diagnosticSetting1 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  scope: datafactoryworkspace
-  name: 'diagnostic-${datafactoryworkspace.name}'  
+resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  scope: datafactory
+  name: 'diagnostic-${datafactory.name}'
   properties: {
-    workspaceId: logAnalyticsWorkspace.id
+    workspaceId: logAnalytics.id
     logs: [
       {
         category: 'PipelineRuns'
@@ -31,12 +36,12 @@ resource diagnosticSetting1 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
       {
         category: 'ActivityRuns'
         enabled: true
-      }      
-    ]    
+      }
+    ]
     metrics: [
       {
-      category: 'AllMetrics'
-      enabled: true
+        category: 'AllMetrics'
+        enabled: true
       }
     ]
   }

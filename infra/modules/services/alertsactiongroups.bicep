@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+// This template is used to create an alert action group.
+targetScope = 'resourceGroup'
+
 // Parameters
 param dataFactoryEmailActionGroup string
 param dataProductTeamEmail string
