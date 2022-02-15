@@ -82,7 +82,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
     largeFileSharesState: 'Disabled'
     minimumTlsVersion: 'TLS1_2'
     networkAcls: {
-      bypass: 'Metrics'
+      bypass: 'AzureServices'
       defaultAction: 'Deny'
       ipRules: []
       virtualNetworkRules: []
