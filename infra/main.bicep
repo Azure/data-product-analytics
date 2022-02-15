@@ -81,6 +81,8 @@ param cognitiveServiceKinds array = []
 param enableSearch bool = false
 @description('Specifies whether observability capabilities should be enabled.')
 param enableObservability bool = true
+@description('Specifies the email address of the Data Product SRE team.')
+param dataProductTeamEmail string = ''
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -141,6 +143,10 @@ var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
 var logAnalytics001Name = '${name}-la001'
+var dataFactoryEmailActionGroupName = '${datafactory001Name}-${name}-emailactiongroup'
+var datafactoryPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var datafactoryScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.DataFactory/factories/${datafactory001Name}'
+var dashbaord001Name= '${name}-dashbaord'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
