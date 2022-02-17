@@ -148,7 +148,9 @@ var machineLearning001Name = '${name}-machinelearning001'
 var loganalyticsName = '${name}-loganalytics'
 var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
 var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var synapsePipelineFailedAlertName = '${synapse001Name}-${name}-synapsefailedalert'
 var datafactoryScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.DataFactory/factories/${datafactory001Name}'
+var synapseScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Synapse/workspaces/${synapse001Name}'
 var dashbaordName= '${name}-dashbaord'
 
 // Resources
@@ -344,6 +346,10 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   params: {
     datafactoryName: datafactory001Name    
     loganalyticsName: loganalyticsName
+    processingService: processingService
+    synapseName: synapse001Name
+    synapseSqlPoolName: synapse001.outputs.synapseSqlPool001Id
+    synapseSparkPoolName: synapse001.outputs.synapseBigDataPool001Id
     }
 }
 
@@ -362,9 +368,11 @@ module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
   scope: resourceGroup()
   params: {
     adfPipelineFailedAlertName: adfPipelineFailedAlertName
+    synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
     alertsActionGroupID: alertsActionGroups.outputs.actiongroup_id
     datafactoryScope :datafactoryScope    
     location: location
+    processingService: processingService  
     tags: tagsJoined
     }
 }
@@ -376,7 +384,10 @@ module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
     dashbaordName: dashbaordName
     datafactoryName: datafactory001Name    
     datafactoryScope :datafactoryScope
-    location: location    
+    synapseName: synapse001Name
+    synapseScope: synapseScope
+    location: location
+    processingService: processingService    
     tags: tagsJoined    
     }
 }
