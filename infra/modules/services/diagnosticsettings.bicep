@@ -14,17 +14,17 @@ resource synapseworkspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = i
   name: synapseName
 }
 
-resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' existing = if (processingService == 'synapse'){
+resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' existing = if (processingService == 'synapse'){
   parent: synapseworkspace
   name: synapseSqlPoolName
 }
 
-resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-03-01' existing = if (processingService == 'synapse'){
+resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' existing = if (processingService == 'synapse'){
   parent: synapseworkspace
   name: synapseSparkPoolName
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
   name: loganalyticsName
 }
 

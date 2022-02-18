@@ -348,8 +348,8 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
     loganalyticsName: loganalyticsName
     processingService: processingService
     synapseName: synapse001Name
-    synapseSqlPoolName: synapse001.outputs.synapseSqlPool001Id
-    synapseSparkPoolName: synapse001.outputs.synapseBigDataPool001Id
+    synapseSqlPoolName: synapse001.outputs.synapseSqlPool001Name
+    synapseSparkPoolName: synapse001.outputs.synapseBigDataPool001Name
     }
 }
 

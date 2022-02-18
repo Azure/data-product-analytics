@@ -198,7 +198,7 @@ resource synapsedashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = if 
                                        }
                                         name :  'PipelineFailedRuns' 
                                         aggregationType : 1
-                                        namespace :  'microsoft.Synapse/Workspaces' 
+                                        namespace :  'Microsoft.Synapse/workspaces' 
                                         metricVisualization : {
                                           displayName :  'Failed integration pipeline runs metrics' 
                                           resourceDisplayName : synapseName
@@ -262,7 +262,7 @@ resource synapsedashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = if 
                                    }
                                     name :  'IntegrationPipelineSucceededRuns' 
                                     aggregationType : 1
-                                    namespace :  'microsoft.synapse/workspaces' 
+                                    namespace :  'Microsoft.Synapse/workspaces' 
                                     metricVisualization : {
                                       displayName :  'Succeeded integration pipeline runs metrics' 
                                       resourceDisplayName : synapseName
