@@ -1006,47 +1006,7 @@
                                     }
                                 }
                             ]
-                        },
-                        {
-                            "name": "observabilitySettings",
-                            "label": "Observability Settings",
-                            "type": "Microsoft.Common.Section",
-                            "visible": true,
-                            "elements": [
-                                {
-                                    "name": "observabilitySettingsText",
-                                    "type": "Microsoft.Common.TextBlock",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "Specify observability settings for this deployment.",
-                                        "link": {
-                                            "label": "",
-                                            "uri": ""
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "enableObservability",
-                                    "label": "Deploy Observability Extension",
-                                    "type": "Microsoft.Common.OptionsGroup",
-                                    "visible": true,
-                                    "toolTip": "If 'Yes' is selected, a Log Analytics workspace as well as a set of Azure dashboards will be deployed.",
-                                    "defaultValue": "Yes (recommended)",
-                                    "constraints": {
-                                        "allowedValues": [
-                                            {
-                                                "label": "Yes (recommended)",
-                                                "value": "yes"
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "no"
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        },
+                        },                        
                         {
                             "name": "monitoringSettings",
                             "label": "Monitoring Settings",
@@ -1054,11 +1014,23 @@
                             "visible": true,
                             "elements": [
                                 {
+                                    "name": "monitoringSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify Monitoring settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
                                     "name": "enableMonitoring",
-                                    "label": "Enable monitoring components like Azure dashboards, alerts and diagnostic settings",
+                                    "label": "Deploy Monitoring Components",
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
-                                    "toolTip": "If 'Yes' is selected, you are required to provide email id to receive alerts",
+                                    "toolTip": "Deploy monitoring components like Log Analytics, Azure dashboards, alerts and diagnostic settings.",
                                     "defaultValue": "No",
                                     "constraints": {
                                         "allowedValues": [
