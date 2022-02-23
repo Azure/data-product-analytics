@@ -93,7 +93,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | `cognitiveServiceKinds` | Specifies the cognitive service kind that will be deployed. | [`FormRecognizer`, `LUIS`] |
 | `enableSearch` | Specifies whether Azure Search should be deployed as part of the template. | `true` or `false` |
 | `enableMonitoring` | Specifies whether key monitoring components like Azure Dashboard, metrics and alerts are enabled. | `true` or `false` |
-| `dataProductTeamEmail` | Email Id of the group to receive monitoring alerts. | `email@domian.com` |
+| `dataProductTeamEmail` | Email ID of the group to receive monitoring alerts. | `email@domian.com` |
 | `subnetId` | Specifies the resource ID of the subnet to which all services will connect. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/virtualNetworks/{vnet-name}/subnets/{subnet-name}` |
 | `privateDnsZoneIdKeyVault` | Specifies the Resource ID of the private DNS zone for KeyVault. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net` |
 | `privateDnsZoneIdSynapseDev` | Specifies the Resource ID of the private DNS zone for Synapse Dev. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net` |
