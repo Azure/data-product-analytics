@@ -28,7 +28,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
     enablePurgeProtection: true
     enableRbacAuthorization: true
     enableSoftDelete: true
-    publicNetworkAccess: 'Disabled'
+    // publicNetworkAccess: 'Disabled'
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
