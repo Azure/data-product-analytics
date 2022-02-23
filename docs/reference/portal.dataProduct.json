@@ -990,10 +990,46 @@
                                     }
                                 }
                             ]
+                        },
+                        {
+                            "name": "monitoringSettings",
+                            "label": "Monitoring Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "enableMonitoring",
+                                    "label": "Enable monitoring components like Azure dashboards, alerts and diagnostic settings",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, you are required to provide email id to receive alerts",
+                                    "defaultValue": "No",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "dataProductTeamEmail",
+                                    "label": "Alert Receivers Email ID",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
+                                    "defaultValue": "",
+                                    "toolTip": "Specify Email ID to receive monitoring alerts."                                    
+                                }                                
+                            ]
                         }
                     ]
                 },
-                {
+                                {
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
                     "subLabel": {
@@ -1430,6 +1466,8 @@
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
                 "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
+                "enableMonitoring": "[steps('generalSettings').monitoringSettings.enableMonitoring]",
+                "dataProductTeamEmail": "[steps('generalSettings').monitoringSettings.dataProductTeamEmail]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",

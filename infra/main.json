@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1124.51302",
-      "templateHash": "3860597727392112976"
+      "version": "0.4.1272.37030",
+      "templateHash": "2664279640337978879"
     }
   },
   "parameters": {
@@ -276,6 +276,19 @@
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Machine Learning Notebooks."
       }
+    },
+    "enableMonitoring": {
+      "type": "bool",
+      "metadata": {
+        "description": "Specifies whether monitoring components(LogAnalytics, Azure Dashboard, Alerts etc.) should be deployed as part of the template."
+      }
+    },
+    "dataProductTeamEmail": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Email Id for the Data Product SRE Team."
+      }
     }
   },
   "variables": {
@@ -311,7 +324,14 @@
     "applicationInsights001Name": "[format('{0}-insights001', variables('name'))]",
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "storage001Name": "[format('{0}-storage001', variables('name'))]",
-    "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]"
+    "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]",
+    "loganalyticsName": "[format('{0}-loganalytics', variables('name'))]",
+    "dataFactoryEmailActionGroup": "[format('{0}-{1}-emailactiongroup', variables('datafactory001Name'), variables('name'))]",
+    "adfPipelineFailedAlertName": "[format('{0}-{1}-adffailedalert', variables('datafactory001Name'), variables('name'))]",
+    "synapsePipelineFailedAlertName": "[format('{0}-failedalert', variables('synapse001Name'))]",
+    "synapseScope": "[format('{0}/resourceGroups/{1}/providers/Microsoft.Synapse/workspaces/{2}', subscription().id, resourceGroup().name, variables('synapse001Name'))]",
+    "datafactoryScope": "[format('{0}/resourceGroups/{1}/providers/Microsoft.DataFactory/factories/{2}', subscription().id, resourceGroup().name, variables('datafactory001Name'))]",
+    "dashboardName": "[format('{0}-dashboard', variables('name'))]"
   },
   "resources": [
     {
@@ -346,8 +366,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "12660131753967436973"
+              "version": "0.4.1272.37030",
+              "templateHash": "9938457463094163649"
             }
           },
           "parameters": {
@@ -518,8 +538,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "1475585971495335452"
+              "version": "0.4.1272.37030",
+              "templateHash": "4566622898197965808"
             }
           },
           "parameters": {
@@ -584,7 +604,7 @@
           "resources": [
             {
               "type": "Microsoft.Synapse/workspaces",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-06-01",
               "name": "[parameters('synapseName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -617,7 +637,7 @@
             {
               "condition": "[parameters('enableSqlPool')]",
               "type": "Microsoft.Synapse/workspaces/sqlPools",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-06-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'sqlPool001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -635,7 +655,7 @@
             },
             {
               "type": "Microsoft.Synapse/workspaces/bigDataPools",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-06-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'bigDataPool001')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -668,7 +688,7 @@
             },
             {
               "type": "Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-06-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'default')]",
               "properties": {
                 "grantSqlControlToManagedIdentity": {
@@ -682,7 +702,7 @@
             {
               "condition": "[and(not(empty(parameters('synapseSqlAdminGroupName'))), not(empty(parameters('synapseSqlAdminGroupObjectID'))))]",
               "type": "Microsoft.Synapse/workspaces/administrators",
-              "apiVersion": "2021-03-01",
+              "apiVersion": "2021-06-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'activeDirectory')]",
               "properties": {
                 "administratorType": "ActiveDirectory",
@@ -844,6 +864,14 @@
             "synapseBigDataPool001Id": {
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
+            },
+            "synapseBigDataPool001Name": {
+              "type": "string",
+              "value": "bigDataPool001"
+            },
+            "synapseSqlPool001Name": {
+              "type": "string",
+              "value": "sqlPool001"
             }
           }
         }
@@ -866,7 +894,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -875,8 +903,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "17584063900477479467"
+              "version": "0.4.1272.37030",
+              "templateHash": "4535135918647961980"
             }
           },
           "parameters": {
@@ -936,7 +964,7 @@
             "value": "[variables('datafactory001Name')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001')).outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -954,7 +982,7 @@
             "value": "[parameters('purviewManagedEventHubId')]"
           },
           "machineLearning001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001')).outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -963,8 +991,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "8903592133998705977"
+              "version": "0.4.1272.37030",
+              "templateHash": "4658994371289046641"
             }
           },
           "parameters": {
@@ -1354,8 +1382,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "14497077229040500861"
+              "version": "0.4.1272.37030",
+              "templateHash": "390418905763272326"
             }
           },
           "parameters": {
@@ -1526,8 +1554,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "7020391773370407540"
+              "version": "0.4.1272.37030",
+              "templateHash": "10783497108252025858"
             }
           },
           "parameters": {
@@ -1692,8 +1720,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "15263814874918461179"
+              "version": "0.4.1272.37030",
+              "templateHash": "7685666168919205168"
             }
           },
           "parameters": {
@@ -1773,8 +1801,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9462754811042758050"
+              "version": "0.4.1272.37030",
+              "templateHash": "10998052295333890969"
             }
           },
           "parameters": {
@@ -1938,8 +1966,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "16200407904616843158"
+              "version": "0.4.1272.37030",
+              "templateHash": "17706947645436179540"
             }
           },
           "parameters": {
@@ -2256,16 +2284,16 @@
             "value": "[variables('machineLearning001Name')]"
           },
           "applicationInsightsId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationInsights001'), '2020-10-01').outputs.applicationInsightsId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'applicationInsights001')).outputs.applicationInsightsId.value]"
           },
           "containerRegistryId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001'), '2020-10-01').outputs.containerRegistryId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'containerRegistry001')).outputs.containerRegistryId.value]"
           },
           "keyVaultId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001')).outputs.keyvaultId.value]"
           },
           "storageAccountId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001'), '2020-10-01').outputs.storageId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storage001')).outputs.storageId.value]"
           },
           "datalakeFileSystemIds": {
             "value": "[parameters('datalakeFileSystemIds')]"
@@ -2283,10 +2311,10 @@
             "value": "[parameters('databricksWorkspaceUrl')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           },
           "synapseBigDataPoolId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseBigDataPool001Id.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Id.value, '')]"
           },
           "machineLearningComputeInstance001AdministratorObjectId": {
             "value": "[parameters('machineLearningComputeInstance001AdministratorObjectId')]"
@@ -2310,8 +2338,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "14064910724988098449"
+              "version": "0.4.1272.37030",
+              "templateHash": "2625581626341947011"
             }
           },
           "parameters": {
@@ -2754,7 +2782,7 @@
             "value": "[parameters('externalContainerRegistryId')]"
           },
           "machineLearningId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001')).outputs.machineLearningId.value]"
           }
         },
         "template": {
@@ -2763,8 +2791,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "14462268884464265429"
+              "version": "0.4.1272.37030",
+              "templateHash": "6095886941970314891"
             }
           },
           "parameters": {
@@ -2817,7 +2845,7 @@
         "mode": "Incremental",
         "parameters": {
           "machineLearningId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001'), '2020-10-01').outputs.machineLearningId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'machineLearning001')).outputs.machineLearningId.value]"
           },
           "storageAccountFileSystemId": {
             "value": "[parameters('datalakeFileSystemIds')[copyIndex()]]"
@@ -2829,8 +2857,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "15329536860223583620"
+              "version": "0.4.1272.37030",
+              "templateHash": "9185402326525362659"
             }
           },
           "parameters": {
@@ -2865,6 +2893,858 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'machineLearning001')]"
       ]
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "logAnalytics",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "loganalyticsName": {
+            "value": "[variables('loganalyticsName')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "13195190478005842925"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "loganalyticsName": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "processingService": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "dataFactoryAnalyticsName": "[format('AzureDataFactoryAnalytics({0})', parameters('loganalyticsName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2020-08-01",
+              "name": "[parameters('loganalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "sku": {
+                  "name": "PerGB2018"
+                },
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled",
+                "retentionInDays": 120,
+                "features": {
+                  "searchVersion": 1,
+                  "legacy": 0
+                }
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('dataFactoryAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "[variables('dataFactoryAnalyticsName')]",
+                "product": "OMSGallery/AzureDataFactoryAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "diagnosticSettings",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "datafactoryName": {
+            "value": "[variables('datafactory001Name')]"
+          },
+          "loganalyticsName": {
+            "value": "[variables('loganalyticsName')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "synapseName": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "synapseSqlPoolName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value]"
+          },
+          "synapseSparkPoolName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "12754602256613282178"
+            }
+          },
+          "parameters": {
+            "loganalyticsName": {
+              "type": "string"
+            },
+            "datafactoryName": {
+              "type": "string"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapseName": {
+              "type": "string"
+            },
+            "synapseSqlPoolName": {
+              "type": "string"
+            },
+            "synapseSparkPoolName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DataFactory/factories/{0}', parameters('datafactoryName'))]",
+              "name": "[format('diagnostic-{0}', parameters('datafactoryName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]",
+                "logs": [
+                  {
+                    "category": "PipelineRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "TriggerRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "ActivityRuns",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}', parameters('synapseName'))]",
+              "name": "[format('diagnostic-{0}', parameters('synapseName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]",
+                "logs": [
+                  {
+                    "category": "SynapseRbacOperations",
+                    "enabled": true
+                  },
+                  {
+                    "category": "GatewayApiRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "BuiltinSqlReqsEnded",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationPipelineRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationActivityRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationTriggerRuns",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}/sqlPools/{1}', parameters('synapseName'), parameters('synapseSqlPoolName'))]",
+              "name": "[format('diagnostic-{0}-{1}', parameters('synapseName'), parameters('synapseSqlPoolName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]",
+                "logs": [
+                  {
+                    "category": "SqlRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "RequestSteps",
+                    "enabled": true
+                  },
+                  {
+                    "category": "ExecRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "DmsWorkers",
+                    "enabled": true
+                  },
+                  {
+                    "category": "Waits",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}/bigDataPools/{1}', parameters('synapseName'), parameters('synapseSparkPoolName'))]",
+              "name": "[format('diagnostic-{0}-{1}', parameters('synapseName'), parameters('synapseSparkPoolName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('loganalyticsName'))]",
+                "logs": [
+                  {
+                    "category": "BigDataPoolAppsEnded",
+                    "enabled": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "alerts",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "adfPipelineFailedAlertName": {
+            "value": "[variables('adfPipelineFailedAlertName')]"
+          },
+          "datafactoryScope": {
+            "value": "[variables('datafactoryScope')]"
+          },
+          "dataFactoryEmailActionGroup": {
+            "value": "[variables('dataFactoryEmailActionGroup')]"
+          },
+          "dataProductTeamEmail": {
+            "value": "[parameters('dataProductTeamEmail')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "synapsePipelineFailedAlertName": {
+            "value": "[variables('synapsePipelineFailedAlertName')]"
+          },
+          "synapseScope": {
+            "value": "[variables('synapseScope')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "10031715913734352554"
+            }
+          },
+          "parameters": {
+            "adfPipelineFailedAlertName": {
+              "type": "string"
+            },
+            "datafactoryScope": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapsePipelineFailedAlertName": {
+              "type": "string"
+            },
+            "synapseScope": {
+              "type": "string"
+            },
+            "dataFactoryEmailActionGroup": {
+              "type": "string"
+            },
+            "dataProductTeamEmail": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Insights/actionGroups",
+              "apiVersion": "2021-09-01",
+              "name": "[parameters('dataFactoryEmailActionGroup')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "groupShortName": "emailgroup",
+                "emailReceivers": [
+                  {
+                    "emailAddress": "[parameters('dataProductTeamEmail')]",
+                    "name": "emailaction",
+                    "useCommonAlertSchema": true
+                  }
+                ],
+                "enabled": true
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Insights/metricAlerts",
+              "apiVersion": "2018-03-01",
+              "name": "[parameters('adfPipelineFailedAlertName')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "actions": [
+                  {
+                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+                  }
+                ],
+                "autoMitigate": false,
+                "criteria": {
+                  "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                  "allOf": [
+                    {
+                      "threshold": 1,
+                      "name": "Metric1",
+                      "metricNamespace": "Microsoft.DataFactory/factories",
+                      "metricName": "PipelineFailedRuns",
+                      "operator": "GreaterThan",
+                      "timeAggregation": "Total",
+                      "criterionType": "StaticThresholdCriterion"
+                    }
+                  ]
+                },
+                "description": "ADF pipeline failed",
+                "enabled": true,
+                "evaluationFrequency": "PT1M",
+                "scopes": [
+                  "[parameters('datafactoryScope')]"
+                ],
+                "severity": 1,
+                "targetResourceRegion": "[parameters('location')]",
+                "targetResourceType": "Microsoft.DataFactory/factories",
+                "windowSize": "PT5M"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+              ]
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/metricAlerts",
+              "apiVersion": "2018-03-01",
+              "name": "[parameters('synapsePipelineFailedAlertName')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "actions": [
+                  {
+                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+                  }
+                ],
+                "autoMitigate": false,
+                "criteria": {
+                  "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                  "allOf": [
+                    {
+                      "threshold": 1,
+                      "name": "Metric1",
+                      "metricNamespace": "Microsoft.Synapse/workspaces",
+                      "metricName": "IntegrationPipelineRunsEnded",
+                      "operator": "GreaterThan",
+                      "timeAggregation": "Total",
+                      "criterionType": "StaticThresholdCriterion",
+                      "dimensions": [
+                        {
+                          "name": "Result",
+                          "operator": "Include",
+                          "values": [
+                            "Failed"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "description": "Synapse pipeline failed",
+                "enabled": true,
+                "evaluationFrequency": "PT1M",
+                "scopes": [
+                  "[parameters('synapseScope')]"
+                ],
+                "severity": 1,
+                "targetResourceRegion": "[parameters('location')]",
+                "targetResourceType": "Microsoft.Synapse/workspaces",
+                "windowSize": "PT5M"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "dashboard",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dashboardName": {
+            "value": "[variables('dashboardName')]"
+          },
+          "datafactoryName": {
+            "value": "[variables('datafactory001Name')]"
+          },
+          "datafactoryScope": {
+            "value": "[variables('datafactoryScope')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "synapse001Name": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "synapseScope": {
+            "value": "[variables('synapseScope')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "15614871915008595699"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "dashboardName": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "datafactoryScope": {
+              "type": "string"
+            },
+            "datafactoryName": {
+              "type": "string"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapseScope": {
+              "type": "string"
+            },
+            "synapse001Name": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Portal/dashboards",
+              "apiVersion": "2020-09-01-preview",
+              "name": "[parameters('dashboardName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "lenses": [
+                  {
+                    "order": 0,
+                    "parts": [
+                      {
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('datafactoryScope')]"
+                                      },
+                                      "name": "PipelineFailedRuns",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.datafactory/factories",
+                                      "metricVisualization": {
+                                        "displayName": "Failed pipeline runs metrics",
+                                        "resourceDisplayName": "[parameters('datafactoryName')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Count Failed activity runs metrics for {0}', parameters('datafactoryName'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "position": {
+                          "x": 6,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('datafactoryScope')]"
+                                      },
+                                      "name": "PipelineSucceededRuns",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.datafactory/factories",
+                                      "metricVisualization": {
+                                        "displayName": "Succeeded pipeline runs metrics",
+                                        "resourceDisplayName": "[parameters('datafactoryName')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Succeeded pipeline runs metrics for {0}', parameters('datafactoryName'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "metadata": {
+                  "model": {}
+                }
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Portal/dashboards",
+              "apiVersion": "2020-09-01-preview",
+              "name": "[format('{0}-synapse', parameters('dashboardName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "lenses": [
+                  {
+                    "order": 0,
+                    "parts": [
+                      {
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('synapseScope')]"
+                                      },
+                                      "name": "IntegrationPipelineRunsEnded",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.synapse/workspaces",
+                                      "metricVisualization": {
+                                        "displayName": "Pipeline runs ended",
+                                        "resourceDisplayName": "[parameters('synapse001Name')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Pipeline runs ended for {0}', parameters('synapse001Name'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "position": {
+                          "x": 6,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('synapseScope')]"
+                                      },
+                                      "name": "IntegrationActivityRunsEnded",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.synapse/workspaces",
+                                      "metricVisualization": {
+                                        "displayName": "Activity runs ended",
+                                        "resourceDisplayName": "[parameters('synapse001Name')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Activity runs ended for {0}', parameters('synapse001Name'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "metadata": {
+                  "model": {}
+                }
+              }
+            }
+          ]
+        }
+      }
     }
   ]
 }
