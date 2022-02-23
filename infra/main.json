@@ -187,6 +187,20 @@
         "description": "Specifies whether Azure Search should be deployed as part of the template."
       }
     },
+    "enableObservability": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether observability capabilities should be enabled."
+      }
+    },
+    "dataProductTeamEmail": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the email address of the Data Product SRE team."
+      }
+    },
     "subnetId": {
       "type": "string",
       "metadata": {
@@ -394,7 +408,7 @@
           "resources": [
             {
               "type": "Microsoft.KeyVault/vaults",
-              "apiVersion": "2021-04-01-preview",
+              "apiVersion": "2021-06-01-preview",
               "name": "[parameters('keyvaultName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -407,6 +421,7 @@
                 "enablePurgeProtection": true,
                 "enableRbacAuthorization": true,
                 "enableSoftDelete": true,
+                "publicNetworkAccess": "Disabled",
                 "networkAcls": {
                   "bypass": "AzureServices",
                   "defaultAction": "Deny",

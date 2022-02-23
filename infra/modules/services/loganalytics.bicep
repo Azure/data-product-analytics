@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+// This template is used to create a Log Analytics workspace.
+targetScope = 'resourceGroup'
 
 // Parameters
 param location string
-param loganalyticsName string
 param tags object
 param processingService string
 
@@ -12,20 +13,17 @@ param processingService string
 var dataFactoryAnalyticsName = 'AzureDataFactoryAnalytics(${loganalyticsName})'
 
 // Resources
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
-  name: loganalyticsName
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+  name: logAnanalyticsName
   location: location
   tags: tags
   properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
+    features: {}
     publicNetworkAccessForIngestion: 'Enabled'
     publicNetworkAccessForQuery: 'Enabled'
     retentionInDays: 120
-    features: {
-      searchVersion: 1
-      legacy: 0
+    sku: {
+      name: 'PerGB2018'
     }
   }
 }
@@ -46,4 +44,4 @@ resource dataFactoryAnalytics 'Microsoft.OperationsManagement/solutions@2015-11-
 }
 
 // Outputs
-output logAnalyticsWorkspaceId  string = logAnalytics.id
+output logAnalyticsWorkspaceId string = logAnalytics.id

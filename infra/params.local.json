@@ -1,0 +1,120 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westus2"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "prefix": {
+            "value": "pro069" //Change this to  use your prefix
+        },
+        "tags": {
+            "value": {}
+        },
+        "processingService": {
+            "value": "dataFactory"
+        },
+        "datalakeFileSystemIds": {
+            "value": []
+        },
+        "aksId": {
+            "value": ""
+        },
+        "externalContainerRegistryId": {
+            "value": ""
+        },
+        "machineLearningComputeInstance001AdministratorObjectId": {
+            "value": ""
+        },
+        "machineLearningComputeInstance001AdministratorPublicSshKey": {
+            "value": ""
+        },
+        "administratorPassword": {
+            "value": "noas@8u39i"
+        },
+        "synapseDefaultStorageAccountFileSystemId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dlzcaf-dev-storage/providers/Microsoft.Storage/storageAccounts/dlzcafdevwork/blobServices/default/containers/dp001"
+        },
+        "enableSqlPool": {
+            "value": true
+        },
+        "purviewId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-governance/providers/Microsoft.Purview/accounts/dmzcaf-dev-purview001"
+        },
+        "purviewManagedStorageId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-purview001/providers/Microsoft.Storage/storageAccounts/scanwestus2egrirfx"
+        },
+        "purviewManagedEventHubId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-purview001/providers/Microsoft.EventHub/namespaces/Atlas-bfbda92f-477b-4cd8-a07a-9ef8e2e6ed9f"
+        },
+        "databricksWorkspaceId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dlzcaf-dev-shared-product/providers/Microsoft.Databricks/workspaces/dlzcaf-dev-product-databricks001"
+        },
+        "databricksWorkspaceUrl": {
+            "value": "https://adb-4192534314710317.17.azuredatabricks.net"
+        },
+        "databricksAccessToken": {
+            "value": ""
+        },
+        "enableRoleAssignments": {
+            "value": false
+        },
+        "cognitiveServiceKinds": {
+            "value": [
+                "CustomVision.Training",
+                "CustomVision.Prediction"
+            ]
+        },
+        "enableMonitoring": {
+            "value": true
+        },
+        "dataProductTeamEmail": {
+            "value": "email@domain.com"
+        },
+        "enableSearch": {
+            "value": true
+        },
+        "subnetId": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dlzcaf-dev-network/providers/Microsoft.Network/virtualNetworks/dlzcaf-dev-vnet/subnets/DataProduct001Subnet"
+        },
+        "privateDnsZoneIdKeyVault": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        },
+        "privateDnsZoneIdSynapseDev": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+        },
+        "privateDnsZoneIdSynapseSql": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        },
+        "privateDnsZoneIdDataFactory": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+        },
+        "privateDnsZoneIdDataFactoryPortal": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
+        },
+        "privateDnsZoneIdCognitiveService": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com"
+        },
+        "privateDnsZoneIdContainerRegistry": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io"
+        },
+        "privateDnsZoneIdSearch": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net"
+        },
+        "privateDnsZoneIdBlob": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+        },
+        "privateDnsZoneIdFile": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
+        },
+        "privateDnsZoneIdMachineLearningApi": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms"
+        },
+        "privateDnsZoneIdMachineLearningNotebooks": {
+            "value": "/subscriptions/0fe1cc35-0cfa-4152-97d7-5dfb45a8d4ba/resourceGroups/dmzcaf-dev-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net"
+        }
+    }
+}

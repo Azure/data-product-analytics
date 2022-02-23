@@ -71,7 +71,10 @@
         "enableSearch": {
             "value": true
         },
-        "enableMonitoring": {
+        "enableSearch": {
+            "value": true
+        },
+        "enableObservability": {
             "value": true
         },
         "dataProductTeamEmail": {

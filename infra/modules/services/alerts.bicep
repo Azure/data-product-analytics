@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+// This template is used to create an alert.
+targetScope = 'resourceGroup'
+
 // Parameters
 param adfPipelineFailedAlertName string
 param datafactoryScope string
@@ -12,6 +15,8 @@ param synapseScope string
 param dataFactoryEmailActionGroup string
 param dataProductTeamEmail string
 
+
+// Variables
 
 // Resources
 resource actiongroup 'Microsoft.Insights/actionGroups@2021-09-01' =  {
@@ -46,15 +51,15 @@ resource adfPipelineFailedAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = i
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
-            threshold : 1
-            name : 'Metric1'
-            metricNamespace: 'Microsoft.DataFactory/factories'
-            metricName: 'PipelineFailedRuns'
-            operator: 'GreaterThan'
-            timeAggregation: 'Total'
-            criterionType: 'StaticThresholdCriterion'
+          threshold: 1
+          name: 'Metric1'
+          metricNamespace: 'Microsoft.DataFactory/factories'
+          metricName: 'PipelineFailedRuns'
+          operator: 'GreaterThan'
+          timeAggregation: 'Total'
+          criterionType: 'StaticThresholdCriterion'
         }
-       ]      
+      ]
     }
     description: 'ADF pipeline failed'
     enabled: true

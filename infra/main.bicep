@@ -79,6 +79,10 @@ param enableRoleAssignments bool = false
 param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
+@description('Specifies whether observability capabilities should be enabled.')
+param enableObservability bool = true
+@description('Specifies the email address of the Data Product SRE team.')
+param dataProductTeamEmail string = ''
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -109,13 +113,6 @@ param privateDnsZoneIdFile string = ''
 param privateDnsZoneIdMachineLearningApi string = ''
 @description('Specifies the resource ID of the private DNS zone for Machine Learning Notebooks.')
 param privateDnsZoneIdMachineLearningNotebooks string = ''
-
-// Monitoring
-@description('Specifies whether monitoring components(LogAnalytics, Azure Dashboard, Alerts etc.) should be deployed as part of the template.')
-param enableMonitoring bool
-@description('Email Id for the Data Product SRE Team.')
-param dataProductTeamEmail string = ''
-
 
 // Variables
 var name = toLower('${prefix}-${environment}')
@@ -329,9 +326,8 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
   }
 }]
 
-// Monitoring
-module loganalytics './modules/services/loganalytics.bicep' = if (enableMonitoring) {
-  name: 'logAnalytics'
+module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableObservability) {
+  name: 'logAnalytics001'
   scope: resourceGroup()
   params: {
     location: location
