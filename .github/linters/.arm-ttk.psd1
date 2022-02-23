@@ -14,5 +14,6 @@
         'Variables Must Be Referenced'
         'apiVersions Should Be Recent In Reference Functions'
         'URIs Should Be Properly Constructed'
+        'VM Size must be a parameter'
     )
 }
