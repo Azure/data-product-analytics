@@ -79,9 +79,11 @@ param enableRoleAssignments bool = false
 param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
+
+// Monitoring parameters
 @description('Specifies whether monitoring capabilities should be enabled.')
 param enableMonitoring bool = true
-@description('Specifies the email address of the Data Product SRE team.')
+@description('Specifies the email ID of the alerts receiver.')
 param dataProductTeamEmail string = ''
 
 // Network parameters
@@ -142,12 +144,10 @@ var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
-var loganalyticsName = '${name}-loganalytics'
+var logAnalytics001Name = '${name}-loganalytics'
 var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
 var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
 var synapsePipelineFailedAlertName = '${synapse001Name}-failedalert'
-var synapseScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Synapse/workspaces/${synapse001Name}'
-var datafactoryScope = '${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.DataFactory/factories/${datafactory001Name}'
 var dashboardName= '${name}-dashboard'
 
 // Resources
@@ -332,7 +332,7 @@ module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableMonitori
   params: {
     location: location
     tags: tagsJoined
-    loganalyticsName: loganalyticsName
+    logAnalytics001Name: logAnalytics001Name
     processingService: processingService  
   }
 }
@@ -342,11 +342,15 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   scope: resourceGroup()
   params: {
     datafactoryName: datafactory001Name    
-    loganalyticsName: loganalyticsName
+    logAnalytics001Name: logAnalytics001Name
     processingService: processingService
     synapseName: synapse001Name
-    synapseSqlPoolName: synapse001.outputs.synapseSqlPool001Name
-    synapseSparkPoolName: synapse001.outputs.synapseBigDataPool001Name
+    synapseSqlPools: [ 
+      synapse001.outputs.synapseSqlPool001Name
+    ]
+    synapseSparkPools: [
+      synapse001.outputs.synapseBigDataPool001Name
+    ] 
     }
 }
 
@@ -355,13 +359,13 @@ module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
   scope: resourceGroup()
   params: {
     adfPipelineFailedAlertName: adfPipelineFailedAlertName
-    datafactoryScope :datafactoryScope
+    datafactoryScope : datafactory001.outputs.datafactoryId
     dataFactoryEmailActionGroup: dataFactoryEmailActionGroup    
     dataProductTeamEmail: dataProductTeamEmail
     location: location
     processingService: processingService
     synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
-    synapseScope:synapseScope
+    synapseScope: synapse001.outputs.synapseId
     tags: tagsJoined
     }
 }
@@ -372,11 +376,11 @@ module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
   params: {
     dashboardName: dashboardName
     datafactoryName: datafactory001Name    
-    datafactoryScope :datafactoryScope
+    datafactoryScope : datafactory001.outputs.datafactoryId
     location: location
     processingService: processingService
     synapse001Name: synapse001Name
-    synapseScope: synapseScope
+    synapseScope: synapse001.outputs.synapseId
     tags: tagsJoined    
     }
 }

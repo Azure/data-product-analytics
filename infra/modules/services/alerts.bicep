@@ -15,7 +15,6 @@ param synapseScope string
 param dataFactoryEmailActionGroup string
 param dataProductTeamEmail string
 
-
 // Variables
 
 // Resources

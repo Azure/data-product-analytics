@@ -1006,7 +1006,7 @@
                                     }
                                 }
                             ]
-                        },                        
+                        },
                         {
                             "name": "monitoringSettings",
                             "label": "Monitoring Settings",
@@ -1051,13 +1051,18 @@
                                     "type": "Microsoft.Common.TextBox",
                                     "visible": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
                                     "defaultValue": "",
-                                    "toolTip": "Specify Email ID to receive monitoring alerts."                                    
-                                }                                
+                                    "toolTip": "Specify Email ID to receive monitoring alerts.",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[\\S+@\\S+.\\S+]{7,100}$",
+                                        "validationMessage": "Please enter a valid email address."
+                                    }
+                                }
                             ]
                         }
                     ]
                 },
-                                {
+                {
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
                     "subLabel": {
@@ -1494,8 +1499,8 @@
                 "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
                 "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
-                "enableMonitoring": "[steps('generalSettings').monitoringSettings.enableMonitoring]",
-                "dataProductTeamEmail": "[steps('generalSettings').monitoringSettings.dataProductTeamEmail]",
+                "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring,'yes')]",
+                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail,'',steps('generalSettings').monitoringSettings.dataProductTeamEmail]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",

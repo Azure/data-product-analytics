@@ -5,37 +5,41 @@
 targetScope = 'resourceGroup'
 
 // Parameters
-param loganalyticsName string
+param logAnalytics001Name string
 param datafactoryName string
 param processingService string
 param synapseName string
-param synapseSqlPoolName string
-param synapseSparkPoolName string
+param synapseSqlPools array
+param synapseSparkPools array
+
+//variables
+var synapseSqlPoolsCount = length(synapseSqlPools)
+var synapseSparkPoolCount = length(synapseSparkPools)
 
 //Resources
-resource datafactoryworkspace 'Microsoft.DataFactory/factories@2018-06-01' existing = if (processingService == 'dataFactory') {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
+  name: logAnalytics001Name
+}
+
+resource datafactoryworkspace 'Microsoft.DataFactory/factories@2018-06-01' existing = {
   name: datafactoryName
 }
 
-resource synapseworkspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = if (processingService == 'synapse') {
+resource synapseworkspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: synapseName
 }
 
-resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' existing = if (processingService == 'synapse') {
+resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' existing = [ for sqlPool in synapseSqlPools:{
   parent: synapseworkspace
-  name: synapseSqlPoolName
-}
+  name: sqlPool
+}]
 
-resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' existing = if (processingService == 'synapse') {
+resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' existing = [ for sparkPool in synapseSparkPools: {
   parent: synapseworkspace
-  name: synapseSparkPoolName
-}
+  name: sparkPool
+}]
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
-  name: loganalyticsName
-}
-
-resource diagnosticSetting1 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'dataFactory') {
+resource diagnosticSetting001 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'dataFactory') {
   scope: datafactoryworkspace
   name: 'diagnostic-${datafactoryworkspace.name}'  
   properties: {
@@ -63,7 +67,7 @@ resource diagnosticSetting1 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
   }
 }
 
-resource diagnosticSetting2 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'synapse') {
+resource diagnosticSetting002 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'synapse') {
   scope: synapseworkspace
   name: 'diagnostic-${synapseworkspace.name}'  
   properties: {
@@ -97,9 +101,9 @@ resource diagnosticSetting2 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
   }
 }
 
-resource diagnosticSetting3 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'synapse') {
-  scope: synapsesqlpool
-  name: 'diagnostic-${synapseworkspace.name}-${synapsesqlpool.name}'
+resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount) : {
+  scope: synapsesqlpool[i]
+  name: 'diagnostic-${synapseworkspace.name}-${synapsesqlpool[i].name}'
   properties: {
     workspaceId: logAnalyticsWorkspace.id
     logs: [
@@ -125,11 +129,11 @@ resource diagnosticSetting3 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
       }
     ]
   }
-}
+}]
 
-resource diagnosticSetting4 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'synapse') {
-  scope: synapsebigdatapool
-  name: 'diagnostic-${synapseworkspace.name}-${synapsebigdatapool.name}'
+resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount) : {
+  scope: synapsebigdatapool[i]
+  name: 'diagnostic-${synapseworkspace.name}-${synapsebigdatapool[i].name}'
   properties: {
     workspaceId: logAnalyticsWorkspace.id
     logs: [
@@ -139,6 +143,6 @@ resource diagnosticSetting4 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
       }
     ]
   }
-}
+}]
 
 //Outputs
