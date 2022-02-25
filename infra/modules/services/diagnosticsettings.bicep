@@ -39,7 +39,7 @@ resource diagnosticSetting1 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
   scope: datafactoryworkspace
   name: 'diagnostic-${datafactoryworkspace.name}'  
   properties: {
-    workspaceId: logAnalytics.id
+    workspaceId: logAnalyticsWorkspace.id
     logs: [
       {
         category: 'PipelineRuns'

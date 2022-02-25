@@ -79,8 +79,8 @@ param enableRoleAssignments bool = false
 param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
-@description('Specifies whether observability capabilities should be enabled.')
-param enableObservability bool = true
+@description('Specifies whether monitoring capabilities should be enabled.')
+param enableMonitoring bool = true
 @description('Specifies the email address of the Data Product SRE team.')
 param dataProductTeamEmail string = ''
 
@@ -326,7 +326,7 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
   }
 }]
 
-module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableObservability) {
+module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableMonitoring) {
   name: 'logAnalytics001'
   scope: resourceGroup()
   params: {
