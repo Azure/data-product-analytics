@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1272.37030",
-      "templateHash": "4690900052751888953"
+      "templateHash": "9847568812709356606"
     }
   },
   "parameters": {
@@ -326,7 +326,7 @@
     "containerRegistry001Name": "[format('{0}-containerregistry001', variables('name'))]",
     "storage001Name": "[format('{0}-storage001', variables('name'))]",
     "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]",
-    "logAnalytics001Name": "[format('{0}-loganalytics', variables('name'))]",
+    "logAnalytics001Name": "[format('{0}-loganalytics001', variables('name'))]",
     "dataFactoryEmailActionGroup": "[format('{0}-{1}-emailactiongroup', variables('datafactory001Name'), variables('name'))]",
     "adfPipelineFailedAlertName": "[format('{0}-{1}-adffailedalert', variables('datafactory001Name'), variables('name'))]",
     "synapsePipelineFailedAlertName": "[format('{0}-failedalert', variables('synapse001Name'))]",
@@ -366,7 +366,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "5013879991171743096"
+              "templateHash": "13044844821274583928"
             }
           },
           "parameters": {
@@ -3189,7 +3189,7 @@
       ]
     },
     {
-      "condition": "[parameters('enableMonitoring')]",
+      "condition": "[and(not(empty(parameters('dataProductTeamEmail'))), parameters('enableMonitoring'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
       "name": "alerts",

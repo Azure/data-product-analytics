@@ -67,7 +67,7 @@
                 "CustomVision.Training",
                 "CustomVision.Prediction"
             ]
-        },        
+        },
         "enableSearch": {
             "value": true
         },
