@@ -1500,7 +1500,7 @@
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
                 "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
                 "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring,'yes')]",
-                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail,'',steps('generalSettings').monitoringSettings.dataProductTeamEmail]",
+                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail),'',steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
