@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1272.37030",
-      "templateHash": "9847568812709356606"
+      "templateHash": "13884728231884728752"
     }
   },
   "parameters": {
@@ -3033,7 +3033,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "848089050683961471"
+              "templateHash": "1613816826511040281"
             }
           },
           "parameters": {
@@ -3128,6 +3128,7 @@
               }
             },
             {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
               "copy": {
                 "name": "diagnosticSetting003",
                 "count": "[length(range(0, variables('synapseSqlPoolsCount')))]"
@@ -3163,6 +3164,7 @@
               }
             },
             {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
               "copy": {
                 "name": "diagnosticSetting004",
                 "count": "[length(range(0, variables('synapseSparkPoolCount')))]"
