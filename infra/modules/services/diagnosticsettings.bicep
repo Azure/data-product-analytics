@@ -29,19 +29,19 @@ resource synapseworkspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: synapseName
 }
 
-resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' existing = [ for sqlPool in synapseSqlPools:{
+resource synapsesqlpool 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' existing = [for sqlPool in synapseSqlPools: {
   parent: synapseworkspace
   name: sqlPool
 }]
 
-resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' existing = [ for sparkPool in synapseSparkPools: {
+resource synapsebigdatapool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' existing = [for sparkPool in synapseSparkPools: {
   parent: synapseworkspace
   name: sparkPool
 }]
 
 resource diagnosticSetting001 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'dataFactory') {
   scope: datafactoryworkspace
-  name: 'diagnostic-${datafactoryworkspace.name}'  
+  name: 'diagnostic-${datafactoryworkspace.name}'
   properties: {
     workspaceId: logAnalyticsWorkspace.id
     logs: [
@@ -69,7 +69,7 @@ resource diagnosticSetting001 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 
 resource diagnosticSetting002 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (processingService == 'synapse') {
   scope: synapseworkspace
-  name: 'diagnostic-${synapseworkspace.name}'  
+  name: 'diagnostic-${synapseworkspace.name}'
   properties: {
     workspaceId: logAnalyticsWorkspace.id
     logs: [
@@ -101,7 +101,7 @@ resource diagnosticSetting002 'Microsoft.Insights/diagnosticSettings@2021-05-01-
   }
 }
 
-resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount) : {
+resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount): if (processingService == 'synapse') {
   scope: synapsesqlpool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsesqlpool[i].name}'
   properties: {
@@ -131,7 +131,7 @@ resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-
   }
 }]
 
-resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount) : {
+resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount): if (processingService == 'synapse') {
   scope: synapsebigdatapool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsebigdatapool[i].name}'
   properties: {

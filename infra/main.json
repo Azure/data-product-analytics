@@ -3017,12 +3017,12 @@
           },
           "synapseSqlPools": {
             "value": [
-              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, json('null'))]"
             ]
           },
           "synapseSparkPools": {
             "value": [
-              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, json('null'))]"
             ]
           }
         },
@@ -3221,7 +3221,7 @@
             "value": "[variables('synapsePipelineFailedAlertName')]"
           },
           "synapseScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -3418,7 +3418,7 @@
             "value": "[variables('synapse001Name')]"
           },
           "synapseScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
