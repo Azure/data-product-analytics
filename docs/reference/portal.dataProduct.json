@@ -1031,11 +1031,11 @@
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
                                     "toolTip": "Deploy monitoring components like Log Analytics, Azure dashboards, alerts and diagnostic settings.",
-                                    "defaultValue": "No",
+                                    "defaultValue": "yes",
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "Yes",
+                                                "label": "Yes (recommended)",
                                                 "value": "yes"
                                             },
                                             {
@@ -1499,8 +1499,8 @@
                 "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
                 "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
-                "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring,'yes')]",
-                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail),'',steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
+                "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
+                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail), '', steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",

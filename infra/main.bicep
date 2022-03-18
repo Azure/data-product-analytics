@@ -370,7 +370,7 @@ module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmai
   }
 }
 
-module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
+module dashboards './modules/services/dashboard.bicep' = if (enableMonitoring) {
   name: 'dashboard'
   scope: resourceGroup()
   params: {

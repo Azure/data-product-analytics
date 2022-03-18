@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1272.37030",
-      "templateHash": "13884728231884728752"
+      "templateHash": "13748630543132992782"
     }
   },
   "parameters": {
@@ -3433,7 +3433,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "15614871915008595699"
+              "templateHash": "9501397294172110948"
             }
           },
           "parameters": {
@@ -3467,7 +3467,7 @@
               "condition": "[equals(parameters('processingService'), 'dataFactory')]",
               "type": "Microsoft.Portal/dashboards",
               "apiVersion": "2020-09-01-preview",
-              "name": "[parameters('dashboardName')]",
+              "name": "[format('{0}-dataFactory', parameters('dashboardName'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
