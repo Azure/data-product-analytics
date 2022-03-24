@@ -1031,7 +1031,7 @@
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
                                     "toolTip": "Deploy monitoring components like Log Analytics, Azure dashboards, alerts and diagnostic settings.",
-                                    "defaultValue": "yes",
+                                    "defaultValue": "Yes (recommended)",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -1498,7 +1498,7 @@
                 "databricksAccessToken": "[if(empty(steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken), '', steps('generalSettings').machineLearningDeploymentSettings.databricksAccessToken)]",
                 "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
                 "cognitiveServiceKinds": "[if(empty(steps('generalSettings').generalSettings.cognitiveServiceKinds), parse('[]'), steps('generalSettings').generalSettings.cognitiveServiceKinds)]",
-                "enableSearch": "[steps('generalSettings').generalSettings.enableSearch]",
+                "enableSearch": "[equals(steps('generalSettings').generalSettings.enableSearch, 'yes')]",
                 "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
                 "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail), '', steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",

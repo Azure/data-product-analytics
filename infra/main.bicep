@@ -146,7 +146,7 @@ var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
 var logAnalytics001Name = '${name}-loganalytics001'
 var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
-var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-failedalert'
 var synapsePipelineFailedAlertName = '${synapse001Name}-failedalert'
 var dashboardName = '${name}-dashboard'
 
