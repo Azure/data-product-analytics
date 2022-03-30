@@ -256,3 +256,4 @@ resource machineLearning001LinkedService 'Microsoft.DataFactory/factories/linked
 
 // Outputs
 output datafactoryId string = datafactory.id
+output datafactoryName string = datafactory.name

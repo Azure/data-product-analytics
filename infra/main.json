@@ -1331,6 +1331,10 @@
             "datafactoryId": {
               "type": "string",
               "value": "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]"
+            },
+            "datafactoryName": {
+              "type": "string",
+              "value": "[parameters('datafactoryName')]"
             }
           }
         }
@@ -3187,6 +3191,7 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'datafactory001')]",
         "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
       ]
     },
@@ -3205,7 +3210,7 @@
             "value": "[variables('adfPipelineFailedAlertName')]"
           },
           "datafactoryScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value, '')]"
           },
           "dataFactoryEmailActionGroup": {
             "value": "[variables('dataFactoryEmailActionGroup')]"
@@ -3408,7 +3413,7 @@
             "value": "[variables('datafactory001Name')]"
           },
           "datafactoryScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value, '')]"
           },
           "location": {
             "value": "[parameters('location')]"

@@ -341,7 +341,7 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   name: 'diagnosticSettings'
   scope: resourceGroup()
   params: {
-    datafactoryName: datafactory001Name
+    datafactoryName: datafactory001.outputs.datafactoryName
     logAnalytics001Name: logAnalytics001Name
     processingService: processingService
     synapseName: synapse001Name
