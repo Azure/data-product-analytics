@@ -54,7 +54,7 @@ resource adfPipelineFailedAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = i
           name: 'Metric1'
           metricNamespace: 'Microsoft.DataFactory/factories'
           metricName: 'PipelineFailedRuns'
-          operator: 'GreaterThan'
+          operator: 'GreaterThanOrEqual'
           timeAggregation: 'Total'
           criterionType: 'StaticThresholdCriterion'
         }
@@ -92,7 +92,7 @@ resource synapsePipelineFailedAlert 'Microsoft.Insights/metricAlerts@2018-03-01'
             name : 'Metric1'
             metricNamespace: 'Microsoft.Synapse/workspaces'
             metricName: 'IntegrationPipelineRunsEnded'
-            operator: 'GreaterThan'
+            operator: 'GreaterThanOrEqual'
             timeAggregation: 'Total'
             criterionType: 'StaticThresholdCriterion'
             dimensions: [
