@@ -29,7 +29,7 @@ var synapsePrivateEndpointNameSqlOnDemand = '${synapse.name}-sqlondemand-private
 var synapsePrivateEndpointNameDev = '${synapse.name}-dev-private-endpoint'
 
 // Resources
-resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
+resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: synapseName
   location: location
   tags: tags
@@ -60,7 +60,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   }
 }
 
-resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = if(enableSqlPool) {
+resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-06-01' = if(enableSqlPool) {
   parent: synapse
   name: 'sqlPool001'
   location: location
@@ -75,7 +75,7 @@ resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = 
   }
 }
 
-resource synapseBigDataPool001 'Microsoft.Synapse/workspaces/bigDataPools@2021-03-01' = {
+resource synapseBigDataPool001 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' = {
   parent: synapse
   name: 'bigDataPool001'
   location: location
@@ -117,7 +117,7 @@ resource synapseBigDataPool001 'Microsoft.Synapse/workspaces/bigDataPools@2021-0
   }
 }
 
-resource synapseManagedIdentitySqlControlSettings 'Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings@2021-03-01' = {
+resource synapseManagedIdentitySqlControlSettings 'Microsoft.Synapse/workspaces/managedIdentitySqlControlSettings@2021-06-01' = {
   parent: synapse
   name: 'default'
   properties: {
@@ -127,7 +127,7 @@ resource synapseManagedIdentitySqlControlSettings 'Microsoft.Synapse/workspaces/
   }
 }
 
-resource synapseAadAdministrators 'Microsoft.Synapse/workspaces/administrators@2021-03-01' = if (!empty(synapseSqlAdminGroupName) && !empty(synapseSqlAdminGroupObjectID)) {
+resource synapseAadAdministrators 'Microsoft.Synapse/workspaces/administrators@2021-06-01' = if (!empty(synapseSqlAdminGroupName) && !empty(synapseSqlAdminGroupObjectID)) {
   parent: synapse
   name: 'activeDirectory'
   properties: {
@@ -258,3 +258,5 @@ resource synapsePrivateEndpointDevARecord 'Microsoft.Network/privateEndpoints/pr
 // Outputs
 output synapseId string = synapse.id
 output synapseBigDataPool001Id string = synapseBigDataPool001.id
+output synapseBigDataPool001Name string = synapseBigDataPool001.name
+output synapseSqlPool001Name string = synapseSqlPool001.name

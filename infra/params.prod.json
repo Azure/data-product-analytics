@@ -71,6 +71,12 @@
         "enableSearch": {
             "value": true
         },
+        "enableMonitoring": {
+            "value": true
+        },
+        "dataProductTeamEmail": {
+            "value": ""
+        },
         "subnetId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prd-network/providers/Microsoft.Network/virtualNetworks/dlz01-prd-vnet/subnets/DataProduct001Subnet"
         },

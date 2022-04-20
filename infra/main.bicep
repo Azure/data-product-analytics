@@ -80,6 +80,12 @@ param cognitiveServiceKinds array = []
 @description('Specifies whether Azure Search should be deployed as part of the template.')
 param enableSearch bool = false
 
+// Monitoring parameters
+@description('Specifies whether monitoring capabilities should be enabled.')
+param enableMonitoring bool = true
+@description('Specifies the email ID of the alerts receiver.')
+param dataProductTeamEmail string = ''
+
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
 param subnetId string
@@ -125,7 +131,7 @@ var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStor
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 var externalContainerRegistrySubscriptionId = length(split(externalContainerRegistryId, '/')) >= 9 ? split(externalContainerRegistryId, '/')[2] : subscription().subscriptionId
 var externalContainerRegistryResourceGroupName = length(split(externalContainerRegistryId, '/')) >= 9 ? split(externalContainerRegistryId, '/')[4] : resourceGroup().name
-var datalakeFileSystemScopes = [for datalakeFileSystemId in datalakeFileSystemIds : {
+var datalakeFileSystemScopes = [for datalakeFileSystemId in datalakeFileSystemIds: {
   subscriptionId: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[2] : subscription().subscriptionId
   resourceGroupName: length(split(datalakeFileSystemId, '/')) >= 13 ? split(datalakeFileSystemId, '/')[4] : resourceGroup().name
 }]
@@ -138,6 +144,11 @@ var applicationInsights001Name = '${name}-insights001'
 var containerRegistry001Name = '${name}-containerregistry001'
 var storage001Name = '${name}-storage001'
 var machineLearning001Name = '${name}-machinelearning001'
+var logAnalytics001Name = '${name}-loganalytics001'
+var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
+var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-failedalert'
+var synapsePipelineFailedAlertName = '${synapse001Name}-failedalert'
+var dashboardName = '${name}-dashboard'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -214,7 +225,7 @@ module cognitiveservices 'modules/services/cognitiveservices.bicep' = [for (cogn
   }
 }]
 
-module search001 'modules/services/search.bicep' = if(enableSearch) {
+module search001 'modules/services/search.bicep' = if (enableSearch) {
   name: 'search001'
   scope: resourceGroup()
   params: {
@@ -306,7 +317,7 @@ module machineLearning001RoleAssignmentContainerRegistry 'modules/auxiliary/mach
   }
 }
 
-module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearningRoleAssignmentStorage.bicep' = [ for (datalakeFileSystemId, i) in datalakeFileSystemIds : if(enableRoleAssignments) {
+module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearningRoleAssignmentStorage.bicep' = [for (datalakeFileSystemId, i) in datalakeFileSystemIds: if (enableRoleAssignments) {
   name: 'machineLearning001RoleAssignmentStorage-${i}'
   scope: resourceGroup(length(datalakeFileSystemIds) <= 0 ? subscription().subscriptionId : datalakeFileSystemScopes[i].subscriptionId, length(datalakeFileSystemIds) <= 0 ? resourceGroup().name : datalakeFileSystemScopes[i].resourceGroupName)
   params: {
@@ -314,5 +325,64 @@ module machineLearning001RoleAssignmentStorage 'modules/auxiliary/machineLearnin
     storageAccountFileSystemId: datalakeFileSystemId
   }
 }]
+
+module logAnalytics001 'modules/services/loganalytics.bicep' = if (enableMonitoring) {
+  name: 'logAnalytics001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tagsJoined
+    logAnalytics001Name: logAnalytics001Name
+    processingService: processingService
+  }
+}
+
+module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (enableMonitoring) {
+  name: 'diagnosticSettings'
+  scope: resourceGroup()
+  params: {
+    datafactoryName: datafactory001.outputs.datafactoryName
+    logAnalytics001Name: logAnalytics001Name
+    processingService: processingService
+    synapseName: synapse001Name
+    synapseSqlPools: [
+      synapse001.outputs.synapseSqlPool001Name
+    ]
+    synapseSparkPools: [
+      synapse001.outputs.synapseBigDataPool001Name
+    ]
+  }
+}
+
+module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmail) && enableMonitoring) {
+  name: 'alerts'
+  scope: resourceGroup()
+  params: {
+    adfPipelineFailedAlertName: adfPipelineFailedAlertName
+    datafactoryScope: datafactory001.outputs.datafactoryId
+    dataFactoryEmailActionGroup: dataFactoryEmailActionGroup
+    dataProductTeamEmail: dataProductTeamEmail
+    location: location
+    processingService: processingService
+    synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
+    synapseScope: synapse001.outputs.synapseId
+    tags: tagsJoined
+  }
+}
+
+module dashboards './modules/services/dashboard.bicep' = if (enableMonitoring) {
+  name: 'dashboard'
+  scope: resourceGroup()
+  params: {
+    dashboardName: dashboardName
+    datafactoryName: datafactory001Name
+    datafactoryScope: datafactory001.outputs.datafactoryId
+    location: location
+    processingService: processingService
+    synapse001Name: synapse001Name
+    synapseScope: synapse001.outputs.synapseId
+    tags: tagsJoined
+  }
+}
 
 // Outputs
