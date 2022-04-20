@@ -3,7 +3,7 @@
     "view": {
         "kind": "Form",
         "properties": {
-            "title": "Data Management & Analytics Scenario - Data Product Analytics",
+            "title": "Cloud-scale Analytics Scenario - Data Product Analytics",
             "steps": [
                 {
                     "name": "basics",
@@ -14,9 +14,9 @@
                             "type": "Microsoft.Common.InfoBox",
                             "visible": true,
                             "options": {
-                                "text": "Data Management & Analytics Scenario is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
+                                "text": "Cloud-scale Analytics Scenario is a prescriptive reference architecture for data with reference implementation provided by Microsoft. Visit 'aka.ms/adopt/datamanagement' for more details about the solution pattern.",
                                 "style": "Info",
-                                "uri": "https://aka.ms/adopt/datamanagement"
+                                "uri": "https://aka.ms/adopt/cloudscaleanalytics"
                             }
                         },
                         {
@@ -412,7 +412,7 @@
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": "[equals(steps('generalSettings').machineLearningDeploymentSettings.enableDatabricks, 'yes')]",
                                     "options": {
-                                        "text": "As per Data Management & Analytics Scenario recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
+                                        "text": "As per Cloud-scale Analytics Scenario recommendation, we are advising to use shared Databricks workspaces. Please select the shared product Databricks workspace in your Data Landing Zone and provide an access token to connect the workspace with Machine Learning. Leave blank, if you don't want to connect Databricks and Machine Learning.",
                                         "style": "Info",
                                         "uri": "https://docs.microsoft.com/azure/machine-learning/how-to-attach-compute-targets#databricks"
                                     }
