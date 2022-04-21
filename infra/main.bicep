@@ -341,15 +341,15 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   name: 'diagnosticSettings'
   scope: resourceGroup()
   params: {
-    datafactoryName: datafactory001.outputs.datafactoryName
-    logAnalytics001Name: logAnalytics001Name
+    datafactoryName: processingService == 'dataFactory' ? datafactory001.outputs.datafactoryName : ''
+    logAnalytics001Name: enableMonitoring ? logAnalytics001.outputs.logAnalyticsWorkspaceName: ''
     processingService: processingService
-    synapseName: synapse001Name
+    synapseName: processingService == 'synapse' ? synapse001.outputs.synapseName : ''
     synapseSqlPools: [
-      synapse001.outputs.synapseSqlPool001Name
+      processingService == 'synapse' ? synapse001.outputs.synapseSqlPool001Name : null
     ]
     synapseSparkPools: [
-      synapse001.outputs.synapseBigDataPool001Name
+      processingService == 'synapse' ? synapse001.outputs.synapseBigDataPool001Name : null
     ]
   }
 }
@@ -359,13 +359,13 @@ module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmai
   scope: resourceGroup()
   params: {
     adfPipelineFailedAlertName: adfPipelineFailedAlertName
-    datafactoryScope: datafactory001.outputs.datafactoryId
+    datafactoryScope: processingService == 'dataFactory' ? datafactory001.outputs.datafactoryId : ''
     dataFactoryEmailActionGroup: dataFactoryEmailActionGroup
     dataProductTeamEmail: dataProductTeamEmail
     location: location
     processingService: processingService
     synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
-    synapseScope: synapse001.outputs.synapseId
+    synapseScope: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
     tags: tagsJoined
   }
 }
@@ -375,12 +375,12 @@ module dashboards './modules/services/dashboard.bicep' = if (enableMonitoring) {
   scope: resourceGroup()
   params: {
     dashboardName: dashboardName
-    datafactoryName: datafactory001Name
-    datafactoryScope: datafactory001.outputs.datafactoryId
+    datafactoryName: processingService == 'dataFactory' ? datafactory001.outputs.datafactoryName : ''
+    datafactoryScope: processingService == 'dataFactory' ? datafactory001.outputs.datafactoryId : ''
     location: location
     processingService: processingService
-    synapse001Name: synapse001Name
-    synapseScope: synapse001.outputs.synapseId
+    synapse001Name: processingService == 'synapse' ? synapse001.outputs.synapseName : ''
+    synapseScope: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
     tags: tagsJoined
   }
 }

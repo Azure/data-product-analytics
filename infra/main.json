@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1272.37030",
-      "templateHash": "13748630543132992782"
+      "version": "0.5.6.12127",
+      "templateHash": "11208283124260060624"
     }
   },
   "parameters": {
@@ -328,7 +328,7 @@
     "machineLearning001Name": "[format('{0}-machinelearning001', variables('name'))]",
     "logAnalytics001Name": "[format('{0}-loganalytics001', variables('name'))]",
     "dataFactoryEmailActionGroup": "[format('{0}-{1}-emailactiongroup', variables('datafactory001Name'), variables('name'))]",
-    "adfPipelineFailedAlertName": "[format('{0}-{1}-adffailedalert', variables('datafactory001Name'), variables('name'))]",
+    "adfPipelineFailedAlertName": "[format('{0}-{1}-failedalert', variables('datafactory001Name'), variables('name'))]",
     "synapsePipelineFailedAlertName": "[format('{0}-failedalert', variables('synapse001Name'))]",
     "dashboardName": "[format('{0}-dashboard', variables('name'))]"
   },
@@ -365,8 +365,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "13044844821274583928"
+              "version": "0.5.6.12127",
+              "templateHash": "3502341494887404126"
             }
           },
           "parameters": {
@@ -538,8 +538,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "4566622898197965808"
+              "version": "0.5.6.12127",
+              "templateHash": "13468015969190816556"
             }
           },
           "parameters": {
@@ -861,6 +861,10 @@
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
             },
+            "synapseName": {
+              "type": "string",
+              "value": "[parameters('synapseName')]"
+            },
             "synapseBigDataPool001Id": {
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
@@ -894,7 +898,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -903,8 +907,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "4535135918647961980"
+              "version": "0.5.6.12127",
+              "templateHash": "10481417171219687804"
             }
           },
           "parameters": {
@@ -991,8 +995,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "4658994371289046641"
+              "version": "0.5.6.12127",
+              "templateHash": "4036033092441386605"
             }
           },
           "parameters": {
@@ -1197,7 +1201,6 @@
                 "privateLinkResourceId": "[parameters('purviewId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1212,7 +1215,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1227,7 +1229,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1242,7 +1243,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedEventHubId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1256,7 +1256,6 @@
                 "privateLinkResourceId": "[parameters('keyVault001Id')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1294,7 +1293,6 @@
                 "privateLinkResourceId": "[parameters('machineLearning001Id')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1386,8 +1384,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "390418905763272326"
+              "version": "0.5.6.12127",
+              "templateHash": "15660561946971952792"
             }
           },
           "parameters": {
@@ -1558,8 +1556,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "10783497108252025858"
+              "version": "0.5.6.12127",
+              "templateHash": "17822501770677739141"
             }
           },
           "parameters": {
@@ -1724,8 +1722,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "7685666168919205168"
+              "version": "0.5.6.12127",
+              "templateHash": "12606138087252769114"
             }
           },
           "parameters": {
@@ -1805,8 +1803,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "10998052295333890969"
+              "version": "0.5.6.12127",
+              "templateHash": "3228388473696689504"
             }
           },
           "parameters": {
@@ -1970,8 +1968,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "17706947645436179540"
+              "version": "0.5.6.12127",
+              "templateHash": "14089446652223414104"
             }
           },
           "parameters": {
@@ -2157,7 +2155,6 @@
                 "metadata": {}
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageNameCleaned'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageNameCleaned'), 'default')]"
               ]
             },
@@ -2315,10 +2312,10 @@
             "value": "[parameters('databricksWorkspaceUrl')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "synapseBigDataPoolId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Id.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseBigDataPool001Id.value, '')]"
           },
           "machineLearningComputeInstance001AdministratorObjectId": {
             "value": "[parameters('machineLearningComputeInstance001AdministratorObjectId')]"
@@ -2342,8 +2339,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "2625581626341947011"
+              "version": "0.5.6.12127",
+              "templateHash": "11404786937672607635"
             }
           },
           "parameters": {
@@ -2795,8 +2792,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "6095886941970314891"
+              "version": "0.5.6.12127",
+              "templateHash": "381718829974112269"
             }
           },
           "parameters": {
@@ -2861,8 +2858,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "9185402326525362659"
+              "version": "0.5.6.12127",
+              "templateHash": "3319596300491808760"
             }
           },
           "parameters": {
@@ -2928,8 +2925,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "1735967501270030305"
+              "version": "0.5.6.12127",
+              "templateHash": "5155949914999452782"
             }
           },
           "parameters": {
@@ -2991,6 +2988,10 @@
             "logAnalyticsWorkspaceId": {
               "type": "string",
               "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string",
+              "value": "[parameters('logAnalytics001Name')]"
             }
           }
         }
@@ -3008,25 +3009,25 @@
         "mode": "Incremental",
         "parameters": {
           "datafactoryName": {
-            "value": "[variables('datafactory001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.datafactoryName.value, '')]"
           },
           "logAnalytics001Name": {
-            "value": "[variables('logAnalytics001Name')]"
+            "value": "[if(parameters('enableMonitoring'), reference(resourceId('Microsoft.Resources/deployments', 'logAnalytics001'), '2020-10-01').outputs.logAnalyticsWorkspaceName.value, '')]"
           },
           "processingService": {
             "value": "[parameters('processingService')]"
           },
           "synapseName": {
-            "value": "[variables('synapse001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseName.value, '')]"
           },
           "synapseSqlPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, json('null'))]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseSqlPool001Name.value, null())]"
             ]
           },
           "synapseSparkPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, json('null'))]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseBigDataPool001Name.value, null())]"
             ]
           }
         },
@@ -3036,8 +3037,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "1613816826511040281"
+              "version": "0.5.6.12127",
+              "templateHash": "8821169468752758231"
             }
           },
           "parameters": {
@@ -3192,6 +3193,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'datafactory001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'logAnalytics001')]",
         "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
       ]
     },
@@ -3210,7 +3212,7 @@
             "value": "[variables('adfPipelineFailedAlertName')]"
           },
           "datafactoryScope": {
-            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.datafactoryId.value, '')]"
           },
           "dataFactoryEmailActionGroup": {
             "value": "[variables('dataFactoryEmailActionGroup')]"
@@ -3228,7 +3230,7 @@
             "value": "[variables('synapsePipelineFailedAlertName')]"
           },
           "synapseScope": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -3240,8 +3242,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "10031715913734352554"
+              "version": "0.5.6.12127",
+              "templateHash": "16025665147240045999"
             }
           },
           "parameters": {
@@ -3410,10 +3412,10 @@
             "value": "[variables('dashboardName')]"
           },
           "datafactoryName": {
-            "value": "[variables('datafactory001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.datafactoryName.value, '')]"
           },
           "datafactoryScope": {
-            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.datafactoryId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.datafactoryId.value, '')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -3422,10 +3424,10 @@
             "value": "[parameters('processingService')]"
           },
           "synapse001Name": {
-            "value": "[variables('synapse001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseName.value, '')]"
           },
           "synapseScope": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -3437,8 +3439,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "9501397294172110948"
+              "version": "0.5.6.12127",
+              "templateHash": "7422181253017355270"
             }
           },
           "parameters": {
