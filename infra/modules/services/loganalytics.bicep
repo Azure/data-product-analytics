@@ -46,3 +46,4 @@ resource dataFactoryAnalytics 'Microsoft.OperationsManagement/solutions@2015-11-
 
 // Outputs
 output logAnalyticsWorkspaceId string = logAnalytics.id
+output logAnalyticsWorkspaceName string = logAnalytics.name
