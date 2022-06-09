@@ -7,7 +7,7 @@ The [Cloud-scale Analytics Scenario](https://aka.ms/adopt/cloudscaleanalytics) p
 The Cloud-scale Analyticsarchitecture consists of two core building blocks:
 
 1. *Data Management Landing Zone* which provides all data management and data governance capabilities for the data platform of an organization.
-1. *Data Landing Zone* which is a logical construct and a unit of scale in the Cloud-scale Analyticsarchitecture that enables data retention and execution of data workloads for generating insights and value with data.
+1. *Data Landing Zone* which is a logical construct and a unit of scale in the Cloud-scale Analytics architecture that enables data retention and execution of data workloads for generating insights and value with data.
 
 The architecture is modular by design and allows organizations to start small with a single Data Management Landing Zone and Data Landing Zone, but also allows to scale to a multi-subscription data platform environment by adding more Data Landing Zones to the architecture. Thereby, the reference design allows to implement different modern data platform patterns like data-mesh, data-fabric as well as traditional datalake architectures. Cloud-scale Analytics Scenario has been very well aligned with the data-mesh approach, and is ideally suited to help organizations build data products and share these across business units of an organization. If core recommendations are followed, the resulting target architecture will put the customer on a path to sustainable scale.
 
@@ -25,7 +25,7 @@ This repository describes a Data Product template for Data Analytics and Data Sc
 
 ## Deploy Cloud-scale Analytics Scenario
 
-The Cloud-scale Analyticsarchitecture is modular by design and allows customers to start with a small footprint and grow over time. In order to not end up in a migration project, customers should decide upfront how they want to organize data domains across Data Landing Zones. All Cloud-scale Analyticsarchitecture building blocks can be deployed through the Azure Portal as well as through GitHub Actions workflows and Azure DevOps Pipelines. The template repositories contain sample YAML pipelines to more quickly get started with the setup of the environments.
+The Cloud-scale Analytics architecture is modular by design and allows customers to start with a small footprint and grow over time. In order to not end up in a migration project, customers should decide upfront how they want to organize data domains across Data Landing Zones. All Cloud-scale Analytics architecture building blocks can be deployed through the Azure Portal as well as through GitHub Actions workflows and Azure DevOps Pipelines. The template repositories contain sample YAML pipelines to more quickly get started with the setup of the environments.
 
 | Reference implementation   | Description | Deploy to Azure | Link |
 |:---------------------------|:------------|:----------------|------|
