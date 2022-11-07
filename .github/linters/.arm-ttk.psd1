@@ -15,5 +15,6 @@
         'apiVersions Should Be Recent In Reference Functions'
         'URIs Should Be Properly Constructed'
         'VM Size Should Be A Parameter'
+        'Parameter Types Should Be Consistent'
     )
 }
