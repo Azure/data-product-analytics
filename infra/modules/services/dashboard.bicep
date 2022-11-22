@@ -44,6 +44,7 @@ resource dashboardDataFactory 'Microsoft.Portal/dashboards@2020-09-01-preview' =
                   isOptional: true
                 }
               ]
+              #disable-next-line BCP036
               type: 'Extension/HubsExtension/PartType/MonitorChartPart'
               settings: {
                 content: {
@@ -108,6 +109,7 @@ resource dashboardDataFactory 'Microsoft.Portal/dashboards@2020-09-01-preview' =
                   isOptional: true
                 }
               ]
+              #disable-next-line BCP036
               type: 'Extension/HubsExtension/PartType/MonitorChartPart'
               settings: {
                 content: {
@@ -190,6 +192,7 @@ resource dashboardSynapse 'Microsoft.Portal/dashboards@2020-09-01-preview' = if 
                   isOptional: true
                 }
               ]
+              #disable-next-line BCP036
               type: 'Extension/HubsExtension/PartType/MonitorChartPart'
               settings: {
                 content: {
@@ -254,6 +257,7 @@ resource dashboardSynapse 'Microsoft.Portal/dashboards@2020-09-01-preview' = if 
                   isOptional: true
                 }
               ]
+              #disable-next-line BCP036
               type: 'Extension/HubsExtension/PartType/MonitorChartPart'
               settings: {
                 content: {
