@@ -242,12 +242,12 @@ resource machineLearningComputeInstance001 'Microsoft.MachineLearningServices/wo
           tenantId: subscription().tenantId
         }
       }
-      setupScripts: {
-        scripts: {
-          creationScript: {}
-          startupScript: {}
-        }
-      }
+      // setupScripts: {  // Use this to create the compute instance with a creation or startup script
+      //   scripts: {
+      //     creationScript: {}
+      //     startupScript: {}
+      //   }
+      // }
       sshSettings: {
         adminPublicKey: machineLearningComputeInstance001AdministratorPublicSshKey
         sshPublicAccess: empty(machineLearningComputeInstance001AdministratorPublicSshKey) ? 'Disabled' : 'Enabled'
