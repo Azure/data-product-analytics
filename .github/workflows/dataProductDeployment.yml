@@ -54,28 +54,27 @@ jobs:
           subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_LOCATION }}
-          template: ${{ github.workspace }}/infra/main.json
+          template: ${{ github.workspace }}/infra/main.bicep
           parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
           deploymentMode: Validate
+          deploymentName: "DataProduct-${{ github.sha }}"
           failOnStdErr: false
 
       # Deploy Data Product - what-if
       - name: Deploy Data Product - what-if
         id: data_product_whatif
-        uses: azure/cli@v1
+        uses: azure/arm-deploy@v1
         with:
-          azcliversion: "agentazcliversion"
-          inlineScript: |
-            az account set \
-              --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
-            
-            az deployment group what-if \
-              --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-              --exclude-change-types Ignore NoChange Unsupported \
-              --mode "Incremental" \
-              --template-file "${GITHUB_WORKSPACE}/infra/main.json" \
-              --parameters "${GITHUB_WORKSPACE}/infra/params.dev.json" administratorPassword="${{ steps.generate_password_001.outputs.password }}" \
-              --result-format "FullResourcePayloads"
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+          region: ${{ env.AZURE_LOCATION }}
+          template: ${{ github.workspace }}/infra/main.bicep
+          parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
+          deploymentMode: Incremental
+          deploymentName: "DataProduct-${{ github.sha }}"
+          failOnStdErr: false
+          additionalArguments: "--what-if --what-if-exclude-change-types Ignore NoChange Unsupported --what-if-result-format FullResourcePayloads"
 
       # Log out from Azure
       - name: Log out from Azure
@@ -122,9 +121,10 @@ jobs:
           subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
           region: ${{ env.AZURE_LOCATION }}
-          template: ${{ github.workspace }}/infra/main.json
+          template: ${{ github.workspace }}/infra/main.bicep
           parameters: ${{ github.workspace }}/infra/params.dev.json administratorPassword="${{ steps.generate_password_001.outputs.password }}"
           deploymentMode: Incremental
+          deploymentName: "DataProduct-${{ github.sha }}"
           failOnStdErr: false
 
       # Log out from Azure
